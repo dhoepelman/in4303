@@ -1,0 +1,141 @@
+// Done
+
+// [Statements]
+// Points earned = 0.0 out of 10.0
+// Points earned = 0.0 out of 2.0
+
+module test-Statement
+
+language MiniJava
+start symbol Statement
+
+// Syntax tests
+
+test empty [[ {} ]] parse succeeds
+test multiple [[ x = y; y = z; ]] parse fails
+
+test block [[ { x = 1; }]] parse succeeds
+test blockmultiple [[ { x = 1; y = 2;} ]] parse succeeds
+
+test if only [[ if (1 < 2) x = y; ]] parse fails
+test ifelse nobrackets [[ if (x) x = y ; else x = z; ]] parse succeeds
+test ifelse nosemicolon [[ if (x) x = y else x = z; ]] parse fails
+test ifelse nosemicolon 2 [[ if (x) x = y; else x = z ]] parse fails
+test ifelse empty [[ if (x) { } else { } ]] parse succeeds
+test ifelse brackets [[ if(x) { x = y; } else { x = z;}]] parse succeeds
+test ifelse multiple statements [[ if(x) x=y;x=z; else q=r; ]] parse fails
+test ifelse multiple statements 2 [[ if(x) x=y; else q=r; s=t; ]] parse fails
+test ifelse nested [[ if(x) if(y) {} else {} else {}]] parse succeeds
+
+// // Test ifelse with a selection of valid and invalid expressions
+// test ifelse this [[if(this) {} else {}]] parse succeeds
+// test ifelse exp and exp [[if(1 && a) {} else {}]] parse succeeds
+// test ifelse exp lt exp [[if(true < a) {} else {}]] parse succeeds
+// test ifelse exp plus exp [[if(1 + x) {} else {}]] parse succeeds
+// test ifelse exp mul exp [[if(c * 9) {} else {}]] parse succeeds
+// test ifelse exp bracket exp [[if(a[1]) {} else {}]] parse succeeds
+// test ifelse exp length [[if(a.length) {} else {}]] parse succeeds
+// test ifelse exp id call [[if(a.b()) {} else {}]] parse succeeds
+// test ifelse exp id call exp [[if(a.b(c)) {} else {}]] parse succeeds 
+// test ifelse exp id call expl [[if(a.b(c,d)) {} else {}]] parse succeeds
+// test ifelse invalid call 1 [[if(a.b(,)) {} else {}]] parse fails
+// test ifelse invalid call 2 [[if(a.b(c,)) {} else {}]] parse fails
+// test ifelse invalid call 3 [[if(a.b(,c)) {} else {}]] parse fails
+// test ifelse INTEGER_LITERAL [[if(1) {} else {}]] parse succeeds
+// test ifelse invalid int [[if(-1) {} else {}]] parse fails
+// test ifelse true [[if(true) {} else {}]] parse succeeds
+// test ifelse false [[if(false) {} else {}]] parse succeeds
+// test ifelse new int exp [[if(new int[1]) {} else {}]] parse succeeds
+// test ifelse new id [[if(new id()) {} else {}]] parse succeeds
+// test ifelse not exp [[if(!1) {} else {}]] parse succeeds
+// test ifelse parentheses [[if((1)) {} else {}]] parse succeeds
+
+test while [[ while(x) x = y; ]] parse succeeds
+test while empty [[ while(x)]] parse fails
+test while empty brackets [[ while(x) { } ]] parse succeeds
+test while multiple [[ while(x) x = y; y = z; ]] parse fails
+test while brackets [[ while(x){ x = y; y = z; }]] parse succeeds
+test while nested [[ while(x) while(y) {} ]] parse succeeds
+
+test print [[System.out.println ( x ) ;]] parse succeeds
+test print empty [[ System.out.println (  ) ; ]] parse fails
+test print weirdexp [[ System.out.println ( new int[5] ) ; ]] parse succeeds
+test print 2 [[System.out.println(5);]] parse succeeds
+test print spaced [[System . out. println(10);]] parse succeeds
+
+test assignment [[ x = 1; ]] parse succeeds
+test assignment lowercase	[[a = y;]]	parse succeeds
+// test assignment Uppercase	[[A = 1;]]	parse succeeds
+// test assignment digit0		[[0 = 1;]]	parse fails
+// test assignment digit1		[[1 = 1;]]	parse fails
+// test assignment underscore [[_ = 1;]]	parse fails
+// test assignment lower lower		[[bb = 1;]]	parse succeeds
+// test assignment lower upper		[[bB = 1;]]	parse succeeds
+// test assignment lower digit		[[b0 = 1;]]	parse succeeds
+// test assignment lower underscore	[[b_ = 1;]]	parse succeeds
+test assignment only id [[a]] parse fails
+test assignment id assign [[a = ]] parse fails
+test assignment no assign [[a b;]] parse fails
+test assignment no semicolon [[a = 1]] parse fails
+test assignment statement [[a = b = 5;]] parse fails
+test assignment statement 2 [[ a = {};]] parse fails
+
+// Test assignment with a selection of valid and invalid expressions
+test assignment this [[x = this;]] parse succeeds
+test assignment exp and exp [[x = 1 && a;]] parse succeeds
+test assignment exp lt exp [[x = true < a;]] parse succeeds
+test assignment exp plus exp [[x = 1 + x;]] parse succeeds
+test assignment exp mul exp [[x = c * 9;]] parse succeeds
+test assignment exp bracket exp [[x = a[1];]] parse succeeds
+test assignment exp length [[x = a.length;]] parse succeeds
+test assignment exp id call [[x = a.b();]] parse succeeds
+test assignment exp id call exp [[x = a.b(c);]] parse succeeds
+test assignment exp id call expl [[x = a.b(c,d);]] parse succeeds
+test assignment invalid call 1 [[x = a.b(,);]] parse fails
+test assignment invalid call 2 [[x = a.b(c,);]] parse fails
+test assignment invalid call 3 [[x = a.b(,c);]] parse fails
+test assignment INTEGER_LITERAL [[x = 1;]] parse succeeds
+test assignment invalid int [[x = -1;]] parse fails
+test assignment true [[x = true;]] parse succeeds
+test assignment false [[x = false;]] parse succeeds
+test assignment new int exp [[x = new int[1];]] parse succeeds
+test assignment new id [[x = new id();]] parse succeeds
+test assignment not exp [[x = !1;]] parse succeeds
+test assignment parentheses [[x = (1);]] parse succeeds
+
+test arrayaccess [[a[1] = 1;]] parse succeeds
+test arrayaccess weirdexp [[ a[new int[5] ] = 1; ]] parse succeeds
+test arrayaccess no semicolon [[a[1] = 1]] parse fails
+test arrayaccess no assign [[a[1] ]] parse fails
+
+// some valid Java Statements not in MiniJava
+// test expr++ [[i++;]] parse fails
+// test expr-- [[i--;]] parse fails
+// test ++expr [[++i;]] parse fails
+// test --expr [[--i;]] parse fails
+// test ? [[true?true;]] parse fails
+// test : [[true?true:false;]] parse fails
+// test += [[i += 1;]] parse fails
+// test -= [[i -= 1;]] parse fails
+// test *= [[i *= 1;]] parse fails
+// test /= [[i /= 1;]] parse fails
+// test %= [[i %= 1;]] parse fails
+// test &= [[i &= 1;]] parse fails
+// test ^= [[i ^= 1;]] parse fails
+// test |= [[i |= 1;]] parse fails
+// test <<= [[i <<= 1;]] parse fails
+// test >>= [[i >>= 1;]] parse fails
+// test >>= [[i >>= 1;]] parse fails
+
+test method call 1 [[a.b();]] parse fails
+test method call 2 [[a.b(c);]] parse fails
+test method call 3 [[a.b(c,d);]] parse fails
+
+// Abstract syntax trees tests
+
+// Constraint: variable references on the left-hand side and on the right-hand side of assignments should be represented the same way
+test ast assignment varreference identical [[
+	var = var;
+]] parse to Assignment(VarReference("var"), VarReference("var"))
+
+// Disambiguation tests

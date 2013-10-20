@@ -1,0 +1,190 @@
+// Done
+
+module test-Program
+
+language MiniJava
+start symbol Program
+
+// Syntax tests
+
+test empty [[]] parse fails
+test no method [[
+	class id {
+		
+	}
+]] parse fails
+
+test program simplest [[
+	class id {
+		public static void main(String[] id) {
+			{}
+		}
+	}
+]] parse succeeds
+
+test program multiple classes [[
+	class A {
+		public static void main(String[] param) {
+			{}
+		}
+	}
+	
+	class B {
+	}
+	
+	class C {
+	}
+]] parse succeeds
+
+test program invalid main [[
+	class NoVars {
+		public int method(no param) {
+			return 1;
+		}
+	}
+]] parse fails
+
+test program main not first [[
+	class B {
+	}
+	
+	class A {
+		public static void main(String[] param) {
+			{}
+		}
+	}
+]] parse fails
+
+// Repeat MainClass tests
+test mainclass invalid noargs [[
+	class id {
+		public static void main() {
+			{}
+		}
+	}
+]] parse fails
+
+test mainclass invalid nopublic [[
+	class id {
+		static void main(String[] id) {
+			{}
+		}
+	}
+]] parse fails
+
+test mainclass invalid nostatic [[
+	class id {
+		public void main(String[] id) {
+			{}
+		}
+	}
+]] parse fails
+
+test mainclass invalid notype [[
+	class id {
+		public static main(String[] id) {
+			{}
+		}
+	}
+]] parse fails
+
+test mainclass invalid switched1 [[
+	class id {
+		static public void main(String[] id) {
+			{}
+		}
+	}
+]] parse fails
+
+test mainclass invalid switched2 [[
+	class id {
+		public void static main(String[] id) {
+			{}
+		}
+	}
+]] parse fails
+
+test mainclass invalid mainname [[
+	class id {
+		public static void start(String[] id) {
+			{}
+		}
+	}
+]] parse fails
+
+test mainclass multiple methods [[
+	class id {
+		public static void main(String[] id) {
+			{}
+		}
+		
+		public int id(int a) {
+			return 1;
+		}
+	}
+]] parse fails
+
+test mainclass vardecl [[
+	class id {
+		public static void main(String[] id) {
+			int i;
+		}
+	}
+]] parse fails
+
+test mainclass normal method [[
+	class id {
+		public static void main(String[] id) {
+			return 5;
+		}
+	}
+]] parse fails
+
+test mainclass normal method 2 [[
+	class id {
+		public static void main(String[] id) {
+			int i;
+			i = i + 5;
+			return i;
+		}
+	}
+]] parse fails
+
+// Abstract syntax trees tests
+
+// test program simplest [[
+// 	class id {
+// 		public static void main(String[] id) {
+// 			{}
+// 		}
+// 	}
+// 	class B {
+// 	}
+// 	
+// 	class C {
+// 	}
+// ]] parse to Program(
+// 	Main(
+// 		ID("id1"),
+// 		ID("id2"), 
+// 		StatementSequence(_)
+// 	),
+// 	ClassList(
+// 		Class(
+// 			ID("B"),
+// 			NoExtendedClass(),
+// 			VariableList(
+// 				_
+// 			),
+// 			MethodList(
+// 				_
+// 			)
+// 		),
+// 		ClassList(
+// 			_,
+// 			_
+// 		)
+// 	)
+// )
+
+// Disambiguation tests

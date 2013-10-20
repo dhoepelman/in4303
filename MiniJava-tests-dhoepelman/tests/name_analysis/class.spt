@@ -1,0 +1,49 @@
+module testrefres-Class
+
+language MiniJava
+
+setup MiniJavaStart [[
+	class Main {
+    public static void main(String[] args) {
+      System.out.println(1);
+    }
+  }
+]]
+
+test forward class name resolution [[
+  class Foobar {
+    [[Foo]] x;
+  }
+
+  class [[Foo]] {}
+]] resolve #1 to #2
+
+test backward class name resolution [[
+  class [[Foo]] {}
+
+  class Foobar {
+    [[Foo]] x;
+  }
+]] resolve #2 to #1
+
+test correct program [[
+  class Foo {}
+
+  class Foobar {
+    Foo x;
+  }
+]] 0 errors
+
+test error on duplicate class [[
+  class [[Foo]] {}
+
+  class [[Foo]] {}
+]] 2 errors
+
+test warning on unused class [[
+  class Foo {}
+
+  class [[Foobar]] {
+    Foo x;
+  }
+]] 1 warning
