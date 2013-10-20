@@ -1,0 +1,57 @@
+module MiniJava-Completions
+
+imports
+	MiniJava-Exp.generated
+
+completions
+                                                                   
+  // This file is used to define content completion.               
+  //                                                               
+  // See the imported file for a brief introduction and examples.  
+
+completions
+  // Semantic (identifier) completion:   
+                                         
+  completion proposer                  : editor-complete
+                                         
+  completion trigger                   : "."
+ 
+// The automatically generated completion templates are pretty messy, no choise but to do it manually
+
+completions                                              
+  completion template MainClass : "class Main {" =
+    "class " <Main:ID> " {\n\tpublic static void main(String[] " <args:ID> ") {\n\t\t" <System.out.println(0);:Statement> "\n\t}\n}" (blank)  
+ 
+  completion template ClassDecl : "class" =
+    "class " <Name:ID> " {\n\t\n}" (blank)                                                   
+  completion template ClassDecl : "class extends" =
+    "class " <Name:ID> " extends " <Parent:ID> " {\n\t\n}" (blank)        
+        
+  completion template MethodDecl : "public int method()}" =
+    "public " <int:Type> " " <method:ID> "(" <:ParameterDecl> ") {\n\t\n\treturn " <0:Exp> ";\n}" (blank)  
+  completion template MethodDecl : "public boolean method()" =
+    "public " <boolean:Type> " " <method:ID> "(" <:ParameterDecl> ") {\n\t\n\treturn " <true:Exp> ";\n}" (blank) 
+  completion template MethodDecl : "public int[] method()" =
+    "public " <int[]:Type> " " <method:ID> "(" <:ParameterDecl> ") {\n\t\n\treturn " <new int[0]:Exp> ";\n}" (blank)   
+  completion template ParameterDecl : "int arg" =
+    <int:Type> " " <arg:ID>        
+    
+  // Provided by eclipse itself                                                           
+  //completion template Statement : "{ }" =
+  //  "{\n\t\n}" (blank)                                                                                  
+  completion template Statement : "if(true) {} else {}" =
+    "if(" <true:Exp> ") {\n\t" <:Statement> "\n} else {\n\t" <:Statement> "\n}" (blank)           
+  completion template Statement : "while(true) {}" =
+    "while(" <true:Exp> ") {\n\t" <:Statement> "\n}"                                             
+  completion template Statement : "System.out.println(0);" =
+    "System.out.println(" <:Exp> ");"                                           
+                                                                     
+                                
+  completion template Type : "int[]" =
+    "int[] "                                                                                        
+  completion template Type : "boolean" =
+    "boolean "                                                                                      
+  completion template Type : "int" =
+    "int "                                                                                              
+  completion template Type : "Class" =
+    <Class:ClassReference> " "   

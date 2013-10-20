@@ -1,0 +1,183 @@
+// Done
+// [Classes]
+// Points earned = 4.0 out of 5.0
+// Points earned = 0.0 out of 3.0
+// Points earned = 0.0 out of 4.0
+
+module test-ClassDecl
+
+language MiniJava
+start symbol ClassDecl
+
+// Syntax tests
+
+test empty1 [[class]] parse fails
+test empty2 [[class { }]] parse fails
+test empty extends 1 [[class extends]] parse fails
+test empty extends 2 [[class extends {}]] parse fails
+
+test empty with id [[class a { }]] parse succeeds
+test empty with id extends empty [[class a extends {}]] parse fails
+test empty with id extends [[class a extends b {}]] parse succeeds
+
+test class method variables switched [[
+	class Switched {
+		public type id(no param) {
+			return true;
+		}
+		int i;
+	}
+]] parse fails
+
+test class novariables [[
+	class NoVars {
+		public int method(no param) {
+			return 1;
+		}
+	}
+]] parse succeeds
+
+test class nomethods [[
+	class A {
+		int a;
+		int b;
+		type c;
+	}
+]] parse succeeds
+
+test class onevariable [[
+	class B {
+		int a;
+	}
+]] parse succeeds
+
+test class simple [[
+	class A {
+		int var1;
+		boolean var2;
+		
+		public int method1(no param) {
+			return 0;
+		}
+		
+		public boolean method2(first param) {
+			return true;
+		}
+	}
+]] parse succeeds
+
+test class simple2 [[
+	class A extends B {
+		int var1;
+		boolean var2;
+		
+		public int method1(no param) {
+			return 0;
+		}
+		
+		public boolean method2(first param) {
+			return true;
+		}
+	}
+]] parse succeeds
+
+test class random [[
+	class Dummy extends Another {
+		boolean a;
+		int[] b;
+		C c;
+		
+		public boolean d (no param) {
+			return true;
+		}
+		
+		public int[] e (int first, boolean second) {
+			int[] arr;
+			arr = new int[2];
+			arr[1] = first;
+			if(second) {
+				arr[0] = 1;
+			} else {
+				arr[0] = 0;
+			}
+			return arr;
+		}
+	}
+]] parse succeeds
+
+test class invalid method modifier 1 [[
+	class A {
+		public abstract int method(no param) {
+			return 1;
+		}
+	}
+]] parse fails
+
+test class invalid method modifier 2 [[
+	class A {
+		public final int method(no param) {
+			return 1;
+		}
+	}
+]] parse fails
+
+test class invalid method modifier 3 [[
+	class A {
+		int method(no param) {
+			return 1;
+		}
+	}
+]] parse fails
+
+test class noclass [[
+	A {
+		public int method(no param) {
+			return 1;
+		}
+	}
+]] parse fails
+
+// Abstract syntax trees tests
+
+// test ast class simple [[
+// 	class A {
+// 		int var1;
+// 		boolean var2;
+// 		
+// 		public int method1(no param) {
+// 			return 0;
+// 		}
+// 		
+// 		public boolean method2(first param) {
+// 			return true;
+// 		}
+// 	}
+// ]] parse to Class(
+// 	ID("A"),
+// 	NoExtendedClass(),
+// 	VariableList(
+// 		_,
+// 		_
+// 	),
+// 	MethodList(
+// 		_,
+// 		_
+// 	)
+// )
+
+// test ast class simple2 [[
+// 	class A extends B {
+// 		int var1;
+// 	}
+// ]] parse to Class(
+// 	ID("A"),
+// 	ID("B"),
+// 	VariableList(
+// 		_
+// 	),
+// 	MethodList(
+// 		_
+// 	)
+// )
+
+// Disambiguation tests

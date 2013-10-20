@@ -1,0 +1,44 @@
+module MiniJava-Layout
+ 
+imports
+
+lexical syntax 
+	// Whitespace
+	//[\ \t\n\r] -> LAYOUT
+	LAYOUT = [\ \t\n\r]
+
+	// Single-line comment
+	LAYOUT = "//" ~[\n\r]* ([\n\r] | EOF)
+
+	// Multi-line (nested) comments
+	
+	LAYOUT = Comment
+	Comment = "/*" (CommentBody)* "*/"
+
+	Asterisk = [\*]
+	ForwardSlash = [\/]
+	CommentNonSpecialChar = ~[\*\/]
+	
+	CommentBody = Asterisk
+	CommentBody = ForwardSlash
+	CommentBody = CommentNonSpecialChar
+	CommentBody = Comment
+	
+	EOF = 
+
+lexical restrictions
+
+	// Ensure greedy matching for lexicals
+	Asterisk 	  -/- [\/]
+	ForwardSlash  -/- [\*]
+	
+	// EOF may not be followed by any char
+	EOF           -/- ~[]
+
+context-free restrictions
+
+	// Ensure greedy matching for comments
+	
+	LAYOUT? -/- [\ \t\n\r]
+	LAYOUT? -/- [\/].[\/]
+	LAYOUT? -/- [\/].[\*]

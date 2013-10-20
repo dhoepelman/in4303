@@ -1,0 +1,32 @@
+module MiniJava-Tokens.pp.generated
+
+strategies
+  prettyprint-INT =
+    ![S(<is-string>)]
+
+  prettyprint-BOOLEAN =
+    ![S(<is-string>)]
+
+  prettyprint-LITERAL =
+    ![S(<is-string>)]
+
+  prettyprint-ID =
+    ![S(<is-string>)]
+
+  prettyprint-KEYWORD =
+    ![S(<is-string>)]
+
+  prettyprint-example =
+    prettyprint-INT
+
+  prettyprint-example =
+    prettyprint-BOOLEAN
+
+  prettyprint-example =
+    prettyprint-LITERAL
+
+  prettyprint-example =
+    prettyprint-ID
+
+  prettyprint-example =
+    prettyprint-KEYWORD

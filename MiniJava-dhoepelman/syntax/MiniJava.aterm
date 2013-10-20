@@ -1,0 +1,1602 @@
+module(
+  unparameterized("MiniJava"{ Def(
+                                URI(
+                                  Language("TemplateLang")
+                                , [ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                                )
+                              )
+                            })
+, [imports([module(unparameterized("Common"{Use(Result(10))}))])]
+, [ exports(
+      conc-grammars(
+        conc-grammars(
+          conc-grammars(
+            conc-grammars(
+              conc-grammars(
+                conc-grammars(
+                  conc-grammars(
+                    conc-grammars(
+                      conc-grammars(
+                        conc-grammars(
+                          conc-grammars(
+                            conc-grammars(
+                              conc-grammars(
+                                conc-grammars(
+                                  conc-grammars(
+                                    conc-grammars(
+                                      conc-grammars(
+                                        conc-grammars(
+                                          conc-grammars(
+                                            conc-grammars(
+                                              conc-grammars(
+                                                conc-grammars(
+                                                  context-free-start-symbols(
+                                                    [ sort("Program"{Use(Result(27))})
+                                                    , sort("ClassDecl"{Use(Result(42))})
+                                                    , sort("Exp"{Use(Result(57))})
+                                                    , sort("ID"{Use(Result(72))})
+                                                    , sort("INT"{Use(Result(87))})
+                                                    , sort("MainClass"{Use(Result(102))})
+                                                    , sort("MethodDecl"{Use(Result(117))})
+                                                    , sort("Program"{Use(Result(27))})
+                                                    , sort("Statement"{Use(Result(133))})
+                                                    , sort("Type"{Use(Result(148))})
+                                                    , sort("VarDecl"{Use(Result(163))})
+                                                    ]
+                                                  )
+                                                , lexical-syntax(
+                                                    [ prod(
+                                                        [ char-class(
+                                                            simple-charclass(
+                                                              present(
+                                                                conc(
+                                                                  range(short("a"), short("z"))
+                                                                , range(short("A"), short("Z"))
+                                                                )
+                                                              )
+                                                            )
+                                                          )
+                                                        , iter-star(
+                                                            char-class(
+                                                              simple-charclass(
+                                                                present(
+                                                                  conc(
+                                                                    range(short("a"), short("z"))
+                                                                  , conc(
+                                                                      range(short("A"), short("Z"))
+                                                                    , conc(range(short("0"), short("9")), short("\\_"))
+                                                                    )
+                                                                  )
+                                                                )
+                                                              )
+                                                            )
+                                                          )
+                                                        ]
+                                                      , sort("ID"{ Def(
+                                                                     URI(
+                                                                       Language("TemplateLang")
+                                                                     , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                                                                     )
+                                                                   )
+                                                                 })
+                                                      , no-attrs()
+                                                      )
+                                                    , prod(
+                                                        [iter(
+                                                           char-class(simple-charclass(present(range(short("0"), short("9")))))
+                                                         )]
+                                                      , sort("INT"{ Def(
+                                                                      URI(
+                                                                        Language("TemplateLang")
+                                                                      , [ID(NablNsSort(), "INT", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                                                                      )
+                                                                    )
+                                                                  })
+                                                      , no-attrs()
+                                                      )
+                                                    ]
+                                                  )
+                                                )
+                                              , lexical-restrictions(
+                                                  [ follow(
+                                                      [sort("ID"{Use(Result(72))})]
+                                                    , single(
+                                                        char-class(
+                                                          simple-charclass(
+                                                            present(
+                                                              conc(
+                                                                range(short("a"), short("z"))
+                                                              , conc(
+                                                                  range(short("A"), short("Z"))
+                                                                , conc(range(short("0"), short("9")), short("\\_"))
+                                                                )
+                                                              )
+                                                            )
+                                                          )
+                                                        )
+                                                      )
+                                                    )
+                                                  , follow(
+                                                      [sort("INT"{Use(Result(87))})]
+                                                    , single(
+                                                        char-class(simple-charclass(present(range(short("0"), short("9")))))
+                                                      )
+                                                    )
+                                                  ]
+                                                )
+                                              )
+                                            , context-free-syntax([])
+                                            )
+                                          , context-free-syntax(
+                                              [ prod(
+                                                  [sort("MainClass"{Use(Result(102))}), iter-star(sort("ClassDecl"{Use(Result(42))}))]
+                                                , sort("Program"{ Def(
+                                                                    URI(
+                                                                      Language("TemplateLang")
+                                                                    , [ID(NablNsSort(), "Program", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                                                                    )
+                                                                  )
+                                                                })
+                                                , attrs(
+                                                    [term(
+                                                       default(appl(unquoted("cons"), [fun(quoted("\"Program\""))]))
+                                                     )]
+                                                  )
+                                                )
+                                              ]
+                                            )
+                                          )
+                                        , context-free-syntax(
+                                            [ prod(
+                                                [sort("CONTENTCOMPLETE")]
+                                              , sort("Program"{ Def(
+                                                                  URI(
+                                                                    Language("TemplateLang")
+                                                                  , [ID(NablNsSort(), "Program", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                                                                  )
+                                                                )
+                                                              })
+                                              , attrs(
+                                                  [term(
+                                                     default(appl(unquoted("cons"), [fun(quoted("\"COMPLETION-Program\""))]))
+                                                   )]
+                                                )
+                                              )
+                                            ]
+                                          )
+                                        )
+                                      , context-free-syntax(
+                                          [ prod(
+                                              [ lit("\"class\"")
+                                              , sort("ID"{Use(Result(72))})
+                                              , lit("\"{\"")
+                                              , lit("\"\\\"public\"")
+                                              , lit("\"static\"")
+                                              , lit("\"void\"")
+                                              , lit("\"main\\\"\"")
+                                              , lit("\"(\"")
+                                              , lit("\"String\"")
+                                              , lit("\"[]\"")
+                                              , sort("ID"{Use(Result(72))})
+                                              , lit("\")\"")
+                                              , lit("\"{\"")
+                                              , sort("Statement"{Use(Result(133))})
+                                              , lit("\"}\"")
+                                              , lit("\"}\"")
+                                              ]
+                                            , sort("MainClass"{ Def(
+                                                                  URI(
+                                                                    Language("TemplateLang")
+                                                                  , [ID(NablNsSort(), "MainClass", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                                                                  )
+                                                                )
+                                                              })
+                                            , attrs(
+                                                [term(
+                                                   default(appl(unquoted("cons"), [fun(quoted("\"Main\""))]))
+                                                 )]
+                                              )
+                                            )
+                                          ]
+                                        )
+                                      )
+                                    , context-free-syntax(
+                                        [ prod(
+                                            [sort("CONTENTCOMPLETE")]
+                                          , sort("MainClass"{ Def(
+                                                                URI(
+                                                                  Language("TemplateLang")
+                                                                , [ID(NablNsSort(), "MainClass", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                                                                )
+                                                              )
+                                                            })
+                                          , attrs(
+                                              [term(
+                                                 default(appl(unquoted("cons"), [fun(quoted("\"COMPLETION-MainClass\""))]))
+                                               )]
+                                            )
+                                          )
+                                        ]
+                                      )
+                                    )
+                                  , context-free-syntax(
+                                      [ prod(
+                                          [ lit("\"class\"")
+                                          , sort("ID"{Use(Result(72))})
+                                          , opt(sort("SuperClassDecl"{Use(Result(186))}))
+                                          , lit("\"{\"")
+                                          , iter-star(sort("VarDecl"{Use(Result(163))}))
+                                          , iter-star(sort("MethodDecl"{Use(Result(117))}))
+                                          , lit("\"}\"")
+                                          ]
+                                        , sort("ClassDecl"{ Def(
+                                                              URI(
+                                                                Language("TemplateLang")
+                                                              , [ID(NablNsSort(), "ClassDecl", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                                                              )
+                                                            )
+                                                          })
+                                        , attrs(
+                                            [term(
+                                               default(appl(unquoted("cons"), [fun(quoted("\"Class\""))]))
+                                             )]
+                                          )
+                                        )
+                                      , prod(
+                                          [lit("\"extends\""), sort("ID"{Use(Result(72))})]
+                                        , sort("SuperClassDecl"{ Def(
+                                                                   URI(
+                                                                     Language("TemplateLang")
+                                                                   , [ID(NablNsSort(), "SuperClassDecl", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                                                                   )
+                                                                 )
+                                                               })
+                                        , attrs(
+                                            [term(
+                                               default(appl(unquoted("cons"), [fun(quoted("\"SuperClass\""))]))
+                                             )]
+                                          )
+                                        )
+                                      ]
+                                    )
+                                  )
+                                , context-free-syntax(
+                                    [ prod(
+                                        [sort("CONTENTCOMPLETE")]
+                                      , sort("ClassDecl"{ Def(
+                                                            URI(
+                                                              Language("TemplateLang")
+                                                            , [ID(NablNsSort(), "ClassDecl", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                                                            )
+                                                          )
+                                                        })
+                                      , attrs(
+                                          [term(
+                                             default(appl(unquoted("cons"), [fun(quoted("\"COMPLETION-ClassDecl\""))]))
+                                           )]
+                                        )
+                                      )
+                                    , prod(
+                                        [sort("CONTENTCOMPLETE")]
+                                      , sort("SuperClassDecl"{ Def(
+                                                                 URI(
+                                                                   Language("TemplateLang")
+                                                                 , [ID(NablNsSort(), "SuperClassDecl", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                                                                 )
+                                                               )
+                                                             })
+                                      , attrs(
+                                          [term(
+                                             default(appl(unquoted("cons"), [fun(quoted("\"COMPLETION-SuperClassDecl\""))]))
+                                           )]
+                                        )
+                                      )
+                                    ]
+                                  )
+                                )
+                              , context-free-syntax(
+                                  [ prod(
+                                      [ lit("\"public\"")
+                                      , sort("Type"{Use(Result(148))})
+                                      , sort("ID"{Use(Result(72))})
+                                      , lit("\"(\"")
+                                      , iter-sep(sort("ParameterDecl"{Use(Result(206))}), lit("\",\""))
+                                      , lit("\")\"")
+                                      , lit("\"{\"")
+                                      , iter-star(sort("VarDecl"{Use(Result(163))}))
+                                      , iter-star(sort("Statement"{Use(Result(133))}))
+                                      , lit("\"return\"")
+                                      , sort("Exp"{Use(Result(57))})
+                                      , lit("\";\"")
+                                      , lit("\"}\"")
+                                      ]
+                                    , sort("MethodDecl"{ Def(
+                                                           URI(
+                                                             Language("TemplateLang")
+                                                           , [ID(NablNsSort(), "MethodDecl", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                                                           )
+                                                         )
+                                                       })
+                                    , attrs(
+                                        [term(
+                                           default(appl(unquoted("cons"), [fun(quoted("\"Method\""))]))
+                                         )]
+                                      )
+                                    )
+                                  , prod(
+                                      [sort("Type"{Use(Result(148))}), sort("ID"{Use(Result(72))})]
+                                    , sort("ParameterDecl"{ Def(
+                                                              URI(
+                                                                Language("TemplateLang")
+                                                              , [ID(NablNsSort(), "ParameterDecl", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                                                              )
+                                                            )
+                                                          })
+                                    , attrs(
+                                        [term(
+                                           default(appl(unquoted("cons"), [fun(quoted("\"Parameter\""))]))
+                                         )]
+                                      )
+                                    )
+                                  ]
+                                )
+                              )
+                            , context-free-syntax(
+                                [ prod(
+                                    [sort("CONTENTCOMPLETE")]
+                                  , sort("MethodDecl"{ Def(
+                                                         URI(
+                                                           Language("TemplateLang")
+                                                         , [ID(NablNsSort(), "MethodDecl", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                                                         )
+                                                       )
+                                                     })
+                                  , attrs(
+                                      [term(
+                                         default(appl(unquoted("cons"), [fun(quoted("\"COMPLETION-MethodDecl\""))]))
+                                       )]
+                                    )
+                                  )
+                                , prod(
+                                    [sort("CONTENTCOMPLETE")]
+                                  , sort("ParameterDecl"{ Def(
+                                                            URI(
+                                                              Language("TemplateLang")
+                                                            , [ID(NablNsSort(), "ParameterDecl", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                                                            )
+                                                          )
+                                                        })
+                                  , attrs(
+                                      [term(
+                                         default(appl(unquoted("cons"), [fun(quoted("\"COMPLETION-ParameterDecl\""))]))
+                                       )]
+                                    )
+                                  )
+                                ]
+                              )
+                            )
+                          , context-free-syntax(
+                              [ prod(
+                                  [lit("\"true\"")]
+                                , sort("Boolean"{ Def(
+                                                    URI(
+                                                      Language("TemplateLang")
+                                                    , [ID(NablNsSort(), "Boolean", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                                                    )
+                                                  )
+                                                })
+                                , attrs(
+                                    [term(
+                                       default(appl(unquoted("cons"), [fun(quoted("\"True\""))]))
+                                     )]
+                                  )
+                                )
+                              , prod(
+                                  [lit("\"false\"")]
+                                , sort("Boolean"{ Def(
+                                                    URI(
+                                                      Language("TemplateLang")
+                                                    , [ID(NablNsSort(), "Boolean", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                                                    )
+                                                  )
+                                                })
+                                , attrs(
+                                    [term(
+                                       default(appl(unquoted("cons"), [fun(quoted("\"False\""))]))
+                                     )]
+                                  )
+                                )
+                              ]
+                            )
+                          )
+                        , context-free-syntax(
+                            [ prod(
+                                [sort("CONTENTCOMPLETE")]
+                              , sort("Boolean"{ Def(
+                                                  URI(
+                                                    Language("TemplateLang")
+                                                  , [ID(NablNsSort(), "Boolean", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                                                  )
+                                                )
+                                              })
+                              , attrs(
+                                  [term(
+                                     default(appl(unquoted("cons"), [fun(quoted("\"COMPLETION-Boolean\""))]))
+                                   )]
+                                )
+                              )
+                            ]
+                          )
+                        )
+                      , context-free-syntax(
+                          [ prod(
+                              [sort("Exp"{Use(Result(57))}), lit("\"&&\""), sort("Exp"{Use(Result(57))})]
+                            , sort("Exp"{ Def(
+                                            URI(
+                                              Language("TemplateLang")
+                                            , [ID(NablNsSort(), "Exp", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                                            )
+                                          )
+                                        })
+                            , attrs(
+                                [ term(
+                                    default(appl(unquoted("cons"), [fun(quoted("\"And\""))]))
+                                  )
+                                , assoc(left())
+                                ]
+                              )
+                            )
+                          , prod(
+                              [sort("Exp"{Use(Result(57))}), lit("\"+\""), sort("Exp"{Use(Result(57))})]
+                            , sort("Exp"{ Def(
+                                            URI(
+                                              Language("TemplateLang")
+                                            , [ID(NablNsSort(), "Exp", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                                            )
+                                          )
+                                        })
+                            , attrs(
+                                [ term(
+                                    default(appl(unquoted("cons"), [fun(quoted("\"Addition\""))]))
+                                  )
+                                , assoc(left())
+                                ]
+                              )
+                            )
+                          , prod(
+                              [sort("Exp"{Use(Result(57))}), lit("\"<\""), sort("Exp"{Use(Result(57))})]
+                            , sort("Exp"{ Def(
+                                            URI(
+                                              Language("TemplateLang")
+                                            , [ID(NablNsSort(), "Exp", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                                            )
+                                          )
+                                        })
+                            , attrs(
+                                [ term(
+                                    default(appl(unquoted("cons"), [fun(quoted("\"LessThan\""))]))
+                                  )
+                                , assoc(left())
+                                ]
+                              )
+                            )
+                          , prod(
+                              [sort("Exp"{Use(Result(57))}), lit("\"-\""), sort("Exp"{Use(Result(57))})]
+                            , sort("Exp"{ Def(
+                                            URI(
+                                              Language("TemplateLang")
+                                            , [ID(NablNsSort(), "Exp", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                                            )
+                                          )
+                                        })
+                            , attrs(
+                                [ term(
+                                    default(appl(unquoted("cons"), [fun(quoted("\"Minus\""))]))
+                                  )
+                                , assoc(left())
+                                ]
+                              )
+                            )
+                          , prod(
+                              [sort("Exp"{Use(Result(57))}), lit("\"*\""), sort("Exp"{Use(Result(57))})]
+                            , sort("Exp"{ Def(
+                                            URI(
+                                              Language("TemplateLang")
+                                            , [ID(NablNsSort(), "Exp", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                                            )
+                                          )
+                                        })
+                            , attrs(
+                                [ term(
+                                    default(appl(unquoted("cons"), [fun(quoted("\"Multiplication\""))]))
+                                  )
+                                , assoc(left())
+                                ]
+                              )
+                            )
+                          , prod(
+                              [sort("Exp"{Use(Result(57))}), lit("\"[\""), sort("Exp"{Use(Result(57))}), lit("\"]\"")]
+                            , sort("Exp"{ Def(
+                                            URI(
+                                              Language("TemplateLang")
+                                            , [ID(NablNsSort(), "Exp", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                                            )
+                                          )
+                                        })
+                            , attrs(
+                                [ term(
+                                    default(appl(unquoted("cons"), [fun(quoted("\"ArrayAccess\""))]))
+                                  )
+                                , assoc(left())
+                                ]
+                              )
+                            )
+                          , prod(
+                              [sort("Exp"{Use(Result(57))}), lit("\".\""), lit("\"length\"")]
+                            , sort("Exp"{ Def(
+                                            URI(
+                                              Language("TemplateLang")
+                                            , [ID(NablNsSort(), "Exp", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                                            )
+                                          )
+                                        })
+                            , attrs(
+                                [ term(
+                                    default(appl(unquoted("cons"), [fun(quoted("\"ArrayLength\""))]))
+                                  )
+                                , assoc(left())
+                                ]
+                              )
+                            )
+                          , prod(
+                              [ sort("Exp"{Use(Result(57))})
+                              , lit("\".\"")
+                              , sort("ID"{Use(Result(72))})
+                              , lit("\"(\"")
+                              , iter-star-sep(sort("Exp"{Use(Result(57))}), lit("\",\""))
+                              , lit("\")\"")
+                              ]
+                            , sort("Exp"{ Def(
+                                            URI(
+                                              Language("TemplateLang")
+                                            , [ID(NablNsSort(), "Exp", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                                            )
+                                          )
+                                        })
+                            , attrs(
+                                [ term(
+                                    default(appl(unquoted("cons"), [fun(quoted("\"MethodCall\""))]))
+                                  )
+                                , assoc(left())
+                                ]
+                              )
+                            )
+                          , prod(
+                              [sort("INT"{Use(Result(87))})]
+                            , sort("Exp"{ Def(
+                                            URI(
+                                              Language("TemplateLang")
+                                            , [ID(NablNsSort(), "Exp", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                                            )
+                                          )
+                                        })
+                            , attrs(
+                                [term(
+                                   default(appl(unquoted("cons"), [fun(quoted("\"IntLiteral\""))]))
+                                 )]
+                              )
+                            )
+                          , prod(
+                              [sort("Boolean"{Use(Result(243))})]
+                            , sort("Exp"{ Def(
+                                            URI(
+                                              Language("TemplateLang")
+                                            , [ID(NablNsSort(), "Exp", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                                            )
+                                          )
+                                        })
+                            , attrs(
+                                [term(
+                                   default(appl(unquoted("cons"), [fun(quoted("\"BooleanLiteral\""))]))
+                                 )]
+                              )
+                            )
+                          , prod(
+                              [sort("ID"{Use(Result(72))})]
+                            , sort("Exp"{ Def(
+                                            URI(
+                                              Language("TemplateLang")
+                                            , [ID(NablNsSort(), "Exp", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                                            )
+                                          )
+                                        })
+                            , attrs(
+                                [term(
+                                   default(appl(unquoted("cons"), [fun(quoted("\"ID\""))]))
+                                 )]
+                              )
+                            )
+                          , prod(
+                              [lit("\"this\"")]
+                            , sort("Exp"{ Def(
+                                            URI(
+                                              Language("TemplateLang")
+                                            , [ID(NablNsSort(), "Exp", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                                            )
+                                          )
+                                        })
+                            , attrs(
+                                [term(
+                                   default(appl(unquoted("cons"), [fun(quoted("\"This\""))]))
+                                 )]
+                              )
+                            )
+                          , prod(
+                              [ lit("\"new\"")
+                              , lit("\"int\"")
+                              , lit("\"[\"")
+                              , sort("Exp"{Use(Result(57))})
+                              , lit("\"]\"")
+                              ]
+                            , sort("Exp"{ Def(
+                                            URI(
+                                              Language("TemplateLang")
+                                            , [ID(NablNsSort(), "Exp", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                                            )
+                                          )
+                                        })
+                            , attrs(
+                                [ term(
+                                    default(appl(unquoted("cons"), [fun(quoted("\"NewArray\""))]))
+                                  )
+                                , assoc(right())
+                                ]
+                              )
+                            )
+                          , prod(
+                              [lit("\"new\""), sort("ID"{Use(Result(72))}), lit("\"()\"")]
+                            , sort("Exp"{ Def(
+                                            URI(
+                                              Language("TemplateLang")
+                                            , [ID(NablNsSort(), "Exp", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                                            )
+                                          )
+                                        })
+                            , attrs(
+                                [ term(
+                                    default(appl(unquoted("cons"), [fun(quoted("\"NewObject\""))]))
+                                  )
+                                , assoc(right())
+                                ]
+                              )
+                            )
+                          , prod(
+                              [lit("\"!\""), sort("Exp"{Use(Result(57))})]
+                            , sort("Exp"{ Def(
+                                            URI(
+                                              Language("TemplateLang")
+                                            , [ID(NablNsSort(), "Exp", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                                            )
+                                          )
+                                        })
+                            , attrs(
+                                [ term(
+                                    default(appl(unquoted("cons"), [fun(quoted("\"Not\""))]))
+                                  )
+                                , assoc(right())
+                                ]
+                              )
+                            )
+                          , prod(
+                              [lit("\"(\""), sort("Exp"{Use(Result(57))}), lit("\")\"")]
+                            , sort("Exp"{ Def(
+                                            URI(
+                                              Language("TemplateLang")
+                                            , [ID(NablNsSort(), "Exp", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                                            )
+                                          )
+                                        })
+                            , attrs(
+                                [ term(
+                                    default(appl(unquoted("cons"), [fun(quoted("\"Parentheses\""))]))
+                                  )
+                                , bracket()
+                                ]
+                              )
+                            )
+                          ]
+                        )
+                      )
+                    , context-free-syntax(
+                        [ prod(
+                            [sort("CONTENTCOMPLETE")]
+                          , sort("Exp"{ Def(
+                                          URI(
+                                            Language("TemplateLang")
+                                          , [ID(NablNsSort(), "Exp", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                                          )
+                                        )
+                                      })
+                          , attrs(
+                              [term(
+                                 default(appl(unquoted("cons"), [fun(quoted("\"COMPLETION-Exp\""))]))
+                               )]
+                            )
+                          )
+                        ]
+                      )
+                    )
+                  , context-free-syntax(
+                      [ prod(
+                          [lit("\"{\""), iter-star(sort("Statement"{Use(Result(133))})), lit("\"}\"")]
+                        , sort("Statement"{ Def(
+                                              URI(
+                                                Language("TemplateLang")
+                                              , [ID(NablNsSort(), "Statement", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                                              )
+                                            )
+                                          })
+                        , attrs(
+                            [term(
+                               default(appl(unquoted("cons"), [fun(quoted("\"Block\""))]))
+                             )]
+                          )
+                        )
+                      , prod(
+                          [ lit("\"if\"")
+                          , lit("\"(\"")
+                          , sort("Exp"{Use(Result(57))})
+                          , lit("\")\"")
+                          , sort("Statement"{Use(Result(133))})
+                          , lit("\"else\"")
+                          , sort("Statement"{Use(Result(133))})
+                          ]
+                        , sort("Statement"{ Def(
+                                              URI(
+                                                Language("TemplateLang")
+                                              , [ID(NablNsSort(), "Statement", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                                              )
+                                            )
+                                          })
+                        , attrs(
+                            [term(
+                               default(appl(unquoted("cons"), [fun(quoted("\"IfElse\""))]))
+                             )]
+                          )
+                        )
+                      , prod(
+                          [ lit("\"while\"")
+                          , lit("\"(\"")
+                          , sort("Exp"{Use(Result(57))})
+                          , lit("\")\"")
+                          , sort("Statement"{Use(Result(133))})
+                          ]
+                        , sort("Statement"{ Def(
+                                              URI(
+                                                Language("TemplateLang")
+                                              , [ID(NablNsSort(), "Statement", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                                              )
+                                            )
+                                          })
+                        , attrs(
+                            [term(
+                               default(appl(unquoted("cons"), [fun(quoted("\"While\""))]))
+                             )]
+                          )
+                        )
+                      , prod(
+                          [ lit("\"System\"")
+                          , lit("\".\"")
+                          , lit("\"out\"")
+                          , lit("\".\"")
+                          , lit("\"println\"")
+                          , lit("\"(\"")
+                          , sort("Exp"{Use(Result(57))})
+                          , lit("\");\"")
+                          ]
+                        , sort("Statement"{ Def(
+                                              URI(
+                                                Language("TemplateLang")
+                                              , [ID(NablNsSort(), "Statement", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                                              )
+                                            )
+                                          })
+                        , attrs(
+                            [term(
+                               default(appl(unquoted("cons"), [fun(quoted("\"Print\""))]))
+                             )]
+                          )
+                        )
+                      , prod(
+                          [sort("Variable"{Use(Result(270))}), lit("\"=\""), sort("Exp"{Use(Result(57))}), lit("\";\"")]
+                        , sort("Statement"{ Def(
+                                              URI(
+                                                Language("TemplateLang")
+                                              , [ID(NablNsSort(), "Statement", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                                              )
+                                            )
+                                          })
+                        , attrs(
+                            [term(
+                               default(appl(unquoted("cons"), [fun(quoted("\"Assignment\""))]))
+                             )]
+                          )
+                        )
+                      , prod(
+                          [sort("ID"{Use(Result(72))})]
+                        , sort("Variable"{ Def(
+                                             URI(
+                                               Language("TemplateLang")
+                                             , [ID(NablNsSort(), "Variable", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                                             )
+                                           )
+                                         })
+                        , attrs(
+                            [term(
+                               default(appl(unquoted("cons"), [fun(quoted("\"ID\""))]))
+                             )]
+                          )
+                        )
+                      , prod(
+                          [sort("ID"{Use(Result(72))}), lit("\"[\""), sort("Exp"{Use(Result(57))}), lit("\"]\"")]
+                        , sort("Variable"{ Def(
+                                             URI(
+                                               Language("TemplateLang")
+                                             , [ID(NablNsSort(), "Variable", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                                             )
+                                           )
+                                         })
+                        , attrs(
+                            [term(
+                               default(appl(unquoted("cons"), [fun(quoted("\"ArrayIndex\""))]))
+                             )]
+                          )
+                        )
+                      ]
+                    )
+                  )
+                , context-free-syntax(
+                    [ prod(
+                        [sort("CONTENTCOMPLETE")]
+                      , sort("Statement"{ Def(
+                                            URI(
+                                              Language("TemplateLang")
+                                            , [ID(NablNsSort(), "Statement", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                                            )
+                                          )
+                                        })
+                      , attrs(
+                          [term(
+                             default(appl(unquoted("cons"), [fun(quoted("\"COMPLETION-Statement\""))]))
+                           )]
+                        )
+                      )
+                    , prod(
+                        [sort("CONTENTCOMPLETE")]
+                      , sort("Variable"{ Def(
+                                           URI(
+                                             Language("TemplateLang")
+                                           , [ID(NablNsSort(), "Variable", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                                           )
+                                         )
+                                       })
+                      , attrs(
+                          [term(
+                             default(appl(unquoted("cons"), [fun(quoted("\"COMPLETION-Variable\""))]))
+                           )]
+                        )
+                      )
+                    ]
+                  )
+                )
+              , context-free-syntax(
+                  [ prod(
+                      [sort("Type"{Use(Result(148))}), sort("ID"{Use(Result(72))}), lit("\";\"")]
+                    , sort("VarDecl"{ Def(
+                                        URI(
+                                          Language("TemplateLang")
+                                        , [ID(NablNsSort(), "VarDecl", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                                        )
+                                      )
+                                    })
+                    , attrs(
+                        [term(
+                           default(appl(unquoted("cons"), [fun(quoted("\"Variable\""))]))
+                         )]
+                      )
+                    )
+                  ]
+                )
+              )
+            , context-free-syntax(
+                [ prod(
+                    [sort("CONTENTCOMPLETE")]
+                  , sort("VarDecl"{ Def(
+                                      URI(
+                                        Language("TemplateLang")
+                                      , [ID(NablNsSort(), "VarDecl", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                                      )
+                                    )
+                                  })
+                  , attrs(
+                      [term(
+                         default(appl(unquoted("cons"), [fun(quoted("\"COMPLETION-VarDecl\""))]))
+                       )]
+                    )
+                  )
+                ]
+              )
+            )
+          , context-free-syntax(
+              [ prod(
+                  [lit("\"int\""), lit("\"[]\"")]
+                , sort("Type"{ Def(
+                                 URI(
+                                   Language("TemplateLang")
+                                 , [ID(NablNsSort(), "Type", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                                 )
+                               )
+                             })
+                , attrs(
+                    [term(
+                       default(appl(unquoted("cons"), [fun(quoted("\"Array\""))]))
+                     )]
+                  )
+                )
+              , prod(
+                  [lit("\"boolean\"")]
+                , sort("Type"{ Def(
+                                 URI(
+                                   Language("TemplateLang")
+                                 , [ID(NablNsSort(), "Type", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                                 )
+                               )
+                             })
+                , attrs(
+                    [term(
+                       default(appl(unquoted("cons"), [fun(quoted("\"Boolean\""))]))
+                     )]
+                  )
+                )
+              , prod(
+                  [lit("\"int\"")]
+                , sort("Type"{ Def(
+                                 URI(
+                                   Language("TemplateLang")
+                                 , [ID(NablNsSort(), "Type", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                                 )
+                               )
+                             })
+                , attrs(
+                    [term(
+                       default(appl(unquoted("cons"), [fun(quoted("\"Int\""))]))
+                     )]
+                  )
+                )
+              , prod(
+                  [sort("ID"{Use(Result(72))})]
+                , sort("Type"{ Def(
+                                 URI(
+                                   Language("TemplateLang")
+                                 , [ID(NablNsSort(), "Type", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                                 )
+                               )
+                             })
+                , attrs(
+                    [term(
+                       default(appl(unquoted("cons"), [fun(quoted("\"ID\""))]))
+                     )]
+                  )
+                )
+              ]
+            )
+          )
+        , context-free-syntax(
+            [ prod(
+                [sort("CONTENTCOMPLETE")]
+              , sort("Type"{ Def(
+                               URI(
+                                 Language("TemplateLang")
+                               , [ID(NablNsSort(), "Type", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                               )
+                             )
+                           })
+              , attrs(
+                  [term(
+                     default(appl(unquoted("cons"), [fun(quoted("\"COMPLETION-Type\""))]))
+                   )]
+                )
+              )
+            ]
+          )
+        )
+      , lexical-syntax(
+          [ prod(
+              [lit("\"null\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"true\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"false\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"abstract\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"assert\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"boolean\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"break\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"byte\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"case\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"catch\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"char\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"class\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"const\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"continue\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"default\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"do\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"double\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"else\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"enum\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"extends\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"final\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"finally\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"float\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"for\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"goto\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"if\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"implements\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"import\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"instanceof\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"int\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"interface\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"long\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"native\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"new\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"package\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"private\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"protected\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"public\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"return\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"short\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"static\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"strictfp\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"super\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"switch\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"synchronized\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"this\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"throw\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"throws\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"transient\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"try\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"void\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"volatile\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          , prod(
+              [lit("\"while\"")]
+            , sort("ID"{ Def(
+                           URI(
+                             Language("TemplateLang")
+                           , [ID(NablNsSort(), "ID", NonUnique()), ID(NablNsModule(), "MiniJava", Unique("C:/Users/David/Dropbox/TU Delft/Vakken/IN4303 Compiler Construction/Lab/workspace/MiniJava-dhoepelman/syntax/MiniJava.sdf3/0"))]
+                           )
+                         )
+                       })
+            , attrs([reject()])
+            )
+          ]
+        )
+      )
+    )
+  ]
+)

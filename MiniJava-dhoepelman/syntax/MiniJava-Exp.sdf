@@ -1,0 +1,54 @@
+module MiniJava-Exp
+imports MiniJava-Tokens
+
+exports
+  context-free syntax
+    Exp "&&" Exp                  -> Exp {cons("And"), left}
+    Exp "+" Exp                   -> Exp {cons("Addition"), left}
+    Exp "<" Exp                   -> Exp {cons("LessThan"), left}
+    Exp "-" Exp                   -> Exp {cons("Minus"), left}
+    Exp "*" Exp                   -> Exp {cons("Multiplication"), left}
+    Exp "[" Exp "]"               -> Exp {cons("ArrayIndex"), left}
+    Exp "." "length"              -> Exp {cons("ArrayLength"), left}
+    Exp "." ID "(" {Exp ","}* ")" -> Exp {cons("MethodCall"), left}
+    INT                           -> Exp {cons("INT")}
+    BOOLEAN                       -> Exp {cons("BOOLEAN")}
+    VarReference                  -> Exp 
+    "this"                        -> Exp {cons("This")}
+    "new" "int" "[" Exp "]"       -> Exp {cons("NewArray"), right}
+    "new" ClassReference "(" ")"  -> Exp {cons("NewObject"), right}
+    "!" Exp                       -> Exp {cons("Not"), right}
+
+  context-free syntax
+    CONTENTCOMPLETE -> Exp {cons("COMPLETION-Exp")}
+
+  lexical restrictions
+    "length" "this" "new" -/- [a-zA-Z0-9]
+
+  context-free syntax
+    "(" Exp ")" -> Exp {bracket}
+
+  context-free priorities
+    {left:
+      Exp "[" Exp "]" -> Exp
+      Exp "." "length" -> Exp
+      Exp "." ID "(" {Exp ","}* ")" -> Exp
+    } >
+    {right:
+      "!" Exp -> Exp
+      "new" "int" "[" Exp "]" -> Exp
+      "new" ClassReference "(" ")" -> Exp
+    } >
+    {left:
+      Exp "*" Exp -> Exp
+    } >
+    {left:
+      Exp "+" Exp -> Exp
+      Exp "-" Exp -> Exp
+    } >
+    {left:
+      Exp "<" Exp -> Exp
+    } >
+    {left:
+      Exp "&&" Exp -> Exp
+    }

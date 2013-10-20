@@ -1,0 +1,44 @@
+module MiniJava-Layout.pp.generated
+
+strategies
+  prettyprint-LAYOUT =
+    ![S(<is-string>)]
+
+  prettyprint-Comment =
+    ![S(<is-string>)]
+
+  prettyprint-Asterisk =
+    ![S(<is-string>)]
+
+  prettyprint-ForwardSlash =
+    ![S(<is-string>)]
+
+  prettyprint-CommentNonSpecialChar =
+    ![S(<is-string>)]
+
+  prettyprint-CommentBody =
+    ![S(<is-string>)]
+
+  prettyprint-EOF =
+    ![S(<is-string>)]
+
+  prettyprint-example =
+    prettyprint-LAYOUT
+
+  prettyprint-example =
+    prettyprint-Comment
+
+  prettyprint-example =
+    prettyprint-Asterisk
+
+  prettyprint-example =
+    prettyprint-ForwardSlash
+
+  prettyprint-example =
+    prettyprint-CommentNonSpecialChar
+
+  prettyprint-example =
+    prettyprint-CommentBody
+
+  prettyprint-example =
+    prettyprint-EOF

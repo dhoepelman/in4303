@@ -1,0 +1,20 @@
+module pp
+
+imports
+  libstratego-gpp
+  lib/runtime/tmpl/pp
+  include/MiniJava-parenthesize
+  MiniJava-Exp.pp.generated
+  MiniJava-Layout.pp.generated
+  MiniJava-Tokens.pp.generated
+  MiniJava.pp.generated
+  
+rules
+
+    pp-builder:
+    (selected, position, ast, path, project-path) -> (name, content)
+    with
+      name    := <guarantee-extension(|"pp.mjv")> path
+    ; ast'    := <parenthesize-MiniJava> ast
+    ; box     := V([], <prettyprint-Program> ast')
+    ; content := <box2text-string(|100)> box

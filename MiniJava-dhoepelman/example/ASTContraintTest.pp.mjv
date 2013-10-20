@@ -1,0 +1,29 @@
+class txtMainClass {
+  public static void main(String[] txtMainParamId) {
+    {
+      variableleft = 1 + variableright;
+      arrayvarleft[1] = arrayvarright[2];
+    }
+  }
+}
+class NormalClass {
+}
+
+class SubClass extends NormalClass {
+}
+
+class FieldLocalVariableDistinguishable {
+  int FieldVar;
+  public int method() {
+    int LocalVar;
+    return 1;
+  }
+}
+
+class DeclarationReferenceIDDistinguishable {
+  public int method() {
+    int LocalVarDecl;
+    ReferenceVar = 1;
+    return 1;
+  }
+}

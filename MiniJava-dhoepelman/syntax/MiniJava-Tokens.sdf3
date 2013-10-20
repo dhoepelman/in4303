@@ -1,0 +1,71 @@
+module MiniJava-Tokens
+
+lexical syntax 
+	// Literals
+	INT		= [0-9]+
+	BOOLEAN	= "true" | "false"
+	LITERAL = INT | BOOLEAN
+	
+	ID = [a-zA-Z][a-zA-Z0-9\_]* 
+	
+	ID = LITERAL {reject}
+	ID = KEYWORD {reject}
+	
+	// Actually a Java literal, but a reserved word for MiniJava purposes
+	KEYWORD = "null"
+	 
+	// Reserved keywords
+	KEYWORD = "abstract"
+	KEYWORD = "assert"
+	KEYWORD = "boolean"
+	KEYWORD = "break"
+	KEYWORD = "byte"
+	KEYWORD = "case"
+	KEYWORD = "catch"
+	KEYWORD = "char"
+	KEYWORD = "class"
+	KEYWORD = "const"
+	KEYWORD = "continue"
+	KEYWORD = "default"
+	KEYWORD = "do"
+	KEYWORD = "double"
+	KEYWORD = "else"
+	KEYWORD = "enum"
+	KEYWORD = "extends"
+	KEYWORD = "final"
+	KEYWORD = "finally"
+	KEYWORD = "float"
+	KEYWORD = "for"
+	KEYWORD = "goto"
+	KEYWORD = "if"
+	KEYWORD = "implements"
+	KEYWORD = "import"
+	KEYWORD = "instanceof"
+	KEYWORD = "int"
+	KEYWORD = "interface"
+	KEYWORD = "long"
+	KEYWORD = "native"
+	KEYWORD = "new"
+	KEYWORD = "package"
+	KEYWORD = "private"
+	KEYWORD = "protected"
+	KEYWORD = "public"
+	KEYWORD = "return"
+	KEYWORD = "short"
+	KEYWORD = "static"
+	KEYWORD = "strictfp"
+	KEYWORD = "super"
+	KEYWORD = "switch"
+	KEYWORD = "synchronized"
+	KEYWORD = "this"
+	KEYWORD = "throw"
+	KEYWORD = "throws"
+	KEYWORD = "transient"
+	KEYWORD = "try"
+	KEYWORD = "void"
+	KEYWORD = "volatile"
+	KEYWORD = "while"
+	 
+lexical restrictions
+	ID			-/- [a-zA-Z0-9\_]
+	INT			-/- [0-9]

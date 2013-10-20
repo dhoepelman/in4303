@@ -1,0 +1,56 @@
+// Done
+
+// [Types]
+// Points earned = 4.0 out of 4.0
+// Points earned = 0.0 out of 2.0
+
+module Type
+
+language MiniJava
+start symbol Type
+
+// Syntax tests
+
+test int array [[ int[] ]] parse succeeds
+test int array 2 [[ int [ ] ]] parse succeeds
+test boolean [[ boolean ]] parse succeeds
+test int[[ int ]] parse succeeds
+
+// // Types from Java that are not in MiniJava
+// 
+test byte [[byte]] parse fails
+test char [[char]] parse fails
+test double [[double]] parse fails
+test long [[long]] parse fails
+test short [[short]] parse fails
+test boolean array [[ boolean[] ]] parse fails
+test byte array [[ byte[] ]] parse fails
+test char array [[ char[] ]] parse fails
+test double array [[ double[] ]] parse fails
+test long array [[ long[] ]] parse fails
+test short array [[ short[] ]] parse fails
+test object array [[ A[] ]] parse fails
+
+test int array multidimensional [[ int[][] ]] parse fails
+test object generic [[ List<Object> ]] parse fails
+
+// Not going to repeat all of ID tests, but a selection of the ID tests
+test lowercase	[[a]]	parse succeeds
+test Uppercase	[[A]]	parse succeeds
+test digit0		[[0]]	parse fails
+test digit1		[[1]]	parse fails
+test underscore [[_]]	parse fails
+
+test lower lower		[[bb]]	parse succeeds
+test lower upper		[[bB]]	parse succeeds
+test lower digit		[[b0]]	parse succeeds
+test lower underscore	[[b_]]	parse succeeds
+
+// Abstract syntax trees tests
+
+test ast int array [[ int[] ]] parse to Array()
+test ast boolean [[ boolean ]] parse to Boolean()
+test ast int [[ int ]] parse to Int()
+test ast id [[ a ]] parse to Class(ClassReference("a"))
+
+// Disambiguation tests

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension
+         point="org.eclipse.imp.runtime.languageDescription">
+      <language
+            extensions="mjv"
+            description="MiniJava"
+            language="MiniJava"
+            derivedFrom="DynamicRoot"
+            validator="MiniJavadhoepelman.MiniJavaValidator"
+            validatorClass="MiniJavadhoepelman.MiniJavaValidator"
+      ></language>
+   </extension>
+   <extension
+         id="MiniJavadhoepelman.parser"
+         name="MiniJava Parser"
+         point="org.eclipse.imp.runtime.parser">
+      <parser
+            class="MiniJavadhoepelman.MiniJavaParseController"
+            language="MiniJava">
+      </parser>
+   </extension>    
+</plugin>

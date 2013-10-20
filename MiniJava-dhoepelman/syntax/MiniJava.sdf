@@ -1,0 +1,48 @@
+module MiniJava
+imports MiniJava-Layout MiniJava-Tokens MiniJava-Exp
+
+exports
+  context-free start-symbols
+    Program ClassDecl Exp ID INT MainClass MethodDecl Program Statement Type
+    VarDecl
+
+  context-free syntax
+    MainClass ClassDecl*                                                                             -> Program        {cons("Program")}
+    "class" ID "{" "public" "static" "void" "main" "(" "String" "[" "]" ID ")" "{" Statement "}" "}" -> MainClass      {cons("Main")}
+    "class" ID "{" FieldDecl* MethodDecl* "}"                                                        -> ClassDecl      {cons("Class")}
+    "class" ID "extends" ID "{" FieldDecl* MethodDecl* "}"                                           -> ClassDecl      {cons("Class")}
+    "public" Type ID "(" {ParameterDecl ","}* ")" "{" VarDecl* Statement* "return" Exp ";" "}"       -> MethodDecl     {cons("Method")}
+    Type ID                                                                                          -> ParameterDecl  {cons("Parameter")}
+    "{" Statement* "}"                                                                               -> Statement      {cons("Block")}
+    "if" "(" Exp ")" Statement "else" Statement                                                      -> Statement      {cons("IfElse")}
+    "while" "(" Exp ")" Statement                                                                    -> Statement      {cons("While")}
+    "System" "." "out" "." "println" "(" Exp ")" ";"                                                 -> Statement      {cons("Print")}
+    Assignee "=" Exp ";"                                                                             -> Statement      {cons("Assignment")}
+    VarReference                                                                                     -> Assignee       
+    VarReference "[" Exp "]"                                                                         -> Assignee       {cons("ArrayIndex")}
+    "int" "[" "]"                                                                                    -> Type           {cons("Array")}
+    "boolean"                                                                                        -> Type           {cons("Boolean")}
+    "int"                                                                                            -> Type           {cons("Int")}
+    ClassReference                                                                                   -> Type           {cons("Class")}
+    Type ID ";"                                                                                      -> FieldDecl      {cons("Field")}
+    Type ID ";"                                                                                      -> VarDecl        {cons("Variable")}
+    ID                                                                                               -> VarReference   {cons("VarReference")}
+    ID                                                                                               -> ClassReference {cons("ClassReference")}
+
+  context-free syntax
+    CONTENTCOMPLETE -> Program        {cons("COMPLETION-Program")}
+    CONTENTCOMPLETE -> MainClass      {cons("COMPLETION-MainClass")}
+    CONTENTCOMPLETE -> ClassDecl      {cons("COMPLETION-ClassDecl")}
+    CONTENTCOMPLETE -> MethodDecl     {cons("COMPLETION-MethodDecl")}
+    CONTENTCOMPLETE -> ParameterDecl  {cons("COMPLETION-ParameterDecl")}
+    CONTENTCOMPLETE -> Statement      {cons("COMPLETION-Statement")}
+    CONTENTCOMPLETE -> Assignee       {cons("COMPLETION-Assignee")}
+    CONTENTCOMPLETE -> Type           {cons("COMPLETION-Type")}
+    CONTENTCOMPLETE -> FieldDecl      {cons("COMPLETION-FieldDecl")}
+    CONTENTCOMPLETE -> VarDecl        {cons("COMPLETION-VarDecl")}
+    CONTENTCOMPLETE -> VarReference   {cons("COMPLETION-VarReference")}
+    CONTENTCOMPLETE -> ClassReference {cons("COMPLETION-ClassReference")}
+
+  lexical restrictions
+    "static" "void" "class" "extends" "public" "return" "else" "boolean" "int"
+    -/- [a-zA-Z0-9]

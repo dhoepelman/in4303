@@ -1,0 +1,27 @@
+module MiniJava-Layout
+imports 
+
+exports
+  lexical syntax
+    [\ \t\n\r]                 -> LAYOUT                
+    "//" ~[\n\r]* [\n\r] | EOF -> LAYOUT                
+    Comment                    -> LAYOUT                
+    "/*" CommentBody* "*/"     -> Comment               
+    [\*]                       -> Asterisk              
+    [\/]                       -> ForwardSlash          
+    ~[\*\/]                    -> CommentNonSpecialChar 
+    Asterisk                   -> CommentBody           
+    ForwardSlash               -> CommentBody           
+    CommentNonSpecialChar      -> CommentBody           
+    Comment                    -> CommentBody           
+                               -> EOF                   
+
+  lexical restrictions
+    Asterisk -/- [\/]
+    ForwardSlash -/- [\*]
+    EOF -/- ~[]
+
+  context-free restrictions
+    LAYOUT? -/- [\ \t\n\r]
+    LAYOUT? -/- [\/] . [\/]
+    LAYOUT? -/- [\/] . [\*]

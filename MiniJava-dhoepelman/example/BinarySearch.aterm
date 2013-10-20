@@ -1,0 +1,207 @@
+Program(
+  Main(
+    "BinarySearch"
+  , "a"
+  , Print(
+      MethodCall(NewObject(ClassReference("BS")), "Start", [INT("20")])
+    )
+  )
+, [ Class(
+      "BS"
+    , [Field(Array(), "number"), Field(Int(), "size")]
+    , [ Method(
+          Int()
+        , "Start"
+        , [Parameter(Int(), "sz")]
+        , [Variable(Int(), "aux01"), Variable(Int(), "aux02")]
+        , [ Assignment(
+              VarReference("aux01")
+            , MethodCall(This(), "Init", [VarReference("sz")])
+            )
+          , Assignment(VarReference("aux02"), MethodCall(This(), "Print", []))
+          , IfElse(
+              MethodCall(This(), "Search", [INT("8")])
+            , Print(INT("1"))
+            , Print(INT("0"))
+            )
+          , IfElse(
+              MethodCall(This(), "Search", [INT("19")])
+            , Print(INT("1"))
+            , Print(INT("0"))
+            )
+          , IfElse(
+              MethodCall(This(), "Search", [INT("20")])
+            , Print(INT("1"))
+            , Print(INT("0"))
+            )
+          , IfElse(
+              MethodCall(This(), "Search", [INT("21")])
+            , Print(INT("1"))
+            , Print(INT("0"))
+            )
+          , IfElse(
+              MethodCall(This(), "Search", [INT("37")])
+            , Print(INT("1"))
+            , Print(INT("0"))
+            )
+          , IfElse(
+              MethodCall(This(), "Search", [INT("38")])
+            , Print(INT("1"))
+            , Print(INT("0"))
+            )
+          , IfElse(
+              MethodCall(This(), "Search", [INT("39")])
+            , Print(INT("1"))
+            , Print(INT("0"))
+            )
+          , IfElse(
+              MethodCall(This(), "Search", [INT("50")])
+            , Print(INT("1"))
+            , Print(INT("0"))
+            )
+          ]
+        , INT("999")
+        )
+      , Method(
+          Boolean()
+        , "Search"
+        , [Parameter(Int(), "num")]
+        , [ Variable(Boolean(), "bs01")
+          , Variable(Int(), "right")
+          , Variable(Int(), "left")
+          , Variable(Boolean(), "var_cont")
+          , Variable(Int(), "medium")
+          , Variable(Int(), "aux01")
+          , Variable(Int(), "nt")
+          ]
+        , [ Assignment(VarReference("aux01"), INT("0"))
+          , Assignment(VarReference("bs01"), BOOLEAN("false"))
+          , Assignment(VarReference("right"), ArrayLength(VarReference("number")))
+          , Assignment(VarReference("right"), Minus(VarReference("right"), INT("1")))
+          , Assignment(VarReference("left"), INT("0"))
+          , Assignment(VarReference("var_cont"), BOOLEAN("true"))
+          , While(
+              VarReference("var_cont")
+            , Block(
+                [ Assignment(VarReference("medium"), Addition(VarReference("left"), VarReference("right")))
+                , Assignment(
+                    VarReference("medium")
+                  , MethodCall(This(), "Div", [VarReference("medium")])
+                  )
+                , Assignment(VarReference("aux01"), ArrayIndex(VarReference("number"), VarReference("medium")))
+                , IfElse(
+                    LessThan(VarReference("num"), VarReference("aux01"))
+                  , Assignment(VarReference("right"), Minus(VarReference("medium"), INT("1")))
+                  , Assignment(VarReference("left"), Addition(VarReference("medium"), INT("1")))
+                  )
+                , IfElse(
+                    MethodCall(This(), "Compare", [VarReference("aux01"), VarReference("num")])
+                  , Assignment(VarReference("var_cont"), BOOLEAN("false"))
+                  , Assignment(VarReference("var_cont"), BOOLEAN("true"))
+                  )
+                , IfElse(
+                    LessThan(VarReference("right"), VarReference("left"))
+                  , Assignment(VarReference("var_cont"), BOOLEAN("false"))
+                  , Assignment(VarReference("nt"), INT("0"))
+                  )
+                ]
+              )
+            )
+          , IfElse(
+              MethodCall(This(), "Compare", [VarReference("aux01"), VarReference("num")])
+            , Assignment(VarReference("bs01"), BOOLEAN("true"))
+            , Assignment(VarReference("bs01"), BOOLEAN("false"))
+            )
+          ]
+        , VarReference("bs01")
+        )
+      , Method(
+          Int()
+        , "Div"
+        , [Parameter(Int(), "num")]
+        , [Variable(Int(), "count01"), Variable(Int(), "count02"), Variable(Int(), "aux03")]
+        , [ Assignment(VarReference("count01"), INT("0"))
+          , Assignment(VarReference("count02"), INT("0"))
+          , Assignment(VarReference("aux03"), Minus(VarReference("num"), INT("1")))
+          , While(
+              LessThan(VarReference("count02"), VarReference("aux03"))
+            , Block(
+                [ Assignment(VarReference("count01"), Addition(VarReference("count01"), INT("1")))
+                , Assignment(VarReference("count02"), Addition(VarReference("count02"), INT("2")))
+                ]
+              )
+            )
+          ]
+        , VarReference("count01")
+        )
+      , Method(
+          Boolean()
+        , "Compare"
+        , [Parameter(Int(), "num1"), Parameter(Int(), "num2")]
+        , [Variable(Boolean(), "retval"), Variable(Int(), "aux02")]
+        , [ Assignment(VarReference("retval"), BOOLEAN("false"))
+          , Assignment(VarReference("aux02"), Addition(VarReference("num2"), INT("1")))
+          , IfElse(
+              LessThan(VarReference("num1"), VarReference("num2"))
+            , Assignment(VarReference("retval"), BOOLEAN("false"))
+            , IfElse(
+                Not(LessThan(VarReference("num1"), VarReference("aux02")))
+              , Assignment(VarReference("retval"), BOOLEAN("false"))
+              , Assignment(VarReference("retval"), BOOLEAN("true"))
+              )
+            )
+          ]
+        , VarReference("retval")
+        )
+      , Method(
+          Int()
+        , "Print"
+        , []
+        , [Variable(Int(), "j")]
+        , [ Assignment(VarReference("j"), INT("1"))
+          , While(
+              LessThan(VarReference("j"), VarReference("size"))
+            , Block(
+                [ Print(ArrayIndex(VarReference("number"), VarReference("j")))
+                , Assignment(VarReference("j"), Addition(VarReference("j"), INT("1")))
+                ]
+              )
+            )
+          , Print(INT("99999"))
+          ]
+        , INT("0")
+        )
+      , Method(
+          Int()
+        , "Init"
+        , [Parameter(Int(), "sz")]
+        , [ Variable(Int(), "j")
+          , Variable(Int(), "k")
+          , Variable(Int(), "aux02")
+          , Variable(Int(), "aux01")
+          ]
+        , [ Assignment(VarReference("size"), VarReference("sz"))
+          , Assignment(VarReference("number"), NewArray(VarReference("sz")))
+          , Assignment(VarReference("j"), INT("1"))
+          , Assignment(VarReference("k"), Addition(VarReference("size"), INT("1")))
+          , While(
+              LessThan(VarReference("j"), VarReference("size"))
+            , Block(
+                [ Assignment(VarReference("aux01"), Multiplication(INT("2"), VarReference("j")))
+                , Assignment(VarReference("aux02"), Minus(VarReference("k"), INT("3")))
+                , Assignment(
+                    ArrayIndex(VarReference("number"), VarReference("j"))
+                  , Addition(VarReference("aux01"), VarReference("aux02"))
+                  )
+                , Assignment(VarReference("j"), Addition(VarReference("j"), INT("1")))
+                , Assignment(VarReference("k"), Minus(VarReference("k"), INT("1")))
+                ]
+              )
+            )
+          ]
+        , INT("0")
+        )
+      ]
+    )
+  ]
+)

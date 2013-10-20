@@ -1,0 +1,59 @@
+module MiniJava-Exp
+
+imports
+	MiniJava-Tokens
+
+template options
+	// DO NOT ADD closing brackets etc.
+	// This will cause the tokenizer to use e.g. "[]" as one token, while we want "[" "]"
+	tokenize : "!({[;,."
+	keyword -/- [a-zA-Z0-9]
+	
+ templates
+ 	
+ 
+	// Exp op Exp
+	Exp.And = <<Exp> && <Exp>> {left}
+	Exp.Addition = <<Exp> + <Exp>> {left}
+	Exp.LessThan = [[Exp] < [Exp]] {left}
+	Exp.Minus = <<Exp> - <Exp>> {left}
+	Exp.Multiplication = <<Exp> * <Exp>> {left}
+	
+	Exp.ArrayIndex = <<Exp>[<Exp>]> {left}
+	Exp.ArrayLength = <<Exp>.length> {left}
+	
+	Exp.MethodCall = <<Exp>.<ID>(<Exp*; separator=",">)> {left}
+	
+	Exp.INT = <<INT>>
+	Exp.BOOLEAN <<BOOLEAN>>
+	Exp = <<VarReference>>
+	Exp.This = <this>
+
+	Exp.NewArray = <new int[<Exp>]> {right}
+	Exp.NewObject = <new <ClassReference>()> {right}
+	
+	Exp.Not = <!<Exp>> {right}
+//	Exp.Parentheses = <(<Exp>)> {avoid, bracket}
+context-free syntax
+	// TODO: Can't be (or I don't know how) done in a template
+	Exp = "(" Exp ")" {bracket}
+	
+context-free priorities
+	{ left:
+		Exp.ArrayIndex
+		Exp.ArrayLength
+		Exp.MethodCall
+	} > { right:
+		Exp.Not
+		Exp.NewArray
+		Exp.NewObject
+	} > { left:
+		Exp.Multiplication
+	} > { left:
+		Exp.Addition
+		Exp.Minus
+	} > { left:
+		Exp.LessThan
+	} > { left:
+		Exp.And
+	}

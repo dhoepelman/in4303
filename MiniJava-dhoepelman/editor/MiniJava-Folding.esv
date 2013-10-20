@@ -1,0 +1,27 @@
+module MiniJava-Folding
+
+imports MiniJava-Folding.generated
+
+folding
+  
+  // This file can be used for custom folding rules.
+  //
+  // See the imported file for a brief introduction and examples.
+  
+  
+// It doesn't make sense to fold your whole program
+Program._	(disabled)
+
+// Local Variable and Field declarations
+FieldDecl*
+VarDecl*
+
+// Multiple statements
+Statement.Block
+
+// Because ifelse and while usually have Blocks they don't need to be included
+
+// TODO: Find out how to fold comments
+// Single line comments aren't actually a Comment sort, so that is fine
+Comment
+

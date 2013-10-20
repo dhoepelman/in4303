@@ -1,0 +1,38 @@
+specification
+
+signature
+  constructors
+    Program        : MainClass * List(ClassDecl) -> Program
+    Main           : ID * ID * Statement -> MainClass
+    Class          : ID * Option(ClassDeclExtends) * List(VarDecl) * List(MethodDecl) -> ClassDecl
+    Method         : Type * ID * List(ParameterDecl) * List(VarDecl) * List(Statement) * Exp -> MethodDecl
+    Parameter      : Type * ID -> ParameterDecl
+    And            : Exp * Exp -> Exp
+    Addition       : Exp * Exp -> Exp
+    LessThan       : Exp * Exp -> Exp
+    Minus          : Exp * Exp -> Exp
+    Multiplication : Exp * Exp -> Exp
+    ArrayAccess    : Exp * Exp -> Exp
+    ArrayLength    : Exp -> Exp
+    MethodCall     : Exp * ID * List(Exp) -> Exp
+    LiteralInt     : INT -> Exp
+    LiteralTrue    : Exp
+    LiteralFalse   : Exp
+    ID             : ID -> Exp
+    This           : Exp
+    NewArray       : Exp -> Exp
+    NewObject      : ID -> Exp
+    Not            : Exp -> Exp
+    Parentheses    : Exp -> Exp
+    Block          : List(Statement) -> Statement
+    IfElse         : Exp * Statement * Statement -> Statement
+    While          : Exp * Statement -> Statement
+    Print          : Exp -> Statement
+    Assignment     : Variable * Exp -> Statement
+    ID             : ID -> Variable
+    ArrayIndex     : ID * Exp -> Variable
+    Variable       : Type * ID -> VarDecl
+    Array          : Type
+    Boolean        : Type
+    Int            : Type
+    ID             : ID -> Type

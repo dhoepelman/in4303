@@ -1,0 +1,38 @@
+Program(
+  Main(
+    "Factorial"
+  , "a"
+  , Print(
+      MethodCall(NewObject(ClassReference("Fac")), "ComputeFac", [INT("10")])
+    )
+  )
+, [ Class(
+      "Fac"
+    , []
+    , [ Method(
+          Int()
+        , "ComputeFac"
+        , [Parameter(Int(), "num")]
+        , [Variable(Int(), "num_aux")]
+        , [ IfElse(
+              LessThan(VarReference("num"), INT("1"))
+            , Assignment(VarReference("num_aux"), INT("1"))
+            , Assignment(
+                VarReference("num_aux")
+              , Multiplication(
+                  VarReference("num")
+                , MethodCall(
+                    This()
+                  , "ComputeFac"
+                  , [Minus(VarReference("num"), INT("1"))]
+                  )
+                )
+              )
+            )
+          ]
+        , VarReference("num_aux")
+        )
+      ]
+    )
+  ]
+)

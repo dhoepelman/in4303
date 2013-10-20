@@ -1,0 +1,80 @@
+module MiniJava
+ 
+imports
+	MiniJava-Layout
+	MiniJava-Tokens
+	MiniJava-Exp
+
+context-free start-symbols
+  	Program
+	ClassDecl
+	Exp
+	ID
+	INT
+	MainClass
+	MethodDecl
+	Program
+	Statement
+	Type
+	VarDecl
+
+template options
+	// DO NOT ADD closing brackets etc.
+	// This will cause the tokenizer to use e.g. "[]" as one token, while we want "[" "]"
+	tokenize : "!({[;,."	
+	keyword -/- [a-zA-Z0-9]
+	
+templates // Program
+	Program.Program = <<MainClass>
+<ClassDecl*; separator="\n\n">>
+
+	MainClass.Main = <class <ID; text="Main"> {
+	public static void main(String[] <ID; text="args">) {
+		<Statement; text="System.out.println(0);">
+	}
+}>
+
+	ClassDecl.Class = <class <ID; hide> {
+	<FieldDecl*; separator="\n">
+	<MethodDecl*; separator="\n">
+}>
+	ClassDecl.Class = <class <ID; hide> extends <ID; hide> {
+	<FieldDecl*; separator="\n">
+	<MethodDecl*; separator="\n">
+}>
+
+	MethodDecl.Method = <public <Type; text="int"> <ID; hide>(<ParameterDecl*; separator=", ">) {
+	<VarDecl*; separator="\n">
+	<Statement*; separator="\n">
+	return <Exp; hide>;
+}>
+	
+	ParameterDecl.Parameter = <<Type; text="int"> <ID; text="arg">>
+
+	// Statements
+	Statement.Block = <{
+	<Statement*; separator="\n">
+}>
+
+	Statement.IfElse = <if(<Exp; hide>) <Statement; text="{}">
+else <Statement; text="{}">>
+	
+	// TODO: Find out how to include newlines in replacement text
+	Statement.While = <while(<Exp; hide>) <Statement; text="{}">>
+	
+	Statement.Print = <System.out.println(<Exp; hide>);>
+	Statement.Assignment = <<Assignee; hide> = <Exp; hide>;>
+	
+	Assignee = <<VarReference>>
+	Assignee.ArrayIndex = <<VarReference>[<Exp>]>
+	
+  	Type.Array = <int<>[]>
+ 	Type.Boolean = <boolean>
+  	Type.Int = <int>
+  	Type.Class = <<ClassReference; text="Class">>
+  	
+  	FieldDecl.Field = <<Type> <ID>;>
+  	VarDecl.Variable = <<Type> <ID>;>
+  	
+  	VarReference.VarReference = <<ID>>
+  	ClassReference.ClassReference = <<ID>>

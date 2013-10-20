@@ -1,0 +1,306 @@
+module MiniJava.pp.generated
+
+strategies
+  prettyprint-Program :
+    Program(a, b) -> [ H(
+                         [SOpt(HS(), "0")]
+                       , [a689]
+                       )
+                     , H(
+                         [SOpt(HS(), "0")]
+                       , [b437]
+                       )
+                     ]
+    where a689 := <pp-one-Z(prettyprint-MainClass)> a
+    where b437 := <pp-V-list(prettyprint-ClassDecl|"1")> b
+
+  prettyprint-MainClass :
+    Main(a, b, c) -> [ H(
+                         [SOpt(HS(), "0")]
+                       , [S("class "), a690, S(" {")]
+                       )
+                     , b438
+                     , c183
+                     , a691
+                     , H(
+                         [SOpt(HS(), "0")]
+                       , [S("}")]
+                       )
+                     ]
+    where a690 := <pp-one-Z(prettyprint-ID)> a
+    where b438 := <pp-indent(|"2")> [ S("public static void main(String[] ")
+                                    , <pp-one-Z(prettyprint-ID)> b
+                                    , S(") {")
+                                    ]
+    where c183 := <pp-indent(|"4")> [<pp-one-Z(prettyprint-Statement)> c]
+    where a691 := <pp-indent(|"2")> [S("}")]
+
+  prettyprint-ClassDecl :
+    Class(a, b, c) -> [ H(
+                          [SOpt(HS(), "0")]
+                        , [S("class "), a692, S(" {")]
+                        )
+                      , b439
+                      , c184
+                      , H(
+                          [SOpt(HS(), "0")]
+                        , [S("}")]
+                        )
+                      ]
+    where a692 := <pp-one-Z(prettyprint-ID)> a
+    where b439 := <pp-indent(|"2")> [<pp-V-list(prettyprint-FieldDecl)> b]
+    where c184 := <pp-indent(|"2")> [<pp-V-list(prettyprint-MethodDecl)> c]
+
+  prettyprint-ClassDecl :
+    Class(a, b, c, d) -> [ H(
+                             [SOpt(HS(), "0")]
+                           , [ S("class ")
+                             , a693
+                             , S(" extends ")
+                             , b440
+                             , S(" {")
+                             ]
+                           )
+                         , c185
+                         , d75
+                         , H(
+                             [SOpt(HS(), "0")]
+                           , [S("}")]
+                           )
+                         ]
+    where a693 := <pp-one-Z(prettyprint-ID)> a
+    where b440 := <pp-one-Z(prettyprint-ID)> b
+    where c185 := <pp-indent(|"2")> [<pp-V-list(prettyprint-FieldDecl)> c]
+    where d75 := <pp-indent(|"2")> [<pp-V-list(prettyprint-MethodDecl)> d]
+
+  prettyprint-MethodDecl :
+    Method(a, b, c, d, e, f) -> [ H(
+                                    [SOpt(HS(), "0")]
+                                  , [ S("public ")
+                                    , a694
+                                    , S(" ")
+                                    , b441
+                                    , S("(")
+                                    , c186
+                                    , S(") {")
+                                    ]
+                                  )
+                                , d76
+                                , e41
+                                , f38
+                                , H(
+                                    [SOpt(HS(), "0")]
+                                  , [S("}")]
+                                  )
+                                ]
+    where a694 := <pp-one-Z(prettyprint-Type)> a
+    where b441 := <pp-one-Z(prettyprint-ID)> b
+    where c186 := <pp-H-list(prettyprint-ParameterDecl|", ")> c
+    where d76 := <pp-indent(|"2")> [<pp-V-list(prettyprint-VarDecl)> d]
+    where e41 := <pp-indent(|"2")> [<pp-V-list(prettyprint-Statement)> e]
+    where f38 := <pp-indent(|"2")> [ S("return ")
+                                   , <pp-one-Z(prettyprint-Exp)> f
+                                   , S(";")
+                                   ]
+
+  prettyprint-ParameterDecl :
+    Parameter(a, b) -> [ H(
+                           [SOpt(HS(), "0")]
+                         , [a695, S(" "), b442]
+                         )
+                       ]
+    where a695 := <pp-one-Z(prettyprint-Type)> a
+    where b442 := <pp-one-Z(prettyprint-ID)> b
+
+  prettyprint-Statement :
+    Block(a) -> [ H(
+                    [SOpt(HS(), "0")]
+                  , [S("{")]
+                  )
+                , a696
+                , H(
+                    [SOpt(HS(), "0")]
+                  , [S("}")]
+                  )
+                ]
+    where a696 := <pp-indent(|"2")> [<pp-V-list(prettyprint-Statement)> a]
+
+  prettyprint-Statement :
+    IfElse(a, b, c) -> [ H(
+                           [SOpt(HS(), "0")]
+                         , [ S("if(")
+                           , a697
+                           , S(") ")
+                           , b443
+                           ]
+                         )
+                       , H(
+                           [SOpt(HS(), "0")]
+                         , [S("else "), c187]
+                         )
+                       ]
+    where a697 := <pp-one-Z(prettyprint-Exp)> a
+    where b443 := <pp-one-Z(prettyprint-Statement)> b
+    where c187 := <pp-one-Z(prettyprint-Statement)> c
+
+  prettyprint-Statement :
+    While(a, b) -> [ H(
+                       [SOpt(HS(), "0")]
+                     , [ S("while(")
+                       , a698
+                       , S(") ")
+                       , b444
+                       ]
+                     )
+                   ]
+    where a698 := <pp-one-Z(prettyprint-Exp)> a
+    where b444 := <pp-one-Z(prettyprint-Statement)> b
+
+  prettyprint-Statement :
+    Print(a) -> [ H(
+                    [SOpt(HS(), "0")]
+                  , [S("System.out.println("), a699, S(");")]
+                  )
+                ]
+    where a699 := <pp-one-Z(prettyprint-Exp)> a
+
+  prettyprint-Statement :
+    Assignment(a, b) -> [ H(
+                            [SOpt(HS(), "0")]
+                          , [ a700
+                            , S(" = ")
+                            , b445
+                            , S(";")
+                            ]
+                          )
+                        ]
+    where a700 := <pp-one-Z(prettyprint-Assignee)> a
+    where b445 := <pp-one-Z(prettyprint-Exp)> b
+
+  prettyprint-Assignee :
+    a -> [ H(
+             [SOpt(HS(), "0")]
+           , [a701]
+           )
+         ]
+    where a701 := <pp-one-Z(prettyprint-VarReference)> a
+
+  prettyprint-Assignee :
+    ArrayIndex(a, b) -> [ H(
+                            [SOpt(HS(), "0")]
+                          , [ a702
+                            , S("[")
+                            , b446
+                            , S("]")
+                            ]
+                          )
+                        ]
+    where a702 := <pp-one-Z(prettyprint-VarReference)> a
+    where b446 := <pp-one-Z(prettyprint-Exp)> b
+
+  prettyprint-Type :
+    Array() -> [ H(
+                   [SOpt(HS(), "0")]
+                 , [S("int[]")]
+                 )
+               ]
+
+  prettyprint-Type :
+    Boolean() -> [ H(
+                     [SOpt(HS(), "0")]
+                   , [S("boolean")]
+                   )
+                 ]
+
+  prettyprint-Type :
+    Int() -> [ H(
+                 [SOpt(HS(), "0")]
+               , [S("int")]
+               )
+             ]
+
+  prettyprint-Type :
+    Class(a) -> [ H(
+                    [SOpt(HS(), "0")]
+                  , [a703]
+                  )
+                ]
+    where a703 := <pp-one-Z(prettyprint-ClassReference)> a
+
+  prettyprint-FieldDecl :
+    Field(a, b) -> [ H(
+                       [SOpt(HS(), "0")]
+                     , [ a704
+                       , S(" ")
+                       , b447
+                       , S(";")
+                       ]
+                     )
+                   ]
+    where a704 := <pp-one-Z(prettyprint-Type)> a
+    where b447 := <pp-one-Z(prettyprint-ID)> b
+
+  prettyprint-VarDecl :
+    Variable(a, b) -> [ H(
+                          [SOpt(HS(), "0")]
+                        , [ a705
+                          , S(" ")
+                          , b448
+                          , S(";")
+                          ]
+                        )
+                      ]
+    where a705 := <pp-one-Z(prettyprint-Type)> a
+    where b448 := <pp-one-Z(prettyprint-ID)> b
+
+  prettyprint-VarReference :
+    VarReference(a) -> [ H(
+                           [SOpt(HS(), "0")]
+                         , [a706]
+                         )
+                       ]
+    where a706 := <pp-one-Z(prettyprint-ID)> a
+
+  prettyprint-ClassReference :
+    ClassReference(a) -> [ H(
+                             [SOpt(HS(), "0")]
+                           , [a707]
+                           )
+                         ]
+    where a707 := <pp-one-Z(prettyprint-ID)> a
+
+  prettyprint-example =
+    prettyprint-Program
+
+  prettyprint-example =
+    prettyprint-MainClass
+
+  prettyprint-example =
+    prettyprint-ClassDecl
+
+  prettyprint-example =
+    prettyprint-MethodDecl
+
+  prettyprint-example =
+    prettyprint-ParameterDecl
+
+  prettyprint-example =
+    prettyprint-Statement
+
+  prettyprint-example =
+    prettyprint-Assignee
+
+  prettyprint-example =
+    prettyprint-Type
+
+  prettyprint-example =
+    prettyprint-FieldDecl
+
+  prettyprint-example =
+    prettyprint-VarDecl
+
+  prettyprint-example =
+    prettyprint-VarReference
+
+  prettyprint-example =
+    prettyprint-ClassReference

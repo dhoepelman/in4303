@@ -1,0 +1,19 @@
+Program(
+  Main(
+    "ExpTest"
+  , "id"
+  , Block(
+      [ Assignment(
+          VarReference("id")
+        , Addition(INT("1"), Multiplication(INT("1"), INT("2")))
+        )
+      , Assignment(
+          VarReference("id")
+        , Addition(INT("1"), Multiplication(INT("1"), INT("2")))
+        )
+      , Assignment(VarReference("id"), ArrayLength(ArrayLength(ArrayLength(VarReference("a")))))
+      ]
+    )
+  )
+, []
+)
