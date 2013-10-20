@@ -1,0 +1,65 @@
+module analysis/desugar
+
+imports
+
+  assignment1/MiniJava
+  
+signature
+
+  sorts UnOp BinOp
+  constructors
+  
+  // NewObject   : ID -> Exp
+  //   NewArray    : Exp -> Exp
+  
+  //   Length      : Exp -> Exp
+  //   Not         : Exp -> Exp
+  ArrayLength	: UnOp
+  Negation		: UnOp
+  
+  // Not sure about these, seem different because they allocate things
+  // NewObjectOp: UnOp		// Takes an ID instead of Exp as argument
+  // NewArrayOp	: UnOp
+  
+  // Also not sure about this one
+  ArrayAccess	: BinOp	// Array Access (subscript) operator
+  
+  LogicalAnd	: BinOp // And operator
+  LessThan		: BinOp	// Less than operator
+  Times			: BinOp // Multiplication operator
+  Minus			: BinOp // Substraction operator
+  Plus			: BinOp	// Addition operator
+  
+  
+  UnExp		: UnOp * Exp -> Exp
+  BinExp	: BinOp * Exp * Exp -> Exp
+  
+rules
+  
+  // desugar: ... -> ...
+ 	// Unary Operations
+ 	desugar: Not(e)		-> UnExp(Negation(),e)
+	desugar: Length(e)	-> UnExp(ArrayLength(),e)
+	
+	// BinExp
+ 	desugar: And(e1, e2) -> BinExp(LogicalAnd(), e1, e2)
+ 	desugar: Lt(e1, e2) -> BinExp(LessThan(), e1, e2)
+ 	desugar: Mul(e1, e2) -> BinExp(Times(), e1, e2)
+ 	desugar: Sub(e1, e2) -> BinExp(Minus(), e1, e2)
+	desugar: Add(e1, e2) -> BinExp(Plus(), e1, e2)
+	
+	desugar: Subscript(e1, e2)	-> BinExp(ArrayAccess(), e1, e2)
+ 
+  
+  
+strategies
+  
+  // select one of these
+  
+  // Will always maxime the desugaring. Over the top for now, but might be useful in the future
+  //desugar-all = innermost(desugar)
+  // desugar-all = topdown(desugar)			
+  //desugar-all = topdown(try(desugar))
+  // desugar-all = bottomup(desugar)
+   desugar-all = bottomup(try(desugar))
+  // desugar-all = alltd(desugar)

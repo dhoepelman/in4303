@@ -1,0 +1,45 @@
+Program(
+  Main(
+    "txtMainClass"
+  , "txtMainParamId"
+  , Block(
+      [ Assignment(VarReference("variableleft"), Addition(Const("1"), VarReference("variableright")))
+      , Assignment(
+          ArrayIndex(VarReference("arrayvarleft"), Const("1"))
+        , ArrayIndex(VarReference("arrayvarright"), Const("2"))
+        )
+      ]
+    )
+  )
+, [ Class("NormalClass", None(), [], [])
+  , Class("SubClass", Some("NormalClass"), [], [])
+  , Class(
+      "FieldLocalVariableDistinguishable"
+    , None()
+    , [Field(Int(), "FieldVar")]
+    , [ Method(
+          Int()
+        , "method"
+        , []
+        , [Variable(Int(), "LocalVar")]
+        , []
+        , Const("1")
+        )
+      ]
+    )
+  , Class(
+      "DeclarationReferenceIDDistinguishable"
+    , None()
+    , []
+    , [ Method(
+          Int()
+        , "method"
+        , []
+        , [Variable(Int(), "LocalVarDecl")]
+        , [Assignment(VarReference("ReferenceVar"), Const("1"))]
+        , Const("1")
+        )
+      ]
+    )
+  ]
+)

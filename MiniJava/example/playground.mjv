@@ -1,0 +1,25 @@
+class Main {
+	public static void main(String[] args) {
+		System.out.println(0);
+	}
+}
+
+class Name extends Parent {
+	
+}
+
+class Name extends Parent {
+	
+	public int name () {
+		i = 1;
+		if() {
+			
+		} else {
+			
+		}
+		return 0;
+	}
+	
+	
+}
+

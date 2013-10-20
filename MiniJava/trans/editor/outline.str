@@ -1,0 +1,66 @@
+module editor/outline
+
+imports
+  assignment1/MiniJava
+  runtime/editor/outline-library
+  runtime/editor/origins
+  editor/MiniJava-Outliner.generated
+
+rules
+  
+  outline-expand-to-level = !3
+
+rules
+  
+// TODO: Filename (challenge) als tijd over
+  to-outline-label: Program(main, classes) -> "MiniJava Program"
+  
+  // Variable outline
+  to-outline-label: Var(type, name) -> $[[name] : [type']]
+  	where
+  		type'	:= <pp> type
+  to-outline-label: Field(type, name) -> $[[name] : [type']]
+  	where
+  		type'	:= <pp> type
+  		
+  to-outline-label: MainClass(name, argname, statement) -> name
+  to-outline-label: Class(name, parent, fields, methods) -> $[[name] [parent']]
+  	where
+  		parent' := <pp-classparent> parent
+  
+  to-outline-label: Method(type, name, params, vars, statements, return) -> $[[name]([params']) : [type']]
+  	where
+  		params' := <pp-params> params
+  	;	type'	:= <pp> type
+  
+  // Method declarations
+  
+  //class name and super class name
+//field name and type
+//method name, parameter types (not parameter names), return type
+//variable name and type
+  
+rules
+      
+pp: Bool()       -> "boolean"
+pp: ClassType(c) -> c
+pp: Int()        -> "int"
+pp: IntArray()   -> "int[]"
+
+pp-classparent: None() -> ""
+pp-classparent: Parent(name) -> $[is a [name]]
+
+pp-params: // empty parameter list
+  [] -> ""
+
+pp-params: // single parameter
+  [Param(type, name)] -> type'
+  where
+    type'	:= <pp> type
+
+pp-params: // at least two parameters
+  [Param(type, name), param | params] -> $[[type'], [paramrest]]
+  where
+    type'	:= <pp> type
+    // recursive call on remaining parameters
+  ;	paramrest := <pp-params> [param | params]
