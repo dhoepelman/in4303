@@ -1,0 +1,571 @@
+module test-na-complex
+
+language MiniJava
+
+setup MiniJavaStart [[
+	class Main {
+    	public static void main(String[] args) {
+      		System.out.println(1);
+    	}
+  	}
+]]
+
+test class name resolution hell 1 [[
+	class [[foo]] {
+		public int m() {
+			return 1;
+		}
+	}
+	
+	class [[bar]] {
+		public int m() {
+			return 2;
+		}
+	}
+	class [[baz]] {
+		public int m() {
+			return 3;
+		}
+	}
+	
+	class FooBarBaz {
+		public foo bar(baz foo) {
+			[[foo]] bar;
+			bar baz;
+			int i;
+			
+			foo = new baz();
+			bar = new foo();
+			baz = new bar();
+			
+			i = foo.m();
+			System.out.println(i);
+			i = bar.m();
+			System.out.println(i);
+			i = baz.m();
+			System.out.println(i);
+			
+			return bar;
+		}	
+	}
+]] resolve #4 to #1
+
+test class name resolution hell 2 [[
+	class [[foo]] {
+		public int m() {
+			return 1;
+		}
+	}
+	
+	class [[bar]] {
+		public int m() {
+			return 2;
+		}
+	}
+	class [[baz]] {
+		public int m() {
+			return 3;
+		}
+	}
+	
+	class FooBarBaz {
+		public [[foo]] bar(baz foo) {
+			foo bar;
+			bar baz;
+			int i;
+			
+			foo = new baz();
+			bar = new foo();
+			baz = new bar();
+			
+			i = foo.m();
+			System.out.println(i);
+			i = bar.m();
+			System.out.println(i);
+			i = baz.m();
+			System.out.println(i);
+			
+			return bar;
+		}	
+	}
+]] resolve #4 to #1
+
+test class name resolution hell 3 [[
+	class [[foo]] {
+		public int m() {
+			return 1;
+		}
+	}
+	
+	class [[bar]] {
+		public int m() {
+			return 2;
+		}
+	}
+	class [[baz]] {
+		public int m() {
+			return 3;
+		}
+	}
+	
+	class FooBarBaz {
+		public foo bar(baz foo) {
+			foo bar;
+			bar baz;
+			int i;
+			
+			foo = new baz();
+			bar = new [[foo]]();
+			baz = new bar();
+			
+			i = foo.m();
+			System.out.println(i);
+			i = bar.m();
+			System.out.println(i);
+			i = baz.m();
+			System.out.println(i);
+			
+			return bar;
+		}	
+	}
+]] resolve #4 to #1
+
+test class name resolution hell 4 [[
+	class [[foo]] {
+		public int m() {
+			return 1;
+		}
+	}
+	
+	class [[bar]] {
+		public int m() {
+			return 2;
+		}
+	}
+	class [[baz]] {
+		public int m() {
+			return 3;
+		}
+	}
+	
+	class FooBarBaz {
+		public foo bar(baz foo) {
+			foo bar;
+			[[bar]] baz;
+			int i;
+			
+			foo = new baz();
+			bar = new foo();
+			baz = new bar();
+			
+			i = foo.m();
+			System.out.println(i);
+			i = bar.m();
+			System.out.println(i);
+			i = baz.m();
+			System.out.println(i);
+			
+			return bar;
+		}	
+	}
+]] resolve #4 to #2
+
+test class name resolution hell 5 [[
+	class [[foo]] {
+		public int m() {
+			return 1;
+		}
+	}
+	
+	class [[bar]] {
+		public int m() {
+			return 2;
+		}
+	}
+	class [[baz]] {
+		public int m() {
+			return 3;
+		}
+	}
+	
+	class FooBarBaz {
+		public foo bar(baz foo) {
+			foo bar;
+			bar baz;
+			int i;
+			
+			foo = new baz();
+			bar = new foo();
+			baz = new [[bar]]();
+			
+			i = foo.m();
+			System.out.println(i);
+			i = bar.m();
+			System.out.println(i);
+			i = baz.m();
+			System.out.println(i);
+			
+			return bar;
+		}	
+	}
+]] resolve #4 to #2
+
+test class name resolution hell 6 [[
+	class [[foo]] {
+		public int m() {
+			return 1;
+		}
+	}
+	
+	class [[bar]] {
+		public int m() {
+			return 2;
+		}
+	}
+	class [[baz]] {
+		public int m() {
+			return 3;
+		}
+	}
+	
+	class FooBarBaz {
+		public foo bar([[baz]] foo) {
+			foo bar;
+			bar baz;
+			int i;
+			
+			foo = new baz();
+			bar = new foo();
+			baz = new bar();
+			
+			i = foo.m();
+			System.out.println(i);
+			i = bar.m();
+			System.out.println(i);
+			i = baz.m();
+			System.out.println(i);
+			
+			return bar;
+		}	
+	}
+]] resolve #4 to #3
+
+test class name resolution hell 7 [[
+	class [[foo]] {
+		public int m() {
+			return 1;
+		}
+	}
+	
+	class [[bar]] {
+		public int m() {
+			return 2;
+		}
+	}
+	class [[baz]] {
+		public int m() {
+			return 3;
+		}
+	}
+	
+	class FooBarBaz {
+		public foo bar(baz foo) {
+			foo bar;
+			bar baz;
+			int i;
+			
+			foo = new [[baz]]();
+			bar = new foo();
+			baz = new bar();
+			
+			i = foo.m();
+			System.out.println(i);
+			i = bar.m();
+			System.out.println(i);
+			i = baz.m();
+			System.out.println(i);
+			
+			return bar;
+		}	
+	}
+]] resolve #4 to #3
+
+test class name resolution hell 7 [[
+	class foo {
+		public int m() {
+			return 1;
+		}
+	}
+	
+	class bar {
+		public int m() {
+			return 2;
+		}
+	}
+	class baz {
+		public int m() {
+			return 3;
+		}
+	}
+	
+	class FooBarBaz {
+		public foo bar(baz [[foo]]) {
+			foo [[bar]];
+			bar [[baz]];
+			int i;
+			
+			[[foo]] = new baz();
+			bar = new foo();
+			baz = new bar();
+			
+			i = foo.m();
+			System.out.println(i);
+			i = bar.m();
+			System.out.println(i);
+			i = baz.m();
+			System.out.println(i);
+			
+			return bar;
+		}	
+	}
+]] resolve #4 to #1
+
+test class name resolution hell 8 [[
+	class foo {
+		public int m() {
+			return 1;
+		}
+	}
+	
+	class bar {
+		public int m() {
+			return 2;
+		}
+	}
+	class baz {
+		public int m() {
+			return 3;
+		}
+	}
+	
+	class FooBarBaz {
+		public foo bar(baz [[foo]]) {
+			foo [[bar]];
+			bar [[baz]];
+			int i;
+			
+			foo = new baz();
+			bar = new foo();
+			baz = new bar();
+			
+			i = [[foo]].m();
+			System.out.println(i);
+			i = bar.m();
+			System.out.println(i);
+			i = baz.m();
+			System.out.println(i);
+			
+			return bar;
+		}	
+	}
+]] resolve #4 to #1
+
+test class name resolution hell 9 [[
+	class foo {
+		public int m() {
+			return 1;
+		}
+	}
+	
+	class bar {
+		public int m() {
+			return 2;
+		}
+	}
+	class baz {
+		public int m() {
+			return 3;
+		}
+	}
+	
+	class FooBarBaz {
+		public foo bar(baz [[foo]]) {
+			foo [[bar]];
+			bar [[baz]];
+			int i;
+			
+			foo = new baz();
+			[[bar]] = new foo();
+			baz = new bar();
+			
+			i = foo.m();
+			System.out.println(i);
+			i = bar.m();
+			System.out.println(i);
+			i = baz.m();
+			System.out.println(i);
+			
+			return bar;
+		}	
+	}
+]] resolve #4 to #2
+
+test class name resolution hell 10 [[
+	class foo {
+		public int m() {
+			return 1;
+		}
+	}
+	
+	class bar {
+		public int m() {
+			return 2;
+		}
+	}
+	class baz {
+		public int m() {
+			return 3;
+		}
+	}
+	
+	class FooBarBaz {
+		public foo bar(baz [[foo]]) {
+			foo [[bar]];
+			bar [[baz]];
+			int i;
+			
+			foo = new baz();
+			bar = new foo();
+			baz = new bar();
+			
+			i = foo.m();
+			System.out.println(i);
+			i = [[bar]].m();
+			System.out.println(i);
+			i = baz.m();
+			System.out.println(i);
+			
+			return bar;
+		}	
+	}
+]] resolve #4 to #2
+
+test class name resolution hell 11 [[
+	class foo {
+		public int m() {
+			return 1;
+		}
+	}
+	
+	class bar {
+		public int m() {
+			return 2;
+		}
+	}
+	class baz {
+		public int m() {
+			return 3;
+		}
+	}
+	
+	class FooBarBaz {
+		public foo bar(baz [[foo]]) {
+			foo [[bar]];
+			bar [[baz]];
+			int i;
+			
+			foo = new baz();
+			bar = new foo();
+			baz = new bar();
+			
+			i = foo.m();
+			System.out.println(i);
+			i = bar.m();
+			System.out.println(i);
+			i = baz.m();
+			System.out.println(i);
+			
+			return [[bar]];
+		}	
+	}
+]] resolve #4 to #2
+
+test class name resolution hell 12 [[
+	class foo {
+		public int m() {
+			return 1;
+		}
+	}
+	
+	class bar {
+		public int m() {
+			return 2;
+		}
+	}
+	class baz {
+		public int m() {
+			return 3;
+		}
+	}
+	
+	class FooBarBaz {
+		public foo bar(baz [[foo]]) {
+			foo [[bar]];
+			bar [[baz]];
+			int i;
+			
+			foo = new baz();
+			bar = new foo();
+			[[baz]] = new bar();
+			
+			i = foo.m();
+			System.out.println(i);
+			i = bar.m();
+			System.out.println(i);
+			i = baz.m();
+			System.out.println(i);
+			
+			return bar;
+		}	
+	}
+]] resolve #4 to #3
+
+test class name resolution hell 13 [[
+	class foo {
+		public int m() {
+			return 1;
+		}
+	}
+	
+	class bar {
+		public int m() {
+			return 2;
+		}
+	}
+	class baz {
+		public int m() {
+			return 3;
+		}
+	}
+	
+	class FooBarBaz {
+		public foo bar(baz [[foo]]) {
+			foo [[bar]];
+			bar [[baz]];
+			int i;
+			
+			foo = new baz();
+			bar = new foo();
+			baz = new bar();
+			
+			i = foo.m();
+			System.out.println(i);
+			i = bar.m();
+			System.out.println(i);
+			i = [[baz]].m();
+			System.out.println(i);
+			
+			return bar;
+		}	
+	}
+]] resolve #4 to #3

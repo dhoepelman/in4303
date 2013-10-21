@@ -70,48 +70,6 @@ test class name resolution instantiation [[
 ]] resolve #2 to #1
 
 
-
-test class name resolution hell 1 [[
-	class [[foo]] {
-		public int m() {
-			return 1;
-		}
-	}
-	
-	class [[bar]] {
-		public int m() {
-			return 2;
-		}
-	}
-	class [[baz]] {
-		public int m() {
-			return 3;
-		}
-	}
-	
-	class FooBarBaz {
-		public foo bar(baz foo) {
-			[[foo]] bar;
-			bar baz;
-			int i;
-			
-			foo = new baz();
-			bar = new foo();
-			baz = new bar();
-			
-			i = foo.m();
-			System.out.println(i);
-			i = bar.m();
-			System.out.println(i);
-			i = baz.m();
-			System.out.println(i);
-			
-			return bar;
-		}	
-	}
-]] resolve #4 to #1
-
-
 test correct program [[
   class Foo {}
 
@@ -119,8 +77,6 @@ test correct program [[
     Foo x;
   }
 ]] 0 errors
-
-
 
 test error on duplicate class [[
   class [[Foo]] {}
