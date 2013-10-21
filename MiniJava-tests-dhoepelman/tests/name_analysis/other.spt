@@ -1,0 +1,25 @@
+module test-na-Class
+
+language MiniJava
+
+setup MiniJavaStart [[
+	class TheMainClass {
+    	public static void main(String[] args) {
+      		System.out.println(1);
+    	}
+  	}
+]]
+
+test error initialing main class [[  	
+  	class C {
+  		public TheMainClass m() {
+  			TheMainClass var;
+  			var = new [[TheMainClass]](); 
+  			return var;
+  		}
+  	}
+]] 1 error
+
+test error subclassing main class [[
+	class C extends TheMainClass {}
+]] 1 error
