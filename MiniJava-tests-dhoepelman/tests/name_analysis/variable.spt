@@ -1,4 +1,4 @@
-module test-na-parameter
+module test-na-variable
 
 language MiniJava
 
@@ -10,7 +10,7 @@ setup MiniJavaStart [[
   	}
 ]]
 
-test parameter name resolution statement [[
+test variable name resolution statement [[
 	class foo {}
 	
 	class parameterTest {
