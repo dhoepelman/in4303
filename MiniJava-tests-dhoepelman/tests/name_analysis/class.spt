@@ -10,7 +10,7 @@ setup MiniJavaStart [[
   }
 ]]
 
-test forward class name resolution [[
+test forward class name resolution field [[
   class Foobar {
     [[Foo]] x;
   }
@@ -18,13 +18,99 @@ test forward class name resolution [[
   class [[Foo]] {}
 ]] resolve #1 to #2
 
-test backward class name resolution [[
+test backward class name resolution field [[
   class [[Foo]] {}
 
   class Foobar {
     [[Foo]] x;
   }
 ]] resolve #2 to #1
+
+test class name resolution variable [[
+  class [[Foo]] {}
+
+  class Foobar {
+  	public int bar() {
+    	[[Foo]] x;
+    	return 0;
+    }
+  }
+]] resolve #2 to #1
+
+test class name resolution parameter [[
+  class [[Foo]] {}
+
+  class Foobar {
+  	public int bar([[Foo]] x) {
+    	return 0;
+    }
+  }
+]] resolve #2 to #1
+
+test class name resolution return [[
+  class [[Foo]] {}
+
+  class Foobar {
+  	public [[Foo]] bar() {
+    	return 0;
+    }
+  }
+]] resolve #2 to #1
+
+test class name resolution instantiation [[
+  class [[Foo]] {}
+
+  class Foobar {
+  	public int bar() {
+  		Foo x;
+  		x = new [[Foo]]();
+    	return 0;
+    }
+  }
+]] resolve #2 to #1
+
+
+
+test class name resolution hell 1 [[
+	class [[foo]] {
+		public int m() {
+			return 1;
+		}
+	}
+	
+	class [[bar]] {
+		public int m() {
+			return 2;
+		}
+	}
+	class [[baz]] {
+		public int m() {
+			return 3;
+		}
+	}
+	
+	class FooBarBaz {
+		public foo bar(baz foo) {
+			[[foo]] bar;
+			bar baz;
+			int i;
+			
+			foo = new baz();
+			bar = new foo();
+			baz = new bar();
+			
+			i = foo.m();
+			System.out.println(i);
+			i = bar.m();
+			System.out.println(i);
+			i = baz.m();
+			System.out.println(i);
+			
+			return bar;
+		}	
+	}
+]] resolve #4 to #1
+
 
 test correct program [[
   class Foo {}
@@ -33,6 +119,8 @@ test correct program [[
     Foo x;
   }
 ]] 0 errors
+
+
 
 test error on duplicate class [[
   class [[Foo]] {}

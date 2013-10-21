@@ -9,3 +9,50 @@ setup MiniJavaStart [[
     }
   }
 ]]
+
+test field name resolution 1 [[
+  class Foobar {
+    int [[x]];
+    int y;
+    int z;
+    
+    public int foo() {
+    	return this.[[x]];
+    }
+    
+    public int bar() {
+    	int a;
+    	this.z = x + y;
+    	a = this.z;
+    	return a;
+    }
+  }
+]] resolve #1 to #2
+
+test correct program [[
+  class Foo {}
+
+  class Foobar {
+    Foo x;
+  }
+]] 0 errors
+
+test error on duplicate class [[
+  class [[Foo]] {}
+
+  class [[Foo]] {}
+]] 2 errors
+
+test error on missing defintion [[
+	class Foo {
+		[[Bar]] x;
+	}
+]] 1 error
+
+test warning on unused class [[
+  class Foo {}
+
+  class [[Foobar]] {
+    Foo x;
+  }
+]] 1 warning
