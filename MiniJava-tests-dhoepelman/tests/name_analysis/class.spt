@@ -84,7 +84,7 @@ test error on duplicate class [[
   class [[Foo]] {}
 ]] 2 errors
 
-test error on missing defintion [[
+test error on missing class defintion [[
 	class Foo {
 		[[Bar]] x;
 	}
