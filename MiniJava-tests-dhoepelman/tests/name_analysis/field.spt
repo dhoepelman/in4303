@@ -4,55 +4,97 @@ language MiniJava
 
 setup MiniJavaStart [[
 	class Main {
-    public static void main(String[] args) {
-      System.out.println(1);
-    }
-  }
+    	public static void main(String[] args) {
+      		System.out.println(1);
+    	}
+  	}
 ]]
 
-test field name resolution 1 [[
-  class Foobar {
-    int [[x]];
-    int y;
-    int z;
-    
-    public int foo() {
-    	return this.[[x]];
-    }
-    
-    public int bar() {
-    	int a;
-    	this.z = x + y;
-    	a = this.z;
-    	return a;
-    }
-  }
-]] resolve #1 to #2
+test field name resolution statement [[
+	class foo {}
+	
+	class FieldTest {
+		int [[foo]];
+		
+		public int foo() {
+			[[foo]] = foo + 1;
+			return foo;
+		}	
+	}
+]] resolve #2 to #1
+
+test field name resolution expression [[
+	class foo {}
+	
+	class FieldTest {
+		int [[foo]];
+		
+		public int foo() {
+			foo = [[foo]] + 1;
+			return foo;
+		}	
+	}
+]] resolve #2 to #1
+
+test field name resolution return [[
+	class foo {}
+	
+	class FieldTest {
+		int [[foo]];
+		
+		public int foo() {
+			foo = foo + 1;
+			return [[foo]];
+		}	
+	}
+]] resolve #2 to #1
+
+test field name subclass [[
+	class A {
+		int [[foo]];
+	}
+	
+	class B extends A {
+		public int foo() {
+			return [[foo]];
+		}
+	}
+]] resolve #2 to #1
+
 
 test correct program [[
-  class Foo {}
-
-  class Foobar {
-    Foo x;
+  class A {
+  	int foo;
   }
 ]] 0 errors
 
-test error on duplicate class [[
-  class [[Foo]] {}
-
-  class [[Foo]] {}
+test error on duplicate field [[
+  class A {
+  	int [[foo]];
+  	boolean [[foo]];
+  }
 ]] 2 errors
 
-test error on missing defintion [[
-	class Foo {
-		[[Bar]] x;
+test error on missing field defintion [[
+	class A {
+		public int m() {
+			return [[foo]];
+		}
 	}
 ]] 1 error
 
-test warning on unused class [[
-  class Foo {}
-
-  class [[Foobar]] {
-    Foo x;
+test warning on unused field [[
+  class A {
+    int [[foo]];
   }
 ]] 1 warning
+
+test error on field hiding field [[
+	class A {
+		int foo;
+	}
+	
+	class B extends foo {
+		int [[foo]];
+	}
+]] 1 error
