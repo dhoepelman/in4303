@@ -1,6 +1,7 @@
 module test-na-complex
 
 language MiniJava
+start symbol Start
 
 setup MiniJavaStart [[
 	class Main {

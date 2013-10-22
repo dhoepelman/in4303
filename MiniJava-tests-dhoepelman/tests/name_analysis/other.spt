@@ -1,6 +1,7 @@
 module test-na-Class
 
 language MiniJava
+start symbol Start
 
 setup MiniJavaStart [[
 	class TheMainClass {
@@ -23,3 +24,8 @@ test error initialing main class [[
 test error subclassing main class [[
 	class C extends TheMainClass {}
 ]] 1 error
+
+test error cyclic inheritence [[
+	class [[A]] extends B {}
+	class [[B]] extends A {}
+]] 2 errors
