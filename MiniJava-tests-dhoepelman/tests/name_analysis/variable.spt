@@ -13,30 +13,34 @@ setup MiniJavaStart [[
 test variable name resolution statement [[
 	class foo {}
 	
-	class parameterTest {
-		public int foo(int [[foo]]) {
-			[[foo]] = foo + 1;
+	class VariableTest {
+		public int foo() {
+			int [[foo]];
+			[[foo]] = 1;
 			return foo;
 		}	
 	}
 ]] resolve #2 to #1
 
-test parameter name resolution expression [[
+test variable name resolution expression [[
 	class foo {}
 	
 	class parameterTest {
-		public int foo(int [[foo]]) {
+		public int foo() {
+			int [[foo]];
+			foo = 1;
 			foo = [[foo]] + 1;
 			return foo;
 		}	
 	}
 ]] resolve #2 to #1
 
-test parameter name resolution return [[
+test variable name resolution return [[
 	class foo {}
 	
 	class parameterTest {
-		public int foo(int [[foo]]) {
+		public int foo() {
+			int [[foo]];
 			foo = foo + 1;
 			return [[foo]];
 		}	

@@ -43,32 +43,26 @@ test parameter name resolution return [[
 	}
 ]] resolve #2 to #1
 
-test correct program parameter [[
+test correct program variable [[
   class A {
-  	public int m(int foo){
+  	public int m(){
+  		int foo;
   		return foo;
   	}
   }
 ]] 0 errors
 
-test error on duplicate parameter [[
+test error on duplicate variable [[
   class A {
-  	public int m(int [[foo]], boolean [[foo]]){
-  		return foo;
-  	}
-  }
-]] 2 errors
-
-test error on duplicate parameter variable [[
-  class A {
-  	public int m(int [[foo]]){
+  	public int m(){
   		int [[foo]];
+  		boolean [[foo]];
   		return foo;
   	}
   }
 ]] 2 errors
 
-test error on missing parameter definition [[
+test error on missing variable definition [[
 	class A {
 		public int m() {
 			return [[foo]];
@@ -76,19 +70,21 @@ test error on missing parameter definition [[
 	}
 ]] 1 error
 
-test warning on unused parameter [[
+test warning on unused variable [[
   class A {
-  	public int m(int [[foo]]){
+  	public int m(){
+  		int [[foo]];
   		return 1;
   	}
   }
 ]] 1 warning
 
-test warning on parameter hiding field [[
+test warning on variable hiding field [[
 	class A {
 		int foo;
 		
-		public int m(int [[foo]]) {
+		public int m() {
+			int [[foo]];
 			return foo;
 		}
 	}
