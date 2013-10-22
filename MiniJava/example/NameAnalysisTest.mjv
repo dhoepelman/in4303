@@ -1,0 +1,43 @@
+class Main {
+    	public static void main(String[] args) {
+      		System.out.println(1);
+    	}
+  	}
+  	
+class foo {
+		public int m() {
+			return 1;
+		}
+	}
+	
+	class bar {
+		public int m() {
+			return 2;
+		}
+	}
+	class baz {
+		public int m() {
+			return 3;
+		}
+	}
+	
+	class FooBarBaz {
+		public foo bar(baz foo) {
+			foo bar;
+			bar baz;
+			int i;
+			
+			foo = new baz();
+			bar = new foo();
+			baz = new bar();
+			
+			i = foo.m();
+			System.out.println(i);
+			i = bar.m();
+			System.out.println(i);
+			i = baz.m();
+			System.out.println(i);
+			
+			return bar;
+		}	
+	}
