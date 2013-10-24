@@ -15,6 +15,7 @@ imports
 	editor/outline
   editor/builders
   analysis/desugar
+  analysis/namebinding
 
 rules // Analysis
 	
