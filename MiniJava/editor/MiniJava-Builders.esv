@@ -1,8 +1,7 @@
 
 module MiniJava-Builders
 
-imports
-	MiniJava-Builders.generated
+imports MiniJava-Builders.generated
 
 builders
                                                                       
@@ -25,7 +24,7 @@ builders
   builder  : "Show tasks (selection)"  = debug-show-tasks-selection (openeditor) (meta)            
   builder  : "Show tasks (current)"    = debug-show-tasks-current (openeditor) (meta)              
   builder  : "Reset and reanalyze"     = debug-reanalyze (meta)                                    
-  builder  : "Pretty-print"            = pp-builder (meta)                          
+  builder  : "Pretty-print"            = pp-builder (meta)                                    
                                                                                                    
   on save  : editor-save
   
