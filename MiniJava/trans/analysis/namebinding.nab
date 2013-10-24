@@ -2,12 +2,13 @@ module analysis/namebinding
 
 imports
 	assignment1/MiniJava
+	analysis/namebinding-constraints
 	
 namespaces
 	Class
 	Method
 	Field
-	LocalVariable
+	Variable		// Also Parameter
 	
 binding rules
 
@@ -15,17 +16,14 @@ binding rules
 Program(_,_):
 	scopes Class
 
-// defines Param mainargs
-
 // Class definition, referring
 MainClass(main, mainargs, _):
-	defines Class main
-	defines LocalVariable mainargs
-	scopes LocalVariable
+	defines Class main of type MainClassType()
+	defines Variable mainargs
+	scopes Variable
 Class(c, _, _, _):
 	defines Class c
-	scopes Method
-	scopes Field
+	scopes Method, Field
 Parent(p):
 	refers to Class p
 ClassType(c):
@@ -36,20 +34,21 @@ NewObject(c):
 // Method definiton, referring
 Method(_, m, _, _, _, _):
 	defines Method m
-	scopes LocalVariable
-Call(_, callee, _):
-	refers to Method callee
+	scopes Variable
+// Type system required
+//Call(exp, callee, _):
+//	refers to Method callee in Class c where exp has type 
 
 // Field and variable definiton
-Field(_, f):
-	defines Field f
+Field(t, f):
+	defines Field f of type t
 // Variable and parameter declaration
-Param(_, p):
-	defines LocalVariable p
-Var(_, v):
-	defines LocalVariable v
+Param(t, p):
+	defines Variable p of type t
+Var(t, v):
+	defines Variable v of type t
 
 // Variable and Field references
 VarRef(ref):
-	refers to LocalVariable ref
+	refers to Variable ref
 	otherwise refers to Field ref

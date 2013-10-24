@@ -1,0 +1,152 @@
+module analysis/namebinding-constraints
+
+imports
+	assignment1/MiniJava
+	runtime/nabl/-
+	runtime/task/-
+	runtime/types/-
+	analysis/namebinding
+	
+signature constructors
+	MainClassType : MainClassTypeDecl
+	
+strategies
+	nabl-check-disable-duplicate(|uri, ns) = id
+	nabl-check-disable-hiding(|uri, ns) = id
+	nabl-check-disable-unresolved = id
+	
+rules
+	
+	/*******
+	 * Unresolved references
+	 ********/
+	 // Parent(p): refers to Class p		 	
+	nabl-constraint(|ctx):
+		Parent(c) -> <fail>
+		where
+				<has-annotation(?Use(task))> c
+			;	msg := $[Class [c] is not defined]
+			;	<task-create-error-on-failure(|ctx, task, msg)> c
+	 
+	 // ClassType(c): refers to Class c
+	nabl-constraint(|ctx):
+		ClassType(c) -> <fail>
+		where
+				<has-annotation(?Use(task))> c
+			;	msg := $[Class [c] is not defined]
+			;	<task-create-error-on-failure(|ctx, task, msg)> c	
+			 	
+	// NewObject(c): refers to Class c		 	
+	nabl-constraint(|ctx):
+		NewObject(c) -> <fail>
+		where
+				<has-annotation(?Use(task))> c
+			;	msg := $[Class [c] is not defined]
+			;	<task-create-error-on-failure(|ctx, task, msg)> c
+	
+	// VarRef(ref): refers to LocalVariable ref otherwise refers to Field ref
+	// TODO: Enhance with scope information		 	
+	nabl-constraint(|ctx):
+		VarRef(ref) -> <fail>
+		where
+				<has-annotation(?Use(task))> ref
+			;	msg := $[[ref] cannot be resolved to a variable, parameter or field]
+			;	<task-create-error-on-failure(|ctx, task, msg)> ref	 	
+	
+	/*********
+	 * Duplicate defintions
+	 *********/
+	 
+	//MainClass(main, mainargs, _):	defines Class main of type MainClassType()
+	nabl-constraint(|ctx):
+		MainClass(c, _, _) -> <fail>
+		where
+				task := <nabl-lookup-local(|ctx)> c
+			;	msg := $[Duplicate class [c]]
+			;	<task-create-error-on-multiple(|ctx, task, msg)> c
+			 	
+	// Class(c, _, _, _): defines Class c
+	nabl-constraint(|ctx):
+		Class(c, _, _, _) -> <fail>
+		where
+				task := <nabl-lookup-local(|ctx)> c
+			;	msg := $[Duplicate class [c]]
+			;	<task-create-error-on-multiple(|ctx, task, msg)> c
+
+	// Method(_, m, _, _, _, _): defines Method m
+	nabl-constraint(|ctx):
+		Method(_, m, _, _, _, _) -> <fail>
+		where
+				task := <nabl-lookup-local(|ctx)> m
+			;	msg := $[Duplicate method [m]]
+			;	<task-create-error-on-multiple(|ctx, task, msg)> m
+			 	
+	// Field(t, f): defines Field f of type t		 	
+	nabl-constraint(|ctx):
+		Field(_, f) -> <fail>
+		where
+				task := <nabl-lookup-local(|ctx)> f
+			;	msg := $[Duplicate field [f]]
+			;	<task-create-error-on-multiple(|ctx, task, msg)> f
+
+	// Param(t, p): defines Variable p of type t
+	nabl-constraint(|ctx):
+		Param(_, p) -> <fail>
+		where
+				task := <nabl-lookup-local(|ctx)> p
+			;	msg := $[Duplicate parameter or variable [p]]
+			;	<task-create-error-on-multiple(|ctx, task, msg)> p
+			 	
+	// Var(t, v): defines Variable v of type t
+	nabl-constraint(|ctx):
+		Var(_, v) -> <fail>
+		where
+				task := <nabl-lookup-local(|ctx)> v
+			;	msg := $[Duplicate parameter or variable [v]]
+			;	<task-create-error-on-multiple(|ctx, task, msg)> v
+	
+	/******
+	 * Field hiding
+	 ******/
+
+	 nabl-constraint(|ctx):
+		Var(_, v) -> <fail>
+		where
+				task := <nabl-lookup-lexical(|ctx, NablNsField())> v
+			;	msg := $[Variable [v] hides field of the same name]
+			;	<task-create-warning-on-success(|ctx, task, msg)> v
+	
+	 nabl-constraint(|ctx):
+		Param(_, p) -> <fail>
+		where
+				task := <nabl-lookup-lexical(|ctx, NablNsField())> p
+			;	msg := $[Parameter [p] hides field of the same name]
+			;	<task-create-warning-on-success(|ctx, task, msg)> p
+	
+	/*******
+	 * References to the main class
+	 *******/
+
+	nabl-constraint(|ctx):
+		ClassType(c) -> <fail>
+		where
+			lookup	:= <type-lookup(|ctx)> c
+		;	match	:= <type-match(|ctx, MainClassType())> lookup
+		;	msg		:= $[The main class [c] cannot be a type]
+		;	<task-create-error-on-success(|ctx, match, msg)> c	 
+		 		
+	nabl-constraint(|ctx):
+		NewObject(c) -> <fail>
+		where
+			lookup	:= <type-lookup(|ctx)> c
+		;	match	:= <type-match(|ctx, MainClassType())> lookup
+		;	msg		:= $[The main class [c] cannot be instantiated]
+		;	<task-create-error-on-success(|ctx, match, msg)> c	 
+	
+	nabl-constraint(|ctx):
+		Parent(c) -> <fail>
+		where
+			lookup	:= <type-lookup(|ctx)> c
+		;	match	:= <type-match(|ctx, MainClassType())> lookup
+		;	msg		:= $[The main class [c] cannot be subclassed]
+		;	<task-create-error-on-success(|ctx, match, msg)> c	

@@ -16,6 +16,7 @@ imports
   editor/builders
   analysis/desugar
   analysis/namebinding
+  analysis/namebinding-constraints
 
 rules // Analysis
 	
