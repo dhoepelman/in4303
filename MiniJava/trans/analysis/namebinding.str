@@ -273,7 +273,8 @@ rules
           id
         , nabl-store-props(
           | partition__
-          , [Prop(Type(), t, [])]
+          , [ Prop(Type(), FieldType(), [])
+            ]
           )
         )
       |
@@ -314,7 +315,8 @@ rules
           id
         , nabl-store-props(
           | partition__
-          , [Prop(Type(), t, [])]
+          , [ Prop(Type(), ParameterType(), [])
+            ]
           )
         )
       |
@@ -355,7 +357,8 @@ rules
           id
         , nabl-store-props(
           | partition__
-          , [Prop(Type(), t, [])]
+          , [ Prop(Type(), VariableType(), [])
+            ]
           )
         )
       |

@@ -1,0 +1,20 @@
+module analysis/desugar-fieldref
+
+imports
+	assignment1/MiniJava
+	runtime/nabl/-
+	runtime/types/-
+	analysis/namebinding-constraints
+
+signature
+	constructors
+		FieldRef	: ID -> FieldRef
+		
+rules
+	desugar(|ctx):
+		VarRef(ref)	-> FieldRef(ref)
+		//where
+		//	lookup	:= <type-lookup(|ctx)> ref
+		//;	<type-match(|ctx, FieldType())> lookup
+	
+	

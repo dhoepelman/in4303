@@ -41,12 +41,12 @@ Method(_, m, _, _, _, _):
 
 // Field and variable definiton
 Field(t, f):
-	defines Field f of type t
+	defines Field f of type FieldType()
 // Variable and parameter declaration
 Param(t, p):
-	defines Variable p of type t
+	defines Variable p of type ParameterType()
 Var(t, v):
-	defines Variable v of type t
+	defines Variable v of type VariableType()
 
 // Variable and Field references
 VarRef(ref):

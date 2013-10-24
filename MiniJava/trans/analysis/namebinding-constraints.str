@@ -9,6 +9,9 @@ imports
 	
 signature constructors
 	MainClassType : MainClassTypeDecl
+	FieldType: FieldType
+	ParameterType: ParameterType
+	VariableType: VariableType
 	
 strategies
 	nabl-check-disable-duplicate(|uri, ns) = id

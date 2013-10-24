@@ -9,6 +9,7 @@ class SomeClassName {
 	public int name (int i) {
 		int b;
 		
+		fielda = 1;
 		i = 1;
 		if(i) {
 			
