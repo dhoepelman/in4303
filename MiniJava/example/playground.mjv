@@ -4,15 +4,15 @@ class Main {
 	}
 }
 
-class Name extends Parent {
-	
-}
+class Parent {}
 
 class Name extends Parent {
-	
-	public int name () {
+	int field;
+	public int name (int i) {
+		int b;
+		
 		i = 1;
-		if() {
+		if(i) {
 			
 		} else {
 			

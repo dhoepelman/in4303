@@ -1,1 +1,0 @@
-BinExp(Smaller(), VarRef("num"), IntValue("1"))
