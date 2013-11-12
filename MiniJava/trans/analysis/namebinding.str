@@ -12,7 +12,6 @@ imports
 
 signature
   constructors
-    NablNsClass    : Namespace
     NablNsMethod   : Namespace
     NablNsField    : Namespace
     NablNsVariable : Namespace
