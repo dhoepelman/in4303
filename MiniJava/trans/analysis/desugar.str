@@ -3,7 +3,6 @@ module analysis/desugar
 imports
 
   assignment1/MiniJava
-  analysis/desugar-fieldref
   
 signature
 
