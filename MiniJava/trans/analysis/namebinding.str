@@ -12,6 +12,7 @@ imports
 
 signature
   constructors
+    NablNsClass    : Namespace
     NablNsMethod   : Namespace
     NablNsField    : Namespace
     NablNsVariable : Namespace
@@ -99,6 +100,9 @@ rules
   nabl-get-name :
     Class(c, _, _, _) -> c
 
+  nabl-name-apply(s) =
+    Class(s, id, id, id)
+
   nabl-def-site(child-uris__, sibl-uris__, implicits__|lang__, partition__, uniques__, uri__, states__) =
     ?Class(c, _, _, _)
     ; origin-track-forced(
@@ -129,6 +133,9 @@ rules
   nabl-get-name :
     Parent(p) -> p
 
+  nabl-name-apply(s) =
+    Parent(s)
+
   nabl-use-site(|lang__, partition__, uniques__, uris__, states__) =
     ?Parent(p)
     ; origin-track-forced(
@@ -154,6 +161,9 @@ rules
   nabl-get-name :
     ClassType(c) -> c
 
+  nabl-name-apply(s) =
+    ClassType(s)
+
   nabl-use-site(|lang__, partition__, uniques__, uris__, states__) =
     ?ClassType(c)
     ; origin-track-forced(
@@ -178,6 +188,9 @@ rules
 
   nabl-get-name :
     NewObject(c) -> c
+
+  nabl-name-apply(s) =
+    NewObject(s)
 
   nabl-use-site(|lang__, partition__, uniques__, uris__, states__) =
     ?NewObject(c)
@@ -207,6 +220,9 @@ rules
 
   nabl-get-name :
     Method(_, m, _, _, _, _) -> m
+
+  nabl-name-apply(s) =
+    Method(id, s, id, id, id, id)
 
   nabl-def-site(child-uris__, sibl-uris__, implicits__|lang__, partition__, uniques__, uri__, states__) =
     ?Method(_, m, _, _, _, _)
@@ -239,6 +255,9 @@ rules
 
   nabl-get-name :
     Field(t, f) -> f
+
+  nabl-name-apply(s) =
+    Field(id, s)
 
   nabl-def-site(child-uris__, sibl-uris__, implicits__|lang__, partition__, uniques__, uri__, states__) =
     ?Field(t, f)
@@ -282,6 +301,9 @@ rules
   nabl-get-name :
     Param(t, p) -> p
 
+  nabl-name-apply(s) =
+    Param(id, s)
+
   nabl-def-site(child-uris__, sibl-uris__, implicits__|lang__, partition__, uniques__, uri__, states__) =
     ?Param(t, p)
     ; origin-track-forced(
@@ -324,6 +346,9 @@ rules
   nabl-get-name :
     Var(t, v) -> v
 
+  nabl-name-apply(s) =
+    Var(id, s)
+
   nabl-def-site(child-uris__, sibl-uris__, implicits__|lang__, partition__, uniques__, uri__, states__) =
     ?Var(t, v)
     ; origin-track-forced(
@@ -365,6 +390,9 @@ rules
 
   nabl-get-name :
     VarRef(ref) -> ref
+
+  nabl-name-apply(s) =
+    VarRef(s)
 
   nabl-use-site(|lang__, partition__, uniques__, uris__, states__) =
     ?VarRef(ref)
