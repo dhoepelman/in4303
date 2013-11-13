@@ -13,13 +13,13 @@ setup MiniJavaStart [[
 
 test error initialing main class [[  	
   	class C {
-  		public TheMainClass m() {
-  			TheMainClass var;
+  		public [[TheMainClass]] m() {
+  			[[TheMainClass]] var;
   			var = new [[TheMainClass]](); 
   			return var;
   		}
   	}
-]] 1 error
+]] 3 error
 
 test error subclassing main class [[
 	class C extends TheMainClass {}

@@ -17,7 +17,8 @@ test variable name resolution statement [[
 	class VariableTest {
 		public int foo() {
 			int [[foo]];
-			[[foo]] = 1;
+			foo = 1;
+			[[foo]] = foo + 1;
 			return foo;
 		}	
 	}
@@ -47,6 +48,21 @@ test variable name resolution return [[
 		}	
 	}
 ]] resolve #2 to #1
+
+test variable scope method [[
+	class foo {
+		
+		public int foo1() {
+			int foo;
+			return 1;
+		}
+		
+		public int foo2() {
+			int foo;
+			return 1;
+		}
+	}
+]] 0 errors
 
 test correct program parameter [[
   class A {
