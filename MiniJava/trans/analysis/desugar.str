@@ -19,7 +19,7 @@ signature
   
   // Not sure about these, seem different because they allocate things
   // NewObjectOp: UnOp		// Takes an ID instead of Exp as argument
-  // NewArrayOp	: UnOp
+  AllocateArray	: UnOp
   
   // Also not sure about this one
   ArrayAccess	: BinOp	// Array Access (subscript) operator
@@ -40,6 +40,7 @@ rules
  	// Unary Operations
  	desugar: Not(e)		-> UnExp(Negation(),e)
 	desugar: Length(e)	-> UnExp(ArrayLength(),e)
+	desugar: NewArray(e) -> UnExp(AllocateArray(), e)
 	
 	// BinExp
  	desugar: And(e1, e2) -> BinExp(LogicalAnd(), e1, e2)
