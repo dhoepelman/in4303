@@ -1,0 +1,124 @@
+module test-types
+
+language MiniJava
+start symbol Start
+
+setup MiniJavaStart [[
+	class Main {
+    	public static void main(String[] args) {
+     	 System.out.println(1);
+    	}
+  	}
+  	
+]]
+
+test literal type integer [[
+	class A {
+		public int foo() {
+			return [[1]];
+		}
+	}
+]] run get-type to Int()
+
+test literal type boolean [[
+	class A {
+		public boolean foo() {
+			return [[true]];
+		}
+	}
+]] run get-type to Bool()
+
+test reference bool [[
+	class A {
+		boolean a;
+		
+		public boolean foo() {
+			return [[a]];
+		}
+	}
+]] run get-type to Bool()
+
+test reference int [[
+	class A {
+		int a;
+		
+		public int foo() {
+			return [[a]];
+		}
+	}
+]] run get-type to Int()
+
+test reference array [[
+	class A {
+		int[] a;
+		
+		public int[] foo() {
+			return [[a]];
+		}
+	}
+]] run get-type to IntArray()
+
+test reference class identical [[
+	class A {
+		A a;
+		
+		public A foo() {
+			return [[a]];
+		}
+	}
+]] run get-type to ClassType("a")
+
+test reference class different [[
+	class A {
+		
+	}
+	
+	class B {
+		A a;
+		
+		public A foo() {
+			return [[a]];
+		}
+	}
+]] run get-type to ClassType("a")
+
+test field ref [[
+	class A {
+		int foo;
+		
+		public int foo() {
+			int bar;
+			bar = [[foo]];
+			
+			return foo;
+		}
+	}
+]] run get-type to Int()
+
+test var ref [[
+	class A {
+		int foo;
+		
+		public int foo() {
+			int bar;
+			foo = [[bar]];
+			return foo;
+		}
+	}
+]] run get-type to Int()
+
+test method ref [[
+	class A {
+		public int a() {
+			return 1;
+		}
+	}
+	
+	class B {
+		public int foo() {
+			A a;
+			a = new A();
+			return [[a.a()]];
+		}
+	}
+]] run get-type to Int()
