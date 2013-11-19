@@ -1,0 +1,60 @@
+// This contains tests for method errors, warning and notes
+module test-na_method-errors
+
+language MiniJava
+start symbol Start
+
+setup MiniJavaStart [[
+	class Main {
+    	public static void main(String[] args) {
+     	 System.out.println(1);
+    	}
+  	}
+  	
+]]
+
+test duplicate method [[
+	class A {
+		public int [[foo]]() {
+			return 1;
+		}
+		
+		public int [[foo]]() {
+			return 1;
+		}
+	}
+]] 2 errors
+
+test missing method [[
+	class A {
+		public int foo() {
+			return this.[[bar]]();
+		}
+	}
+]] 1 error
+
+test overloaded method [[
+	class A {
+		public int [[foo]]() {
+			return 1;
+		}
+		
+		public int [[foo]](int bar) {
+			return bar;
+		}
+	}
+]] 2 errors
+
+test overriden method [[
+	class A {
+		public int foo() {
+			return 1;
+		}
+	}
+	
+	class B extends A {
+		public int [[foo]]() {
+			return 1;
+		}
+	}
+]] 1 note

@@ -28,6 +28,41 @@ test literal type boolean [[
 	}
 ]] run get-type to Bool()
 
+test instantiate type int array [[
+	class A {
+		public int[] foo() {
+			return [[new int[5] ]];
+		}
+	}
+]] run get-type to IntArray()
+
+test instantiate type class identical[[
+	class A {
+		public A foo() {
+			return [[new A()]];
+		}
+	}
+]] run get-type to ClassType(A)
+
+test instantiate type class different [[
+	class A {}
+	class B {
+		public A foo() {
+			return new A();
+		}
+	}
+]] run get-type to ClassType(A)
+
+test instantiate type subclass [[
+	class A{}
+	class B extends A {}
+	class C {
+		public B foo() {
+			return [[new B()]];
+		}
+	}
+]] run get-type to ClassType(B)
+
 test reference bool [[
 	class A {
 		boolean a;
@@ -66,7 +101,7 @@ test reference class identical [[
 			return [[a]];
 		}
 	}
-]] run get-type to ClassType("a")
+]] run get-type to ClassType(A)
 
 test reference class different [[
 	class A {
@@ -80,7 +115,7 @@ test reference class different [[
 			return [[a]];
 		}
 	}
-]] run get-type to ClassType("a")
+]] run get-type to ClassType(A)
 
 test field ref [[
 	class A {

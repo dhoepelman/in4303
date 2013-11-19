@@ -1,0 +1,166 @@
+// This contains tests for method resolution
+module test-na_method
+
+language MiniJava
+start symbol Start
+
+setup MiniJavaStart [[
+	class Main {
+    	public static void main(String[] args) {
+     	 System.out.println(1);
+    	}
+  	}
+  	
+]]
+
+
+test MR backward [[
+	class A {
+		public int [[foo]]() {
+			return 1;
+		}
+		
+		public int bar() {
+			return this.[[foo]]();
+		}
+	}
+]] resolve #1 to #2
+
+test MR forward [[
+	class A {		
+		public int bar() {
+			return this.[[foo]]();
+		}
+		
+		public int [[foo]]() {
+			return 1;
+		}
+	}
+]] resolve #1 to #2
+
+// Method resolution for another class
+test MR other class [[
+	class A {
+		public int [[foo]]() {
+			return 1;
+		}
+	}
+	
+	class B {
+		public int bar() {
+			return new A().[[foo]]();
+		}
+	}
+]] resolve #1 to #2
+
+// Two unrelated classes with the same method name
+test MR same name 1 [[
+	class A {
+		public int [[foo]]() {
+			return 1;
+		}
+	}
+	
+	class B {
+		public int foo() {
+			return 1;
+		}
+	}
+	
+	class C {
+		public int foo() {
+			return new A().[[foo]]();
+		}
+	}
+]] resolve #1 to #2
+
+// Make sure not always one of the options is chosen, but the correct one is chosen
+test MR same name 2 [[
+	class A {
+		public int foo() {
+			return 1;
+		}
+	}
+	
+	class B {
+		public int [[foo]]() {
+			return 1;
+		}
+	}
+	
+	class C {
+		public int foo() {
+			return new B().[[foo]]();
+		}
+	}
+]] resolve #1 to #2
+
+// Recursive method resolution
+test MR recursive [[
+	class A {
+		public int [[foo]](int arg) {
+			if (0 < arg) {
+				arg = arg + this.[[foo]](arg-1);
+			} else {
+				arg = 0;
+			}
+			return arg; 
+		}
+	}
+]] resolve #1 to #2
+
+// Resolution of a method in a subclass
+test MR subclass [[
+	class A {
+		public int [[foo]]() {
+			return 1;
+		}
+	}
+	
+	class B extends A {
+		public int bar() {
+			return this.[[foo]]();
+		}
+	}
+]] resolve #1 to #2
+
+// Resolution of a overridden method
+test MR override subclass [[
+	class A {
+		public int foo() {
+			return 1;
+		}
+	}
+	
+	class B extends A{
+		public int [[foo]]() {
+			return 1;
+		}
+	}
+	
+	class C {
+		public int bar() {
+			return new B().[[foo]]();
+		}
+	}
+]] resolve #1 to #2
+
+test MR override parent [[
+	class A {
+		public int [[foo]]() {
+			return 1;
+		}
+	}
+	
+	class B extends A{
+		public int foo() {
+			return 1;
+		}
+	}
+	
+	class C {
+		public int bar() {
+			return new A().[[foo]]();
+		}
+	}
+]] resolve #1 to #2
