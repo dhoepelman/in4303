@@ -29,43 +29,131 @@ test MR subclass [[
 	}
 ]] resolve #1 to #2
 
-// Resolution of a overridden method
-test MR override subclass [[
-	class A {
-		public int foo() {
-			return 1;
-		}
-	}
-	
-	class B extends A{
-		public int [[foo]]() {
-			return 1;
-		}
-	}
+// Resolution of a overridden methods
+/*
+Structure:
+	A	<-- 1. Test if parent method can still be called
+	|
+	B	<-- Test if subclass method is called when 2. The type is B and 3. The type is A
+   / \
+  C   D <-- Test if correct method is called with common anchestor (4 and 5) and also tests double overriding
+*/
+test MR method overriding 1 [[
+	class A { public int [[foo]]() { return 1; } }
+	class B extends A { public int [[foo]]() { return 2; } }
+	class C extends B { public int [[foo]]() { return 3; } }
+	class D extends B { public int [[foo]]() { return 4; } }
 	
 	class C {
 		public int bar() {
-			return new B().[[foo]]();
+			A a;
+			B b;
+			A b_as_a;
+			C c;
+			D d;
+			a = new A();
+			b = new B();
+			c = new C();
+			d = new D();
+			b_as_a = new B();
+			
+			return a.[[foo]]();
 		}
 	}
-]] resolve #1 to #2
+]] resolve #1 to #5
 
-test MR override parent [[
-	class A {
-		public int [[foo]]() {
-			return 1;
-		}
-	}
-	
-	class B extends A{
-		public int foo() {
-			return 1;
-		}
-	}
+test MR method overriding 2 [[
+	class A { public int [[foo]]() { return 1; } }
+	class B extends A { public int [[foo]]() { return 2; } }
+	class C extends B { public int [[foo]]() { return 3; } }
+	class D extends B { public int [[foo]]() { return 4; } }
 	
 	class C {
 		public int bar() {
-			return new A().[[foo]]();
+			A a;
+			B b;
+			A b_as_a;
+			C c;
+			D d;
+			a = new A();
+			b = new B();
+			c = new C();
+			d = new D();
+			b_as_a = new B();
+			
+			return b.[[foo]]();
 		}
 	}
-]] resolve #1 to #2
+]] resolve #2 to #5
+
+test MR method overriding 3 [[
+	class A { public int [[foo]]() { return 1; } }
+	class B extends A { public int [[foo]]() { return 2; } }
+	class C extends B { public int [[foo]]() { return 3; } }
+	class D extends B { public int [[foo]]() { return 4; } }
+	
+	class C {
+		public int bar() {
+			A a;
+			B b;
+			A b_as_a;
+			C c;
+			D d;
+			a = new A();
+			b = new B();
+			c = new C();
+			d = new D();
+			b_as_a = new B();
+			
+			return b_as_a.[[foo]]();
+		}
+	}
+]] resolve #2 to #5
+
+test MR method overriding 4 [[
+	class A { public int [[foo]]() { return 1; } }
+	class B extends A { public int [[foo]]() { return 2; } }
+	class C extends B { public int [[foo]]() { return 3; } }
+	class D extends B { public int [[foo]]() { return 4; } }
+	
+	class C {
+		public int bar() {
+			A a;
+			B b;
+			A b_as_a;
+			C c;
+			D d;
+			a = new A();
+			b = new B();
+			c = new C();
+			d = new D();
+			b_as_a = new B();
+			
+			return c.[[foo]]();
+		}
+	}
+]] resolve #3 to #5
+
+test MR method overriding 5 [[
+	class A { public int [[foo]]() { return 1; } }
+	class B extends A { public int [[foo]]() { return 2; } }
+	class C extends B { public int [[foo]]() { return 3; } }
+	class D extends B { public int [[foo]]() { return 4; } }
+	
+	class C {
+		public int bar() {
+			A a;
+			B b;
+			A b_as_a;
+			C c;
+			D d;
+			a = new A();
+			b = new B();
+			c = new C();
+			d = new D();
+			b_as_a = new B();
+			
+			return d.[[foo]]();
+		}
+	}
+]] resolve #4 to #5
