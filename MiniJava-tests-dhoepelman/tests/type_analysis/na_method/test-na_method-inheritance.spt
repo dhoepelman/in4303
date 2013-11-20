@@ -1,0 +1,71 @@
+// This contains tests for method resolution where inheritance is used
+module test-na_method-inheritance
+
+language MiniJava
+start symbol Start
+
+setup MiniJavaStart [[
+	class Main {
+    	public static void main(String[] args) {
+     	 System.out.println(1);
+    	}
+  	}
+  	
+]]
+
+
+// Resolution of a method in a subclass
+test MR subclass [[
+	class A {
+		public int [[foo]]() {
+			return 1;
+		}
+	}
+	
+	class B extends A {
+		public int bar() {
+			return this.[[foo]]();
+		}
+	}
+]] resolve #1 to #2
+
+// Resolution of a overridden method
+test MR override subclass [[
+	class A {
+		public int foo() {
+			return 1;
+		}
+	}
+	
+	class B extends A{
+		public int [[foo]]() {
+			return 1;
+		}
+	}
+	
+	class C {
+		public int bar() {
+			return new B().[[foo]]();
+		}
+	}
+]] resolve #1 to #2
+
+test MR override parent [[
+	class A {
+		public int [[foo]]() {
+			return 1;
+		}
+	}
+	
+	class B extends A{
+		public int foo() {
+			return 1;
+		}
+	}
+	
+	class C {
+		public int bar() {
+			return new A().[[foo]]();
+		}
+	}
+]] resolve #1 to #2

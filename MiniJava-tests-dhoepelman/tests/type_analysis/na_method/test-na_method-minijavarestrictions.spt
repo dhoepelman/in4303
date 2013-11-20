@@ -1,0 +1,14 @@
+// This contains tests for method resolution where inheritance is used
+module test-na_method-inheritance
+
+language MiniJava
+start symbol Start
+
+setup MiniJavaStart [[
+	class Main {
+    	public static void main(String[] args) {
+     	 System.out.println(1);
+    	}
+  	}
+  	
+]]

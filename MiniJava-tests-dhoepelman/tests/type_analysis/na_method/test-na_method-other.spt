@@ -1,0 +1,30 @@
+// This contains misc tests for method resolution
+module test-na_method-other
+
+language MiniJava
+start symbol Start
+
+setup MiniJavaStart [[
+	class Main {
+    	public static void main(String[] args) {
+     	 System.out.println(1);
+    	}
+  	}
+  	
+]]
+
+
+
+// Recursive method resolution
+test MR recursive [[
+	class A {
+		public int [[foo]](int arg) {
+			if (0 < arg) {
+				arg = arg + this.[[foo]](arg-1);
+			} else {
+				arg = 0;
+			}
+			return arg; 
+		}
+	}
+]] resolve #1 to #2

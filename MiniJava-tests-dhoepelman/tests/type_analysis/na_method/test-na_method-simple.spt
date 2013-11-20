@@ -1,0 +1,95 @@
+// This contains tests for normal straight-forward method resolution
+module test-na_method-simple
+
+language MiniJava
+start symbol Start
+
+setup MiniJavaStart [[
+	class Main {
+    	public static void main(String[] args) {
+     	 System.out.println(1);
+    	}
+  	}
+  	
+]]
+
+test MR backward [[
+	class A {
+		public int [[foo]]() {
+			return 1;
+		}
+		
+		public int bar() {
+			return this.[[foo]]();
+		}
+	}
+]] resolve #1 to #2
+
+test MR forward [[
+	class A {		
+		public int bar() {
+			return this.[[foo]]();
+		}
+		
+		public int [[foo]]() {
+			return 1;
+		}
+	}
+]] resolve #1 to #2
+
+// Method resolution for another class
+test MR other class [[
+	class A {
+		public int [[foo]]() {
+			return 1;
+		}
+	}
+	
+	class B {
+		public int bar() {
+			return new A().[[foo]]();
+		}
+	}
+]] resolve #1 to #2
+
+// Two unrelated classes with the same method name
+test MR same name 1 [[
+	class A {
+		public int [[foo]]() {
+			return 1;
+		}
+	}
+	
+	class B {
+		public int foo() {
+			return 1;
+		}
+	}
+	
+	class C {
+		public int foo() {
+			return new A().[[foo]]();
+		}
+	}
+]] resolve #1 to #2
+
+// Make sure not always one of the options is chosen, but the correct one is chosen
+test MR same name 2 [[
+	class A {
+		public int foo() {
+			return 1;
+		}
+	}
+	
+	class B {
+		public int [[foo]]() {
+			return 1;
+		}
+	}
+	
+	class C {
+		public int foo() {
+			return new B().[[foo]]();
+		}
+	}
+]] resolve #1 to #2
