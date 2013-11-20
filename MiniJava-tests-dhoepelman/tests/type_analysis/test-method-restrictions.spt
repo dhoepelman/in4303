@@ -1,5 +1,5 @@
 // This contains tests for method errors, warning and notes
-module test-na_method-errors
+module test-method-restrictions
 
 language MiniJava
 start symbol Start
@@ -44,6 +44,11 @@ test overloaded method [[
 		}
 	}
 ]] 2 errors
+
+test overload of parent [[
+	class A { public int foo() { return 1;} }
+	class B { public int [[foo]](int bar) { return 2; }}
+]] 1 error
 
 test overriden method [[
 	class A {

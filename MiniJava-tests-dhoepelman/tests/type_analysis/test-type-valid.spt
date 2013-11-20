@@ -1,0 +1,78 @@
+// This contains some valid code
+module test-type-valid
+
+language MiniJava
+start symbol Start
+
+setup MiniJavaStart [[
+	
+  	
+]]
+
+test valid code 1 [[
+	class Main {
+    	public static void main(String[] args) {
+     	 System.out.println(new A().foo());
+    	}
+  	}
+  	
+	class A {
+		boolean bar;
+		
+		public int foo() {
+			int i;
+			B b;
+			C c;
+			b = new B();
+			c = new C();
+			if(bar) {
+				i = i + b.foo(i);
+			} else {
+				i = i + c.foo(i);
+			}
+			
+			return 2;
+		}
+	}
+	
+	class B {
+		int[] count;
+		
+		public int foo(int i) {
+			if(count[i] < 5) {
+				i = i + 2;
+				count[i] = count[i] + 1;
+			} else {}
+			return i;
+		}
+	}
+	
+	class C extends B {
+		public int foo(int i) {
+			if(count[i] < 3) {
+				i = i + 2;
+				count[i] = count[i] + 1;
+			} else {}
+			return i;
+		}
+	}
+]] 0 errors
+
+test factorial [[
+	class Factorial {
+		public static void main(String[] a) {
+			System.out.println(new Fac().ComputeFac(10));
+		}
+	}
+	
+	class Fac {
+		public int ComputeFac(int num) {
+			int num_aux;
+			if (num < 1)
+				num_aux = 1;
+			else
+				num_aux = num * (this.ComputeFac(num-1));
+			return num_aux;
+		}
+	}
+]] 0 errors
