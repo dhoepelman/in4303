@@ -1,0 +1,56 @@
+// Contains test to see if method return type errors are detected
+
+language MiniJava
+start symbol Start
+
+setup MiniJavaStart [[
+	class Main {
+    	public static void main(String[] args) {
+     	 System.out.println(1);
+    	}
+  	}
+  	
+  	class A {
+]]
+
+test bool method returns int [[
+	public boolean foo() {
+		return [[1]];
+	}
+]] 1 error
+
+test int method return bool [[
+	boolean a;
+	
+	public int foo() {
+		return [[a]];
+	}
+]] 1 error
+
+test intarray method return class [[
+	public int[] foo() {
+		return [[new A()]];
+	}
+]] 1 error
+
+test class method return bool [[
+	public A foo() {
+		return [[true]];
+	}
+]] 1 error
+
+test method returns invalid superclass [[
+	}
+	class B extends A {}
+	
+	class C {
+		public B foo() {
+			return [[new A()]];
+		}
+	}
+]] 1 error
+
+setup MiniJavaEnd [[
+	}
+]]
+

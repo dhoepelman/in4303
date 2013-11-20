@@ -1,13 +1,8 @@
 // This contains some valid code
-module test-type-valid
+module test-type-valid-complex
 
 language MiniJava
 start symbol Start
-
-setup MiniJavaStart [[
-	
-  	
-]]
 
 test valid code 1 [[
 	class Main {

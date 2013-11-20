@@ -1,0 +1,106 @@
+// Contains tests to see if different type errors will be detected
+module test-method-restrictions
+
+language MiniJava
+start symbol Start
+
+setup MiniJavaStart [[
+	class Main {
+    	public static void main(String[] args) {
+     	 System.out.println(1);
+    	}
+  	}	
+  	
+  	class A {
+		public int foo() {
+]]
+
+test println bool [[
+	System.out.println([[true]]);
+]] 1 error
+
+test println class [[
+	A a;
+	a = new A();
+	System.out.println([[a]]);
+]] 1 error
+
+test println IntArray [[
+	int[] a;
+	a = new int[5];
+	System.out.println([[a]]);
+]] 1 error
+
+test invalid AND int [[
+	boolean a;
+	a = [[true]] && 1;
+]] 1 error
+
+test invalid LT bool [[
+	boolean a;
+	a = [[true]] < 1;
+]] 1 error
+
+test invalid PLUS int array [[
+	int a;
+	int[] b;
+	a = [[b]] + 1;
+]] 1 error
+
+test invalid MINUS class [[
+	int a;
+	A b;
+	a = [[b]] + 1;
+]] 1 error
+
+test invalid MULT boolean [[
+	int a;
+	a = 1 * true;
+]] 1 error
+
+test assignment class exp to boolean var [[
+	boolean a;
+	a = [[new A()]];
+]] 1 error
+
+test assignemnt boolean exp to int var [[
+	int a;
+	a = [[true]];
+]] 1 error
+
+test assignment int exp to intarray var [[
+	int[] a;
+	a = [[1]];
+]] 1 error
+
+test assignment intarray exp to class var [[
+	A a;
+	a = [[new int[10] ]];
+]] 1 error
+
+test assign invalid class [[
+	return 1;}}
+	class B {
+		public int foo() {
+			B b;
+			b= [[new A()]];
+]] 1 error
+
+test assign invalid parent class [[
+	return 1;}}
+	class B extends A {
+		public int foo() {
+			B b;
+			b= [[new A()]];
+]] 1 error
+
+test invalid array assignment [[
+	int[] a;
+	a[0] = [[true]];
+]] 1 error
+
+setup MiniJavaEnd [[
+			return 1;
+		}
+	}
+]]

@@ -10,7 +10,6 @@ setup MiniJavaStart [[
      	 System.out.println(1);
     	}
   	}
-  	
 ]]
 
 test duplicate method [[
