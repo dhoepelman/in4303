@@ -16,6 +16,7 @@ signature
     NablNsMethod   : Namespace
     NablNsField    : Namespace
     NablNsVariable : Namespace
+    NablNsThis     : Namespace
 
 
 rules
@@ -97,7 +98,7 @@ rules
 
   nabl-get-scope =
     ?Class(c, _, _, _)
-    ; ![NablNsMethod(), NablNsField()]
+    ; ![NablNsMethod(), NablNsField(), NablNsThis()]
 
   nabl-get-name :
     Class(c, _, _, _) -> c
@@ -120,16 +121,41 @@ rules
           , NablNsClass()
           , Unique()
           , Current()
-          , [NablNsMethod(), NablNsField()]
+          , [NablNsMethod(), NablNsField(), NablNsThis()]
           , []
           )
         , id
         , id
         , id
         )
-        ; match(child-uris__|c-uri1__)
-        ; match(sibl-uris__|s-uri1__)
-        ; match(implicits__|[])
+        ; where(i-2__ := <nabl-def(
+                            ?c-uri2__
+                          , ?s-uri2__
+                          | lang__
+                          , partition__
+                          , uniques__
+                          , c-uri1__
+                          , s-uri1__
+                          , NablNsThis()
+                          , Unique()
+                          , Current()
+                          , []
+                          , []
+                          )> This())
+        ; match(child-uris__|c-uri2__)
+        ; match(sibl-uris__|s-uri2__)
+        ; match(implicits__|[i-2__])
+      |
+      )
+
+  nabl-prop-site(|lang__, partition__, uris__, states__, implicits__) =
+    ?Class(c, _, _, _)
+    ; origin-track-forced(
+        where([i-2__] := implicits__)
+        ; where(<nabl-store-props(
+                 | partition__
+                 , [Prop(Type(), c, [])]
+                 )> i-2__)
       |
       )
 
@@ -213,6 +239,26 @@ rules
               )
             ]
           )
+        )
+      |
+      )
+
+  nabl-use-site(|lang__, partition__, uniques__, uris__, states__) =
+    ?This()
+    ; origin-track-forced(
+        nabl-use(
+        | lang__
+        , partition__
+        , uniques__
+        , uris__
+        , [ UseCandidate(
+              NablNsThis()
+            , []
+            , Current()
+            , True()
+            , []
+            )
+          ]
         )
       |
       )

@@ -14,3 +14,7 @@ type rules
 	
 	// Object instantiation
 	NewObject(c): ClassType(c)
+	
+	// Variable references
+	VarRef(r): ty
+	where definition of r: ty

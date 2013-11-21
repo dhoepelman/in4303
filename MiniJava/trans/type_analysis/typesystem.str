@@ -13,33 +13,21 @@ imports
   
 rules
   
-  // Integer literal
-  //create-type-task(|ctx) : IntValue(_) -> <type-is(|ctx)> Int()
-  
-  // Boolean literals
-  // create-type-task(|ctx) : True() -> <type-is(|ctx)> Bool()
-  // create-type-task(|ctx) : False() -> <type-is(|ctx)> Bool()
-  
-  // Object creations
-  // create-type-task(|ctx) : NewObject(c) -> <type-is(|ctx)> ClassType(c)
+  // Literals and object creations are defined in types.ts
   
   // Unary operator
-  
   create-type-task(|ctx):
   	UnExp(e1, e2) -> <type-is(|ctx, [task2])> ty
   	where
   			(ty1,ty) := <type-of-op> e1
   		;	task1 := <type-task(|ctx)> e1
   		;	task2 := <type-match(|ctx, ty1)> task1
- 
-  
   // Constraints of Unary operators
   type-of-op: Negation() -> (Bool(), Bool())
   type-of-op: ArrayLength() -> (IntArray(), Int())
   type-of-op: AllocateArray() -> (Int(), IntArray())
   
   // Binary operator
-  
   create-type-task(|ctx):
   	BinExp(e1, e2, e3) -> <type-is(|ctx, [task2, task4])> ty
   	where
@@ -48,10 +36,27 @@ rules
   		;	task2 := <type-match(|ctx, ty1)> task1
   		;	task3 := <type-task(|ctx)> e2
   		;	task4 := <type-match(|ctx, ty2)> task3
-  		 	
+  // Constraints of Binary operators
   type-of-op: LogicalAnd() -> (Bool(), Bool(), Bool())
   type-of-op: LessThan() -> (Int(), Int(), Bool())
   type-of-op: Times() -> (Int(), Int(), Int())
   type-of-op: Minus() -> (Int(), Int(), Int())
   type-of-op: Plus() -> (Int(), Int(), Int())	 	
   type-of-op: ArrayAccess() -> (IntArray(), Int(), Int())
+  
+  // References
+  // References are implemented in types.ts, manual implementation below
+  /*
+  create-type-task(|ctx) :
+    VarRef(r) -> <type-is(|ctx, [task])> task
+    where task := <type-lookup(|ctx)> r
+    */
+    
+  // This
+  // Hier gebleven
+  create-type-task(|ctx):
+  	This() -> <type-is(|ctx) ty
+  		ty := <type-lookup(|ctx)>
+  //create-type-task(|ctx) :
+  //	This() -> <type-is(|ctx, [task])> task
+  //		where task := <type-lookup(|ctx)

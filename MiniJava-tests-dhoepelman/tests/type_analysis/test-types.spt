@@ -36,6 +36,16 @@ test instantiate type int array [[
 	}
 ]] run get-type to IntArray()
 
+test instantiate type int array 2 [[
+	class A {
+		public boolean foo() {
+			int[] a;
+			a = [[new int[5] ]];
+			return true;
+		}
+	}
+]] run get-type to IntArray()
+
 test instantiate type class identical[[
 	class A {
 		public A foo() {

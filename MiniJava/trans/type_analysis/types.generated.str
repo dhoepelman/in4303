@@ -25,6 +25,10 @@ rules
     NewObject(c) -> <type-is(|ctx, [])> ClassType(c)
     where id
   
+  create-type-task(|ctx) :
+    VarRef(r) -> <type-is(|ctx, [ty])> ty
+    where ty := <type-lookup(|ctx)> r
+  
   
 rules // projections
   
