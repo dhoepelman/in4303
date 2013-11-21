@@ -19,6 +19,7 @@ imports
   analysis/desugar
   analysis/namebinding
   analysis/namebinding-constraints
+  type_analysis/typesystem
   
 rules // Analysis
 	
@@ -47,7 +48,10 @@ rules // Editor services
 	// Returns "hover help" information for a particular node in the editor.
 	// For references, this rule is invoked using the resolved term.
 	editor-hover:
-		(target, position, ast, path, project-path) -> <fail>
+		(target, position, ast, path, project-path) -> $[Type: [t] AST: ]
+		where
+				t := <get-type> target
+		//	;	p := <pp> target
 
 	// Completes an identifier when the user presses control-space
 	// (the completion identifier in the AST provides additional context information)

@@ -51,6 +51,7 @@ rules
           , Unique()
           , Current()
           , [NablNsVariable()]
+          , []
           )
         , id
         , id
@@ -69,6 +70,7 @@ rules
             , Unique()
             , Current()
             , [NablNsVariable()]
+            , []
             )
           , id
           )
@@ -119,6 +121,7 @@ rules
           , Unique()
           , Current()
           , [NablNsMethod(), NablNsField()]
+          , []
           )
         , id
         , id
@@ -241,6 +244,7 @@ rules
           , Unique()
           , Current()
           , [NablNsVariable()]
+          , []
           )
         , id
         , id
@@ -275,6 +279,7 @@ rules
           , NablNsField()
           , Unique()
           , Current()
+          , []
           , []
           )
         )
@@ -321,6 +326,7 @@ rules
           , Unique()
           , Current()
           , []
+          , []
           )
         )
         ; match(child-uris__|c-uri1__)
@@ -365,6 +371,7 @@ rules
           , NablNsVariable()
           , Unique()
           , Current()
+          , []
           , []
           )
         )

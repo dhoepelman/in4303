@@ -1,1 +1,4 @@
 *.aterm
+*.index
+*.analysis
+*.task

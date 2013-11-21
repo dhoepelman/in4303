@@ -1,0 +1,58 @@
+module trans/type_analysis/typesystem
+
+imports
+  lib/runtime/nabl/-
+  lib/runtime/task/-
+  lib/runtime/types/-
+  lib/runtime/properties/-
+  
+  assignment1/MiniJava
+  analysis/desugar
+  
+  type_analysis/types.generated
+  
+rules
+  
+  // Integer literal
+  //create-type-task(|ctx) : IntValue(_) -> <type-is(|ctx)> Int()
+  
+  // Boolean literals
+  // create-type-task(|ctx) : True() -> <type-is(|ctx)> Bool()
+  // create-type-task(|ctx) : False() -> <type-is(|ctx)> Bool()
+  
+  // Object creations
+  // create-type-task(|ctx) : NewObject(c) -> <type-is(|ctx)> ClassType(c)
+  
+  // Unary operator
+  
+  create-type-task(|ctx):
+  	UnExp(e1, e2) -> <type-is(|ctx, [task2])> ty
+  	where
+  			(ty1,ty) := <type-of-op> e1
+  		;	task1 := <type-task(|ctx)> e1
+  		;	task2 := <type-match(|ctx, ty1)> task1
+ 
+  
+  // Constraints of Unary operators
+  type-of-op: Negation() -> (Bool(), Bool())
+  type-of-op: ArrayLength() -> (IntArray(), Int())
+  type-of-op: AllocateArray() -> (Int(), IntArray())
+  
+  // Binary operator
+  
+  create-type-task(|ctx):
+  	BinExp(e1, e2, e3) -> <type-is(|ctx, [task2, task4])> ty
+  	where
+  			(ty1,ty2,ty) := <type-of-op> e1
+  		;	task1 := <type-task(|ctx)> e1
+  		;	task2 := <type-match(|ctx, ty1)> task1
+  		;	task3 := <type-task(|ctx)> e2
+  		;	task4 := <type-match(|ctx, ty2)> task3
+  		 	
+  type-of-op: LogicalAnd() -> (Bool(), Bool(), Bool())
+  type-of-op: LessThan() -> (Int(), Int(), Bool())
+  type-of-op: Times() -> (Int(), Int(), Int())
+  type-of-op: Minus() -> (Int(), Int(), Int())
+  type-of-op: Plus() -> (Int(), Int(), Int())	 	
+  // Geldig of niet?
+  // desugar: Subscript(e1, e2)	-> BinExp(ArrayAccess(), e1, e2)

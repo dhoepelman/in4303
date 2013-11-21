@@ -1,0 +1,30 @@
+module trans/type_analysis/types.generated
+
+imports
+  lib/runtime/nabl/-
+  lib/runtime/task/-
+  lib/runtime/types/-
+  lib/runtime/properties/-
+  
+  
+rules
+  
+  create-type-task(|ctx) :
+    IntValue(v) -> <type-is(|ctx, [])> Int()
+    where id
+  
+  create-type-task(|ctx) :
+    True() -> <type-is(|ctx, [])> Bool()
+    where id
+  
+  create-type-task(|ctx) :
+    False() -> <type-is(|ctx, [])> Bool()
+    where id
+  
+  create-type-task(|ctx) :
+    NewObject(c) -> <type-is(|ctx, [])> ClassType(c)
+    where id
+  
+  
+rules // projections
+  
