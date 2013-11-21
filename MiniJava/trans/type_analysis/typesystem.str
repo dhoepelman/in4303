@@ -54,5 +54,4 @@ rules
   type-of-op: Times() -> (Int(), Int(), Int())
   type-of-op: Minus() -> (Int(), Int(), Int())
   type-of-op: Plus() -> (Int(), Int(), Int())	 	
-  // Geldig of niet?
-  // desugar: Subscript(e1, e2)	-> BinExp(ArrayAccess(), e1, e2)
+  type-of-op: ArrayAccess() -> (IntArray(), Int(), Int())
