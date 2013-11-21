@@ -50,17 +50,10 @@ rules
 	desugar: Add(e1, e2) -> BinExp(Plus(), e1, e2)
 	
 	desugar: Subscript(e1, e2)	-> BinExp(ArrayAccess(), e1, e2)
- 
-  
-  
 strategies
   
   // select one of these
   
   // Will always maxime the desugaring. Over the top for now, but might be useful in the future
   //desugar-all = innermost(desugar)
-  // desugar-all = topdown(desugar)			
-  //desugar-all = topdown(try(desugar))
-  // desugar-all = bottomup(desugar)
    desugar-all = bottomup(try(desugar))
-  // desugar-all = alltd(desugar)
