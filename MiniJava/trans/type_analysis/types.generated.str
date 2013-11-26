@@ -29,6 +29,10 @@ rules
     VarRef(r) -> <type-is(|ctx, [ty])> ty
     where ty := <type-lookup(|ctx)> r
   
+  create-type-task(|ctx) :
+    Param(t, p) -> <type-is(|ctx, [])> t
+    where id
+  
   
 rules // projections
   

@@ -263,17 +263,17 @@ rules
       )
 
   nabl-get-scope =
-    ?Method(t, m, _, _, _, _)
+    ?Method(t, m, params, _, _, _)
     ; ![NablNsVariable()]
 
   nabl-get-name :
-    Method(t, m, _, _, _, _) -> m
+    Method(t, m, params, _, _, _) -> m
 
   nabl-name-apply(s) =
     Method(id, s, id, id, id, id)
 
   nabl-def-site(child-uris__, sibl-uris__, implicits__|lang__, partition__, uniques__, uri__, states__) =
-    ?Method(t, m, _, _, _, _)
+    ?Method(t, m, params, _, _, _)
     ; origin-track-forced(
         Method(
           id
@@ -303,7 +303,7 @@ rules
       )
 
   nabl-prop-site(|lang__, partition__, uris__, states__, implicits__) =
-    ?Method(t, m, _, _, _, _)
+    ?Method(t, m, params, _, _, _)
     ; origin-track-forced(
         Method(
           id

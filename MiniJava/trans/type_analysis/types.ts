@@ -19,7 +19,12 @@ type rules
 	VarRef(r): ty
 	where definition of r: ty
 	
-	// Methods
+	
+	/* Methods */
+	// Methods calls
 	// Call(exp, callee, params): ty
 	// where definition of callee: ty
+	
+	// Method parameters
+	Param(t, p): t
 	

@@ -60,6 +60,7 @@ rules
   ; task   := <type-lookup(|ctx)> e
   
   /* Methods */
+  // Params are bound in types.ts
   // Call binding
    create-type-task(|ctx) :
     Call(exp, callee, params) -> <type-is(|ctx, [ty])> ty

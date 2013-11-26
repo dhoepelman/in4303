@@ -35,7 +35,7 @@ This():
 	refers to Class This()
 
 // Method definiton, referring
-Method(t, m, _, _, _, _):
+Method(t, m, params, _, _, _):
 	defines Method m of type t
 	scopes Variable
 // Type system required
