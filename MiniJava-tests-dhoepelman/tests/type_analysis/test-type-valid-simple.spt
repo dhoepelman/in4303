@@ -50,7 +50,7 @@ test valid LT op literal [[
 
 test valid LT op var [[
 	class A {
-		public int foo() {
+		public boolean foo() {
 			int a;
 			int b;
 			return a < b;
