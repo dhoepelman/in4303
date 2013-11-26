@@ -8,8 +8,13 @@ class SomeClassName  {
   int fielda;
   public int name ( int i ) {
     int b;
-    b = this.name2(b);
-    b = 1;
+    int[] a;
+    b = true;
+    a = new int[5];
+    a[1] = 1;
+    a[true] = 1;
+    b[1]  = 1;
+    a[1] = true;
     return b;
   }
   public int name2 ( int field ) {

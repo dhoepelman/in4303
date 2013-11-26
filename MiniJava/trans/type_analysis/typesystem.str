@@ -15,19 +15,22 @@ rules
   
   // Literals and object creations are defined in types.ts
   
-  // Unary operator
-  // create-type-task(|ctx):
-  // 	UnExp(e1, e2) -> <type-is(|ctx, [task2])> ty
-  // 	where
-  // 			(ty1,ty) := <type-of-op> e1
-  // 		;	task1 := <type-task(|ctx)> e1
-  // 		;	task2 := <type-match(|ctx, ty1)> task1
-  // // Constraints of Unary operators
-  // type-of-op: Negation() -> (Bool(), Bool())
-  // type-of-op: ArrayLength() -> (IntArray(), Int())
-  // type-of-op: AllocateArray() -> (Int(), IntArray())
+  // Unary operator, see types.ts
+  /*
+  create-type-task(|ctx):
+  	UnExp(e1, e2) -> <type-is(|ctx, [task2])> ty
+  	where
+  			(ty1,ty) := <type-of-op> e1
+  		;	task1 := <type-task(|ctx)> e1
+  		;	task2 := <type-match(|ctx, ty1)> task1
+  // Constraints of Unary operators
+  type-of-op: Negation() -> (Bool(), Bool())
+  type-of-op: ArrayLength() -> (IntArray(), Int())
+  type-of-op: AllocateArray() -> (Int(), IntArray())
+  */
   
-  // Binary operator
+  // Binary operator, see types.ts
+  /*
   create-type-task(|ctx):
   	BinExp(e1, e2, e3) -> <type-is(|ctx, [task2, task4])> ty
   	where
@@ -43,6 +46,7 @@ rules
   type-of-op: Minus() -> (Int(), Int(), Int())
   type-of-op: Plus() -> (Int(), Int(), Int())	 	
   type-of-op: ArrayAccess() -> (IntArray(), Int(), Int())
+  */
   
   // References
   // References are implemented in types.ts, manual implementation below
@@ -65,3 +69,28 @@ rules
    create-type-task(|ctx) :
     Call(exp, callee, params) -> <type-is(|ctx, [ty])> ty
     where ty := <type-lookup(|ctx)> callee
+    
+    
+   // Constraints are partly generated from types.ts, see that file
+    /*nabl-constraint(|ctx) :
+    ArrayAssign(var, idx, exp) -> <fail>
+    where tvar := <type-lookup(|ctx)> var;
+          tidx := <type-lookup(|ctx)> idx;
+          texp := <type-lookup(|ctx)> exp;
+          varmatch := <type-match(|ctx, IntArray())> tvar;
+          idxmatch := <type-match(|ctx, Int())> tidx;
+          expmatch := <type-match(|ctx, Int())> texp;
+          <task-create-error-on-failure(|ctx, varmatch, "Not an array")> var;
+          <task-create-error-on-failure(|ctx, idxmatch, "Array index needs to be an integer")> idx;
+          <task-create-error-on-failure(|ctx, expmatch, "Incompatible array and expression type")> exp*/
+  /*
+  nabl-constraint(|ctx) :
+    Assign(var, exp) -> <id>
+    where t := <type-task(|ctx)> var;
+          eq129 := <type-match(|ctx, t)> exp;
+          <task-create-error-on-failure(|ctx, eq129, "Incompatible variable and expression type")> exp
+  
+  nabl-constraint(|ctx) :
+    Print(exp) -> <id>
+    where eq130 := <type-match(|ctx, Int())> exp;
+          <task-create-error-on-failure(|ctx, eq130, "Can only print integers")> exp*/

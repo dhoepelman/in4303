@@ -76,7 +76,7 @@ test MR same name 1 [[
 // Make sure not always one of the options is chosen, but the correct one is chosen
 test MR same name 2 [[
 	class A {
-		public int foo() {
+		public int [[foo]]() {
 			return 1;
 		}
 	}
@@ -92,4 +92,4 @@ test MR same name 2 [[
 			return new B().[[foo]]();
 		}
 	}
-]] resolve #1 to #2
+]] resolve #2 to #3

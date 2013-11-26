@@ -31,32 +31,37 @@ test println IntArray [[
 	System.out.println([[a]]);
 ]] 1 error
 
+test invalid NOT int [[
+	boolean a;
+	a = !1;
+]] /incompatible/
+
 test invalid AND int [[
 	boolean a;
-	a = [[true]] && 1;
-]] 1 error
+	a = true && [[1]];
+]] /incompatible/
 
 test invalid LT bool [[
 	boolean a;
 	a = [[true]] < 1;
-]] 1 error
+]] /incompatible/
 
 test invalid PLUS int array [[
 	int a;
 	int[] b;
 	a = [[b]] + 1;
-]] 1 error
+]] /incompatible/
 
 test invalid MINUS class [[
 	int a;
 	A b;
-	a = [[b]] + 1;
-]] 1 error
+	a = b + 1;
+]] /incompatible/
 
 test invalid MULT boolean [[
 	int a;
-	a = 1 * true;
-]] 1 error
+	a = 1 * [[true]];
+]] /incompatible/
 
 test assignment class exp to boolean var [[
 	boolean a;
@@ -84,9 +89,6 @@ test assign invalid this [[
 		public int foo() {
 			A a;
 			a = this;
-			return 1;
-		}
-	}
 ]] 1 error
 
 test assign invalid class [[
