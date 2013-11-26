@@ -93,3 +93,15 @@ test MR same name 2 [[
 		}
 	}
 ]] resolve #2 to #3
+
+test MR this [[
+	class A {
+		public int [[foo]]() {
+			return 1;
+		}
+		
+		public int bar() {
+			return this.[[foo]]();
+		}
+	}
+]] resolve #1 to #2
