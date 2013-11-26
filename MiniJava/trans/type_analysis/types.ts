@@ -74,8 +74,8 @@ type rules
 	Print(exp) :-
 		where	exp: texp
 			and	texp == Int() else error "Can only print integers" on exp
-	
-		
+		 	
 	// Method return type
-	
-	
+	Method(treturn, mname, params, vars, statements, retexp) :-
+		where	retexp: tretexp
+			and	tretexp == treturn else error "Incompatible return and expression type" on retexp
