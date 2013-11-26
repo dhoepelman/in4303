@@ -48,10 +48,9 @@ rules // Editor services
 	// Returns "hover help" information for a particular node in the editor.
 	// For references, this rule is invoked using the resolved term.
 	editor-hover:
-		(target, position, ast, path, project-path) -> $[AST: [p] ]
+		(target, position, ast, path, project-path) -> $[AST: [t] ]
 		where
-			p	:= $[Hoi]
-		//		t := <get-type> target
+				t := <get-type> target
 		//	;	p := <pp> target
 
 	// Completes an identifier when the user presses control-space

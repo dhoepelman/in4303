@@ -55,6 +55,23 @@ test type this [[
 		}
 	}
 ]] run get-type to ClassType("A"{_})
+	
+test multiple this [[
+	class A {
+		public boolean foo() {
+			A t;
+			t = this;
+			return true;
+		}
+	}
+	class B {
+		public boolean foo() {
+			B t;
+			t = [[this]];
+			return true;
+		}
+	}
+]]run get-type to ClassType("B"{_})
 
 test instantiate type class identical[[
 	class A {

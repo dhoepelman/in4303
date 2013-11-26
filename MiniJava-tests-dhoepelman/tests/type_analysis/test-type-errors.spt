@@ -78,6 +78,17 @@ test assignment intarray exp to class var [[
 	a = [[new int[10] ]];
 ]] 1 error
 
+test assign invalid this [[
+	return 1;}}
+	class B{
+		public int foo() {
+			A a;
+			a = this;
+			return 1;
+		}
+	}
+]] 1 error
+
 test assign invalid class [[
 	return 1;}}
 	class B {

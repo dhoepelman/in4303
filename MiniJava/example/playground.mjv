@@ -9,6 +9,7 @@ class SomeClassName  {
   public int name ( int i ) {
     int b;
     b = this.name2(b);
+    b = 1;
     return b;
   }
   public int name2 ( int field ) {
@@ -20,7 +21,6 @@ class SomeClassName  {
 class A {
 		public boolean foo() {
 			A t;
-			boolean a;
 			t = this;
 			return true;
 		}

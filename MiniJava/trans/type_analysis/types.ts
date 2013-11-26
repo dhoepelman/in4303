@@ -18,3 +18,8 @@ type rules
 	// Variable references
 	VarRef(r): ty
 	where definition of r: ty
+	
+	// Methods
+	// Call(exp, callee, params): ty
+	// where definition of callee: ty
+	

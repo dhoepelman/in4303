@@ -35,12 +35,13 @@ This():
 	refers to Class This()
 
 // Method definiton, referring
-Method(_, m, _, _, _, _):
-	defines Method m
+Method(t, m, _, _, _, _):
+	defines Method m of type t
 	scopes Variable
 // Type system required
-//Call(exp, callee, _):
-//	refers to Method callee in Class c where exp has type 
+Call(exp, callee, _):
+	refers to Method callee in Class c
+	where exp has type ClassType(c)
 
 // Field and variable definiton
 Field(t, f):
