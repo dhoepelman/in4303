@@ -56,7 +56,24 @@ test type this [[
 	}
 ]] run get-type to ClassType("A"{_})
 	
-test multiple this [[
+test multiple this 1 [[
+	class A {
+		public boolean foo() {
+			A t;
+			t = [[this]];
+			return true;
+		}
+	}
+	class B {
+		public boolean foo() {
+			B t;
+			t = this;
+			return true;
+		}
+	}
+]]run get-type to ClassType("A"{_})
+	
+test multiple this 2 [[
 	class A {
 		public boolean foo() {
 			A t;

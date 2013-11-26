@@ -7,15 +7,9 @@ class MainClassName {
 class SomeClassName  {
   int fielda;
   public int name ( int i ) {
-    int b;
-    int[] a;
-    b = true;
-    a = new int[5];
-    a[1] = 1;
-    a[true] = 1;
-    b[1]  = 1;
-    a[1] = true;
-    return b;
+    A a;
+    a = this;
+    return 1;
   }
   public int name2 ( int field ) {
     int b;

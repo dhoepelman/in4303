@@ -88,7 +88,7 @@ test assign invalid this [[
 	class B{
 		public int foo() {
 			A a;
-			a = this;
+			a = [[this]];
 ]] 1 error
 
 test assign invalid class [[

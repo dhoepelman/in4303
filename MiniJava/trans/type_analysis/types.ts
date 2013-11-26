@@ -54,8 +54,6 @@ type rules
 	
 	
 	/* Type constraints */
-	// These were almost complete, but I could not find out how to "invert" the relation, e.g. in stratego <id> instead of <fail>
-	// I copied the generated stratego code
 	
 	// Statements
 	ArrayAssign(var, idx, exp) :-
@@ -73,7 +71,7 @@ type rules
 			
 	Print(exp) :-
 		where	exp: texp
-			and	texp == Int() else error "Can only print integers" on exp
+			and	texp == Int() else error "Incompatible expression: can only print integers" on exp
 		 	
 	// Method return type
 	Method(treturn, mname, params, vars, statements, retexp) :-
