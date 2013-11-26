@@ -53,10 +53,15 @@ rules
     */
     
   // This
-  // Hier gebleven
-  create-type-task(|ctx):
-  	This() -> <type-is(|ctx) ty
-  		ty := <type-lookup(|ctx)>
+  // TODO: this binden
+  //create-type-task(|ctx): 
+  //ClassType(e) -> <type-is(|ctx, [task])> task
+  //where
+  //  This() := e
+  //; task   := <type-lookup(|ctx)> e
+  //create-type-task(|ctx):
+  //	This() -> <type-is(|ctx) ty
+  //		ty := <type-lookup(|ctx)>
   //create-type-task(|ctx) :
   //	This() -> <type-is(|ctx, [task])> task
   //		where task := <type-lookup(|ctx)

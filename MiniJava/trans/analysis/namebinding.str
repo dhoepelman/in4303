@@ -16,7 +16,6 @@ signature
     NablNsMethod   : Namespace
     NablNsField    : Namespace
     NablNsVariable : Namespace
-    NablNsThis     : Namespace
 
 
 rules
@@ -98,7 +97,7 @@ rules
 
   nabl-get-scope =
     ?Class(c, _, _, _)
-    ; ![NablNsMethod(), NablNsField(), NablNsThis()]
+    ; ![NablNsMethod(), NablNsField()]
 
   nabl-get-name :
     Class(c, _, _, _) -> c
@@ -121,7 +120,7 @@ rules
           , NablNsClass()
           , Unique()
           , Current()
-          , [NablNsMethod(), NablNsField(), NablNsThis()]
+          , [NablNsMethod(), NablNsField()]
           , []
           )
         , id
@@ -136,7 +135,7 @@ rules
                           , uniques__
                           , c-uri1__
                           , s-uri1__
-                          , NablNsThis()
+                          , NablNsClass()
                           , Unique()
                           , Current()
                           , []
@@ -252,7 +251,7 @@ rules
         , uniques__
         , uris__
         , [ UseCandidate(
-              NablNsThis()
+              NablNsClass()
             , []
             , Current()
             , True()
