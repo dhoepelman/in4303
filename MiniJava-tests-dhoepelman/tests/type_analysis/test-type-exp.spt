@@ -47,7 +47,7 @@ test exp not [[
 test exp length [[
 	int b;
 	int[] a;
-	b = [[a.length()]];
+	b = [[a.length]];
 ]] run get-type to Int()
 
 test exp allocatearray [[
