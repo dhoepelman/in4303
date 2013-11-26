@@ -1,6 +1,0 @@
-class HelloWorld {
-		public static void main(String[] id) {
-			// We actually don't have strings or char arrays :(
-			System.out.println(010010000110010101101100011011000110111100100000010101110110111101110010011011000110010000100001);
-		}
-	}

@@ -1,28 +1,27 @@
 class MainClassName {
-	public static void main(String[] args) {
-		System.out.println(0);
-	}
+  public static void main (String[] args) {
+    System.out.println(0);
+  }
 }
 
-class SomeClassName {
-	int fielda;
-	public int name (int i) {
-		int b;
-		
-		fielda = 1;
-		i = 1;
-		if(i) {
-			
-		} else {
-			
+class SomeClassName  {
+  int fielda;
+  public int name ( int i ) {
+    int b;
+    b = this.name2(b);
+    return b;
+  }
+  public int name2 ( int field ) {
+    int b;
+    return 1;
+  }
+}
+
+class A {
+		public boolean foo() {
+			A t;
+			boolean a;
+			t = this;
+			return true;
 		}
-		return 0;
 	}
-	
-	public int name2 (int field) {
-		int b;
-		
-		return 1;
-	}
-}
-
