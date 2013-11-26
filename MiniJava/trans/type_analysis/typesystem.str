@@ -16,16 +16,16 @@ rules
   // Literals and object creations are defined in types.ts
   
   // Unary operator
-  create-type-task(|ctx):
-  	UnExp(e1, e2) -> <type-is(|ctx, [task2])> ty
-  	where
-  			(ty1,ty) := <type-of-op> e1
-  		;	task1 := <type-task(|ctx)> e1
-  		;	task2 := <type-match(|ctx, ty1)> task1
-  // Constraints of Unary operators
-  type-of-op: Negation() -> (Bool(), Bool())
-  type-of-op: ArrayLength() -> (IntArray(), Int())
-  type-of-op: AllocateArray() -> (Int(), IntArray())
+  // create-type-task(|ctx):
+  // 	UnExp(e1, e2) -> <type-is(|ctx, [task2])> ty
+  // 	where
+  // 			(ty1,ty) := <type-of-op> e1
+  // 		;	task1 := <type-task(|ctx)> e1
+  // 		;	task2 := <type-match(|ctx, ty1)> task1
+  // // Constraints of Unary operators
+  // type-of-op: Negation() -> (Bool(), Bool())
+  // type-of-op: ArrayLength() -> (IntArray(), Int())
+  // type-of-op: AllocateArray() -> (Int(), IntArray())
   
   // Binary operator
   create-type-task(|ctx):

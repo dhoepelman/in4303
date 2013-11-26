@@ -26,6 +26,26 @@ rules
     where id
   
   create-type-task(|ctx) :
+    UnExp(operator, exp) -> <type-is(|ctx, [ety1, t3, ty1, ty, eq27])> ty
+    where ety1 := <type-task(|ctx)> exp;
+          t3 := <type-task(|ctx)> operator;
+          ty1 := <new-task(|ctx)> Rewrite("proj6", t3);
+          ty := <new-task(|ctx)> Rewrite("proj7", t3);
+          eq27 := <type-match(|ctx, ty1)> ety1
+  
+  create-type-task(|ctx) :
+    Negation() -> <type-is(|ctx, [])> (Bool(), Bool())
+    where id
+  
+  create-type-task(|ctx) :
+    ArrayLength() -> <type-is(|ctx, [])> (IntArray(), Int())
+    where id
+  
+  create-type-task(|ctx) :
+    AllocateArray() -> <type-is(|ctx, [])> (Int(), IntArray())
+    where id
+  
+  create-type-task(|ctx) :
     VarRef(r) -> <type-is(|ctx, [ty])> ty
     where ty := <type-lookup(|ctx)> r
   
@@ -35,4 +55,10 @@ rules
   
   
 rules // projections
+  
+  task-rewrite :
+    ("proj7", (ty1, ty)) -> ty
+  
+  task-rewrite :
+    ("proj6", (ty1, ty)) -> ty1
   
