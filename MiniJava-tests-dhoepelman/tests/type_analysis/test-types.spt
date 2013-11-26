@@ -46,22 +46,32 @@ test instantiate type int array 2 [[
 	}
 ]] run get-type to IntArray()
 
+test type this [[
+	class A {
+		public boolean foo() {
+			A t;
+			t = [[this]];
+			return true;
+		}
+	}
+]] run get-type to ClassType("A"{_})
+
 test instantiate type class identical[[
 	class A {
 		public A foo() {
 			return [[new A()]];
 		}
 	}
-]] run get-type to ClassType(A)
+]] run get-type to ClassType("A"{_})
 
 test instantiate type class different [[
 	class A {}
 	class B {
 		public A foo() {
-			return new A();
+			return [[new A()]];
 		}
 	}
-]] run get-type to ClassType(A)
+]] run get-type to ClassType("A"{_})
 
 test instantiate type subclass [[
 	class A{}
@@ -71,7 +81,7 @@ test instantiate type subclass [[
 			return [[new B()]];
 		}
 	}
-]] run get-type to ClassType(B)
+]] run get-type to ClassType("B"{_})
 
 test reference bool [[
 	class A {
@@ -111,7 +121,7 @@ test reference class identical [[
 			return [[a]];
 		}
 	}
-]] run get-type to ClassType(A)
+]] run get-type to ClassType("A"{_})
 
 test reference class different [[
 	class A {
@@ -125,7 +135,7 @@ test reference class different [[
 			return [[a]];
 		}
 	}
-]] run get-type to ClassType(A)
+]] run get-type to ClassType("A"{_})
 
 test field ref [[
 	class A {
