@@ -52,27 +52,15 @@ rules
     where task := <type-lookup(|ctx)> r
     */
     
-  // This
+  // This binding
   create-type-task(|ctx): 
   e -> <type-is(|ctx, [task])> task
   where
     This() := e
   ; task   := <type-lookup(|ctx)> e
-  // TODO: this binden
-  //create-type-task(|ctx): 
-  //ClassType(e) -> <type-is(|ctx, [task])> task
-  //where
-  //  This() := e
-  //; task   := <type-lookup(|ctx)> e
-  //create-type-task(|ctx):
-  //	This() -> <type-is(|ctx) ty
-  //		ty := <type-lookup(|ctx)>
-  //create-type-task(|ctx) :
-  //	This() -> <type-is(|ctx, [task])> task
-  //		where task := <type-lookup(|ctx)
   
   /* Methods */
   // Call binding
-   //create-type-task(|ctx) :
-   // Call(exp, callee, params) -> <type-is(|ctx, [ty])> ty
-   // where ty := <type-lookup(|ctx)> callee
+   create-type-task(|ctx) :
+    Call(exp, callee, params) -> <type-is(|ctx, [ty])> ty
+    where ty := <type-lookup(|ctx)> callee

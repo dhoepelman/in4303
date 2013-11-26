@@ -41,7 +41,7 @@ Method(t, m, _, _, _, _):
 // Type system required
 Call(exp, callee, _):
 	refers to Method callee in Class c
-	where exp has type ClassType(c)
+	where exp has type c
 
 // Field and variable definiton
 Field(t, f):
