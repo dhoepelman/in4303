@@ -53,7 +53,7 @@ test class name resolution return [[
 
   class Foobar {
   	public [[Foo]] bar() {
-    	return 0;
+    	return new Foo();
     }
   }
 ]] resolve #2 to #1

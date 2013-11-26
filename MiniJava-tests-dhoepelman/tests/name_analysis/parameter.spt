@@ -72,7 +72,7 @@ test error on missing variable definition [[
 			return [[foo]];
 		}
 	}
-]] 1 error
+]] /resolved/
 
 test warning on unused variable [[
   class A {

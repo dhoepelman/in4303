@@ -95,7 +95,7 @@ test error on missing parameter definition [[
 			return [[foo]];
 		}
 	}
-]] 1 error
+]] /resolved/
 
 test warning on unused parameter [[
   class A {
