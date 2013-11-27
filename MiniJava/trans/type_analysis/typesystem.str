@@ -22,6 +22,7 @@ rules
   // References, see types.ts
     
   // This binding
+  // TODO: Fix invalid this assignments not giving an error
   create-type-task(|ctx): 
   e -> <type-is(|ctx, [task])> task
   where

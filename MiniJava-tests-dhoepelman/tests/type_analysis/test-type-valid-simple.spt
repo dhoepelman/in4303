@@ -201,6 +201,16 @@ test assignment class [[
 	}
 ]] 0 errors
 
+test assignment this [[
+	class A {
+		public int foo() {
+			A a;
+			a = this;
+			return 1;
+		}
+	}
+]] 0 errors
+
 test assignment subclass[[
 	class A{
 		public int foo(){

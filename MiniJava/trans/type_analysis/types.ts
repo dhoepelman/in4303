@@ -63,7 +63,8 @@ type rules
 			and	tvar == IntArray() else error "Not an array" on var
 			and tidx == Int() else error "Array index needs to be an integer" on idx
 			and texp == Int() else error "Incompatible array and expression type" on exp
-			
+	
+	// Normal assignments		
 	Assign(var, exp) :-
 		where	definition of var : t
 			and	exp: texp
