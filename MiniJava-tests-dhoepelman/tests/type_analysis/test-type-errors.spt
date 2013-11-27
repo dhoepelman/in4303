@@ -112,6 +112,24 @@ test invalid array assignment [[
 	a[0] = [[true]];
 ]] 1 error
 
+test invalid if int [[
+	int a;
+	a = 0;
+	if([[a]]) {
+		a = 2;
+	} else {
+		a = 3;
+	}
+]] 1 error
+
+test invalid while int [[
+	int a;
+	a = 0;
+	while([[a]]) {
+		a = a + 1;
+	} 
+]] 1 error
+
 setup MiniJavaEnd [[
 			return 1;
 		}
