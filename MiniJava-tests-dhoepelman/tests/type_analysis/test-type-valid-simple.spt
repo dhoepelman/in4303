@@ -178,6 +178,22 @@ test while [[
 	}
 ]] 0 errors
 
+test assignment method return type [[
+	class A {
+		public int foo() {
+			return this.foo();
+		}
+	}
+]] 0 errors
+
+test assignment method return type params [[
+	class A {
+		public int foo(int arg) {
+			return 1 + this.foo(arg-1);
+		}
+	}
+]] 0 errors
+
 test assignment boolean [[
 	class A{
 		public int foo(){

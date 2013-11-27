@@ -39,6 +39,24 @@ test class method return bool [[
 	}
 ]] 1 error
 
+test method return type invalid params 1 [[
+	public int foo() {
+		return this.foo(1);
+	}
+]] 1 error
+
+test method return type invalid params 2 [[
+	public int foo() {
+		return this.foo(1, 2);
+	}
+]] 1 error
+
+test method return type invalid params 3 [[
+	public int foo(int arg) {
+		return 1 + this.foo();
+	}
+]] 1 error
+
 test method returns invalid superclass [[
 	}
 	class B extends A {}

@@ -50,7 +50,7 @@ type rules
 	// where definition of callee: ty
 	
 	// Method parameters
-	//Param(t, p): t
+	Param(t, name): t
 	
 	
 	/* Type constraints */

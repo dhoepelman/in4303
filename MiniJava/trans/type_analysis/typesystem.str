@@ -32,5 +32,14 @@ rules
   /* Methods */
   // Call binding
    create-type-task(|ctx) :
-    Call(exp, callee, params) -> <type-is(|ctx, [ty])> ty
-    where ty := <type-lookup(|ctx)> callee
+    Call(exp, callee, params) -> <type-is(|ctx, [task_compositeMethodType])> task_ReturnType
+    where	task_compositeMethodType := <type-lookup(|ctx)> callee
+    	;	task_ReturnType := <new-task(|ctx)> Rewrite("return-type", task_compositeMethodType)
+    	 	
+   task-rewrite:
+   		("return-type", compositeMethodType) -> ret
+   		where (ret, _) := compositeMethodType
+   /*task-rewrite:
+   		("parameter-types", compositeMethodType) -> ptypes
+   		where (_, plist) := compositeMethodType
+   		and	List(ptypes) */
