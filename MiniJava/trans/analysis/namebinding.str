@@ -12,11 +12,10 @@ imports
 
 signature
   constructors
-    NablNsClass     : Namespace
-    NablNsMethod    : Namespace
-    NablNsField     : Namespace
-    NablNsVariable  : Namespace
-    NablNsClassThis : Namespace
+    NablNsClass    : Namespace
+    NablNsMethod   : Namespace
+    NablNsField    : Namespace
+    NablNsVariable : Namespace
 
 
 rules
@@ -98,7 +97,7 @@ rules
 
   nabl-get-scope =
     ?Class(c, _, _, _)
-    ; ![NablNsMethod(), NablNsField(), NablNsClassThis()]
+    ; ![NablNsMethod(), NablNsField()]
 
   nabl-get-name :
     Class(c, _, _, _) -> c
@@ -121,7 +120,7 @@ rules
           , NablNsClass()
           , Unique()
           , Current()
-          , [NablNsMethod(), NablNsField(), NablNsClassThis()]
+          , [NablNsMethod(), NablNsField()]
           , []
           )
         , id
@@ -154,7 +153,12 @@ rules
         where([i-2__] := implicits__)
         ; where(<nabl-store-props(
                  | partition__
-                 , [Prop(Type(), c, [])]
+                 , [ Prop(
+                       Type()
+                     , ClassType(c)
+                     , []
+                     )
+                   ]
                  )> i-2__)
       |
       )
@@ -330,6 +334,7 @@ rules
     ?Call(exp, callee, _)
     ; origin-track-forced(
         where(r9-1-1-1__ := <get-or-create-property-task(|partition__, Type())> exp)
+        ; where(r9-1-1-1-1__ := <new-task(|partition__)> Rewrite("match9-1-1-1-1", (r9-1-1-1__, [])))
         ; Call(
             id
           , nabl-use(
@@ -342,24 +347,12 @@ rules
                 , []
                 , Context(
                     NablNsClass()
-                  , r9-1-1-1__
+                  , r9-1-1-1-1__
                   , []
                   , Current()
                   )
                 , True()
-                , [r9-1-1-1__]
-                )
-              , UseCandidate(
-                  NablNsMethod()
-                , []
-                , Context(
-                    NablNsClassThis()
-                  , This()
-                  , []
-                  , Current()
-                  )
-                , True()
-                , []
+                , [r9-1-1-1-1__]
                 )
               ]
             )
@@ -367,6 +360,11 @@ rules
           )
       |
       )
+
+  task-rewrite :
+    ( "match9-1-1-1-1"
+    , (ClassType(c), [])
+    ) -> c
 
   nabl-get-name :
     Field(t, f) -> f

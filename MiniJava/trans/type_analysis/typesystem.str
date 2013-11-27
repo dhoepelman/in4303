@@ -22,11 +22,11 @@ rules
   // References, see types.ts
     
   // This binding
-  /*create-type-task(|ctx): 
-  ClassType(c) -> <type-is(|ctx, [task])> task
+  create-type-task(|ctx): 
+  e -> <type-is(|ctx, [task])> task
   where
-    This() := ClassType(c)
-  ; task   := <type-lookup(|ctx)> c*/
+    This() := e
+  ; task   := <type-lookup(|ctx)> e
   
   /* Methods */
   // Call binding
