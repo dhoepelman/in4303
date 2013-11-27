@@ -151,6 +151,20 @@ rules
     ?Class(c, _, _, _)
     ; origin-track-forced(
         where([i-2__] := implicits__)
+        ; Class(
+            nabl-store-props(
+            | partition__
+            , [ Prop(
+                  Type()
+                , ClassType(c)
+                , []
+                )
+              ]
+            )
+          , id
+          , id
+          , id
+          )
         ; where(<nabl-store-props(
                  | partition__
                  , [ Prop(

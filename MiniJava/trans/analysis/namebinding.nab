@@ -22,7 +22,7 @@ MainClass(main, mainargs, _):
 	defines Variable mainargs
 	scopes Variable
 Class(c, _, _, _):
-	defines Class c
+	defines Class c of type ClassType(c)
 	implicitly defines Class This() of type ClassType(c)
 	scopes Method, Field
 Parent(p):
