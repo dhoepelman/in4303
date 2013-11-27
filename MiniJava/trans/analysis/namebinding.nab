@@ -42,7 +42,6 @@ Method(t, m, params, _, _, _):
 Call(exp, callee, _):
 	refers to Method callee in Class c
 		where exp has type ClassType(c)
-//	otherwise refers to Method callee in ClassThis This()
 
 // Field and variable definiton
 Field(t, f):

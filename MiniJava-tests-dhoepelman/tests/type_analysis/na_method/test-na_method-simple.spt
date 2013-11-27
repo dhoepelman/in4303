@@ -94,14 +94,26 @@ test MR same name 2 [[
 	}
 ]] resolve #2 to #3
 
-test MR this [[
+test MR this 1 [[
 	class A {
-		public int [[foo]]() {
-			return 1;
-		}
-		
-		public int bar() {
+		public int [[bar]]() {
 			return this.[[foo]]();
 		}
+		
+		public int [[foo]]() {
+			return this.[[bar]]();
+		}
 	}
-]] resolve #1 to #2
+]] resolve #1 to #4
+
+test MR this 2 [[
+	class A {
+		public int [[bar]]() {
+			return this.[[foo]]();
+		}
+		
+		public int [[foo]]() {
+			return this.[[bar]]();
+		}
+	}
+]] resolve #2 to #3
