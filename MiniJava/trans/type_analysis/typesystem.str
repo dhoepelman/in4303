@@ -33,12 +33,13 @@ rules
   /* Methods */
   // Call binding
    create-type-task(|ctx) :
-    Call(exp, callee, params) -> <type-is(|ctx, [task_compositeMethodType])> task_ReturnType
-    where	task_compositeMethodType := <type-lookup(|ctx)> callee
-    	;	task_ReturnType := <new-task(|ctx)> Rewrite("return-type", task_compositeMethodType)
-    	;	task_ExpectedParamTypes := <new-task(|ctx)> Rewrite("parameter-types", task_compositeMethodType)
-    	;	parammatch :=	<type-match(|ctx, task_ExpectedParamTypes)> params;
-    	 					<task-create-error-on-failure(|ctx, parammatch, "Invalid number of parameters or incompatible parameter type(s)")> params
+    Call(exp, callee, args) -> <type-is(|ctx, [task_cMethodType, task_ReturnType, task_expectedPTypes])> task_ReturnType
+    where	task_cMethodType	:= <type-lookup(|ctx)> callee
+    	;	task_ReturnType		:= <new-task(|ctx)> Rewrite("return-type", task_cMethodType)
+    	;	task_expectedPTypes	:= <new-task(|ctx)> Rewrite("parameter-types", task_cMethodType)
+    	;	targs				:= <type-task(|ctx)> args
+    	;	parammatch			:= <type-match(|ctx, task_expectedPTypes)> targs;
+    	 							<task-create-error-on-failure(|ctx, parammatch, "Invalid number of arguments or incompatible argument type(s)")> args
    
    /*
    create-type-task(|ctx) :

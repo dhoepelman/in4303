@@ -16,6 +16,7 @@ class SomeClassName  {
     b = this.name2();
     b = this.name2(1,2,3);
     b = this.name3();
+    b = this.method4(1,2);
     return 1;
   }
   public int name2 ( int field ) {
@@ -24,6 +25,10 @@ class SomeClassName  {
   }
   
   public int name3 () {
+  	return 1;
+  }
+  
+  public int method4(int a, int b) {
   	return 1;
   }
 }
