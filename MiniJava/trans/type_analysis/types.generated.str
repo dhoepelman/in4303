@@ -29,8 +29,8 @@ rules
     UnExp(operator, exp) -> <type-is(|ctx, [ety1, t0, ty1, ty, eq0])> ty
     where ety1 := <type-task(|ctx)> exp;
           t0 := <type-task(|ctx)> operator;
-          ty1 := <new-task(|ctx)> Rewrite("proj3", t0);
-          ty := <new-task(|ctx)> Rewrite("proj4", t0);
+          ty1 := <new-task(|ctx)> Rewrite("proj8", t0);
+          ty := <new-task(|ctx)> Rewrite("proj9", t0);
           eq0 := <type-match(|ctx, ty1)> ety1;
           <task-create-error-on-failure(|ctx, eq0, "Incompatible type")> exp
   
@@ -51,9 +51,9 @@ rules
     where ety1 := <type-task(|ctx)> subexp1;
           ety2 := <type-task(|ctx)> subexp2;
           t1 := <type-task(|ctx)> operator;
-          ty1 := <new-task(|ctx)> Rewrite("proj0", t1);
-          ty2 := <new-task(|ctx)> Rewrite("proj1", t1);
-          ty := <new-task(|ctx)> Rewrite("proj2", t1);
+          ty1 := <new-task(|ctx)> Rewrite("proj5", t1);
+          ty2 := <new-task(|ctx)> Rewrite("proj6", t1);
+          ty := <new-task(|ctx)> Rewrite("proj7", t1);
           eq1 := <type-match(|ctx, ty1)> ety1;
           <task-create-error-on-failure(|ctx, eq1, "Incompatible type")> subexp1;
           eq2 := <type-match(|ctx, ty2)> ety2;
@@ -138,17 +138,17 @@ rules
 rules // projections
   
   task-rewrite :
-    ("proj4", (ty1, ty)) -> ty
+    ("proj9", (ty1, ty)) -> ty
   
   task-rewrite :
-    ("proj3", (ty1, ty)) -> ty1
+    ("proj8", (ty1, ty)) -> ty1
   
   task-rewrite :
-    ("proj2", (ty1, ty2, ty)) -> ty
+    ("proj7", (ty1, ty2, ty)) -> ty
   
   task-rewrite :
-    ("proj1", (ty1, ty2, ty)) -> ty2
+    ("proj6", (ty1, ty2, ty)) -> ty2
   
   task-rewrite :
-    ("proj0", (ty1, ty2, ty)) -> ty1
+    ("proj5", (ty1, ty2, ty)) -> ty1
   

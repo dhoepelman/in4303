@@ -9,4 +9,27 @@ imports
 	analysis/analysis_constructors
 	
 rules
+	/******
+	 * Superclass field hiding
+	 ******/
+
+	 nabl-constraint(|ctx):
+		Var(_, v) -> <fail>
+		where
+				task := <nabl-lookup-lexical-import(|ctx, NablNsField())> v
+			;	msg := $[Variable [v] hides superclass field of the same name]
+			;	<task-create-warning-on-success(|ctx, task, msg)> v
 	
+	 nabl-constraint(|ctx):
+		Param(_, p) -> <fail>
+		where
+				task := <nabl-lookup-lexical-import(|ctx, NablNsField())> p
+			;	msg := $[Parameter [p] hides superclass field of the same name]
+			;	<task-create-warning-on-success(|ctx, task, msg)> p
+	
+	 nabl-constraint(|ctx):
+		Field(_, f) -> <fail>
+		where
+				task := <nabl-lookup-local-import(|ctx, NablNsField())> f
+			;	msg := $[Field [f] hides superclass field of the same name]
+			;	<task-create-error-on-success(|ctx, task, msg)> f

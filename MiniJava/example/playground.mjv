@@ -18,11 +18,13 @@ class B {
 
 
 class C extends B {
-		public boolean foo() {
-			return this.parentmethod();
-		}
+	//int parentfield;
 		
-		public int bar() {
-			return parentfield;
-		}
+	public boolean foo() {
+		return this.parentmethod();
 	}
+		
+	public int bar() {
+		return parentfield;
+	}
+}
