@@ -12,6 +12,9 @@ imports
   
   type_analysis/types.generated
   type_analysis/typesystem
+
+signature constructors
+  SubTyping: Relation 
   
 rules
 	
@@ -38,22 +41,46 @@ rules
 			;	<task-create-error-on-triggers(|ctx, [Success(task_superm), Failure(parammatch)], msgoverload)> m
 			;	<task-create-error-on-triggers(|ctx, [Success(task_superm), Success(parammatch), Failure(retmatch)], msginvreturn)> m
 			;	<task-create-note-on-triggers(|ctx, [Success(task_superm), Success(parammatch), Success(retmatch)], msgoverride)> m
-  
-	/*nabl-constraint(|ctx):
-		Method(_, newm, newparams, _, _, _) -> <fail>
+   	
+			 	
+	/*** Rules for subtyping ***/
+	create-subtype-task(|ctx):
+		(SubTyping(), ty1, ty2) -> t
 		where
-				// Look up the method name in imports
-				superclass_method	:= <nabl-lookup-lexical-import(|ctx)> newm
-				// Get the superclass method type and parameter types
-			//;	cSuperMethodType	:= <type-lookup(|ctx)> superclass_method
-    		//;	tSuperParams		:= <new-task(|ctx)> Rewrite("parameter-types", cSuperMethodType)
-    		 	// Get the new method parameter types
-    		//;	tNewParams			:= <type-task(|ctx)> newparams
-    		 	// Check if the parameter types match
-			//;	param_match			:= <type-match(|ctx, newparams)> tSuperParams
-			 	// Create appropriate messages
-			;	msgoverload			:= $[Cannot overload superclass method [newm]]
-			;	msgoverride			:= $[Method [newm] override superclass method of the same name]
-			;	<task-create-error-on-triggers(|ctx, [Success(superclass_method), Failure(param_match)], msgoverload)> newm
-			//;	<task-create-note-on-triggers(|ctx, [Success(superclass_method), Success(param_match)], msgoverride)> newm
-			 	// Failure, Success, Multiple*/
+				t := <type-match(|ctx, ty1)> ty2
+				
+	create-subtype-task(|ctx):
+  		(SubTyping(), t1*, t2*) -> <type-is(|ctx, [m])> t*
+  		where 
+			      t* := <zip(create-subtype-task(|ctx, SubTyping()))> (t1*, t2*)
+			   <+ t* := <map-with-index(create-subtype-task(|ctx, SubTyping(), t2*))> t1*
+			; l  := <new-task(|ctx)> Length(t2*)
+			; m  := <type-match(|ctx, <length> t1*)> l 
+  			   <+ t* := <map-with-index(create-subtype-task(|ctx, SubTyping(), t1*))> t2*
+   			; l  := <new-task(|ctx)> Length(t1*)
+   			; m  := <type-match(|ctx, <length> t2*)> l 
+   			  
+	create-subtype-task(|ctx):
+		("<:", ty1, ty2) -> t
+		where
+				t := <type-match(|ctx, ty1)> ty2
+				
+	create-subtype-task(|ctx):
+  		("<:", t1*, t2*) -> <type-is(|ctx, [m])> t*
+  		where 
+			      t* := <zip(create-subtype-task(|ctx, SubTyping()))> (t1*, t2*)
+			   <+ t* := <map-with-index(create-subtype-task(|ctx, SubTyping(), t2*))> t1*
+			; l  := <new-task(|ctx)> Length(t2*)
+			; m  := <type-match(|ctx, <length> t1*)> l 
+  			   <+ t* := <map-with-index(create-subtype-task(|ctx, SubTyping(), t1*))> t2*
+   			; l  := <new-task(|ctx)> Length(t1*)
+   			; m  := <type-match(|ctx, <length> t2*)> l 
+
+	create-subtype-task(|ctx, op):
+		(t1, t2) -> <create-subtype-task(|ctx)> (op, t1, t2)
+	
+	create-subtype-task(|ctx, op, t*):
+		(i, t) -> st
+		where
+			t' := <new-task(|ctx)> Index(i, t*)
+		; st := <create-subtype-task(|ctx)> (op, t, t')

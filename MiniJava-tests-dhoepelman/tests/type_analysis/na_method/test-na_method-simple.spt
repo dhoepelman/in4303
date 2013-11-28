@@ -54,27 +54,33 @@ test MR other class [[
 
 // Two unrelated classes with the same method name
 test MR same name 1 [[
-	class A {
-		public int [[foo]]() {
-			return 1;
-		}
-	}
-	
-	class B {
-		public int foo() {
-			return 1;
-		}
-	}
-	
 	class C {
 		public int foo() {
 			return new A().[[foo]]();
 		}
 	}
+	
+	class A {
+		public int [[foo]]() {
+			return 1;
+		}
+	}
+	
+	class B {
+		public int foo() {
+			return 1;
+		}
+	}
 ]] resolve #1 to #2
 
 // Make sure not always one of the options is chosen, but the correct one is chosen
-test MR same name 2 [[
+test MR same name 2 [[	
+	class C {
+		public int foo() {
+			return new B().[[foo]]();
+		}
+	}
+	
 	class A {
 		public int [[foo]]() {
 			return 1;
@@ -86,13 +92,7 @@ test MR same name 2 [[
 			return 1;
 		}
 	}
-	
-	class C {
-		public int foo() {
-			return new B().[[foo]]();
-		}
-	}
-]] resolve #2 to #3
+]] resolve #1 to #3
 
 test MR this 1 [[
 	class A {

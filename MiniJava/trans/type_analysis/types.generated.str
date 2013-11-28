@@ -47,13 +47,13 @@ rules
     where id
   
   create-type-task(|ctx) :
-    BinExp(operator, subexp1, subexp2) -> <type-is(|ctx, [ety1, ety2, t1, ty1, ty2, ty, eq1, eq2])> ty
+    BinExp(operator, subexp1, subexp2) -> <type-is(|ctx, [ety1, ety2, t3, ty1, ty2, ty, eq1, eq2])> ty
     where ety1 := <type-task(|ctx)> subexp1;
           ety2 := <type-task(|ctx)> subexp2;
-          t1 := <type-task(|ctx)> operator;
-          ty1 := <new-task(|ctx)> Rewrite("proj5", t1);
-          ty2 := <new-task(|ctx)> Rewrite("proj6", t1);
-          ty := <new-task(|ctx)> Rewrite("proj7", t1);
+          t3 := <type-task(|ctx)> operator;
+          ty1 := <new-task(|ctx)> Rewrite("proj5", t3);
+          ty2 := <new-task(|ctx)> Rewrite("proj6", t3);
+          ty := <new-task(|ctx)> Rewrite("proj7", t3);
           eq1 := <type-match(|ctx, ty1)> ety1;
           <task-create-error-on-failure(|ctx, eq1, "Incompatible type")> subexp1;
           eq2 := <type-match(|ctx, ty2)> ety2;

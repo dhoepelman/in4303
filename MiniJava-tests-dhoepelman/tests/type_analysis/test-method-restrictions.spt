@@ -46,7 +46,7 @@ test overloaded method [[
 
 test overload of parent [[
 	class A { public int foo() { return 1;} }
-	class B { public int [[foo]](int bar) { return 2; }}
+	class B extends A { public int [[foo]](int bar) { return 2; }}
 ]] 1 error
 
 test overriden method [[

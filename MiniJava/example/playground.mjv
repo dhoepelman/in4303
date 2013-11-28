@@ -18,6 +18,10 @@ class B {
 	public int p3(int i) {
 		return 1;
 	}
+	
+	public int p4() {
+		return this.p3(1);
+	}
 }
 
 

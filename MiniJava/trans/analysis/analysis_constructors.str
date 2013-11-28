@@ -2,6 +2,3 @@ module analysis/analysis_constructors
 
 signature constructors
 	MainClassType : MainClassTypeDecl
-	
-	SubTyping: Relation
-	
