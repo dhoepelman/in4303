@@ -9,7 +9,6 @@ namespaces
 	Method
 	Field
 	Variable		// Also Parameter
-	ClassThis
 	
 binding rules
 
@@ -24,8 +23,8 @@ MainClass(main, mainargs, _):
 	scopes Variable
 Class(c, _, _, _):
 	defines Class c of type ClassType(c)
-	implicitly defines ClassThis This() of type ClassType(c)
-	scopes Method, Field, ClassThis
+	implicitly defines Field This() of type ClassType(c)
+	scopes Method, Field
 Parent(p):
 	refers to Class p
 ClassType(c):
@@ -33,7 +32,7 @@ ClassType(c):
 NewObject(c):
 	refers to Class c
 This():
-	refers to ClassThis This()
+	refers to Field This()
 
 // Method definiton, referring
 Method(t, m, params, _, _, _):
