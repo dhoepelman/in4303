@@ -33,3 +33,9 @@ rules
 				task := <nabl-lookup-local-import(|ctx, NablNsField())> f
 			;	msg := $[Field [f] hides superclass field of the same name]
 			;	<task-create-error-on-success(|ctx, task, msg)> f
+			 	
+	/*******
+	 * Method overloading and overriding
+	 *******/
+	 
+	

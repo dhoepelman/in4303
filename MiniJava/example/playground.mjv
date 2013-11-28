@@ -11,7 +11,7 @@ class B {
 		return true;
 	}
 	
-	public int testne() {
+	public int p2() {
 		return 1;
 	}
 }
@@ -20,6 +20,18 @@ class B {
 class C extends B {
 	//int parentfield;
 		
+	public boolean parentmethod() {
+		return true;
+	}
+	
+	public int p2() {
+		return 1;
+	}
+	
+	/*public boolean parentmethod(int a) {
+		return true;
+	}*/
+	
 	public boolean foo() {
 		return this.parentmethod();
 	}

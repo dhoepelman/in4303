@@ -1,0 +1,58 @@
+module trans/type_analysis/typesystem-inheritance
+
+imports
+  lib/runtime/nabl/-
+  lib/runtime/task/-
+  lib/runtime/types/-
+  lib/runtime/properties/-
+  
+  assignment1/MiniJava
+  analysis/desugar
+  analysis/analysis_constructors
+  
+  type_analysis/types.generated
+  type_analysis/typesystem
+  
+rules
+	
+	 
+  // Method overloading and overriding
+  nabl-constraint(|ctx):
+		Method(rettype, m, params, _, _, _) -> <fail>
+		where
+				// Check for method in superclass
+				task_superm			:= <nabl-lookup-local-import(|ctx)> m
+				// lookup superclass method type
+			;	task_cSuperMethodType	:= <type-lookup(|ctx)> task_superm
+			;	task_superReturnType	:= <new-task(|ctx)> Rewrite("return-type", task_cSuperMethodType)
+			;	task_superParamTypes	:= <new-task(|ctx)> Rewrite("parameter-types", task_cSuperMethodType)
+			 	// Get the new method parameter types and compare
+    		;	tparams			:= <type-task(|ctx)> params
+    		;	parammatch := <type-match(|ctx, task_superParamTypes)> tparams
+			 	// Create error(s) and note(s)
+			;	msgoverload	:= ["Cannot overload superclass method ", m]
+			;	msgoverride	:= ["Method ", m, " overrides superclass method of the same name"]
+			;	msginvreturn:= ["Method ", m, " overrides superclass method and must return compatible types"]
+			;	<task-create-error-on-triggers(|ctx, [Success(task_superm), Failure(parammatch)], msgoverload)> m
+			; 	<task-create-note-on-triggers(|ctx, [Success(task_superm), Success(parammatch)], msgoverride)> m
+			//;	<task-create-note-on-triggers(|ctx, [Success(task_superm), Success(parammatch), Success(retmatch)], msgoverride)> m
+			//;	<task-create-error-on-triggers(|ctx, [Success(task_superm), Success(parammatch), Failure(retmatch)], msgoverload)> m
+  
+	/*nabl-constraint(|ctx):
+		Method(_, newm, newparams, _, _, _) -> <fail>
+		where
+				// Look up the method name in imports
+				superclass_method	:= <nabl-lookup-lexical-import(|ctx)> newm
+				// Get the superclass method type and parameter types
+			//;	cSuperMethodType	:= <type-lookup(|ctx)> superclass_method
+    		//;	tSuperParams		:= <new-task(|ctx)> Rewrite("parameter-types", cSuperMethodType)
+    		 	// Get the new method parameter types
+    		//;	tNewParams			:= <type-task(|ctx)> newparams
+    		 	// Check if the parameter types match
+			//;	param_match			:= <type-match(|ctx, newparams)> tSuperParams
+			 	// Create appropriate messages
+			;	msgoverload			:= $[Cannot overload superclass method [newm]]
+			;	msgoverride			:= $[Method [newm] override superclass method of the same name]
+			;	<task-create-error-on-triggers(|ctx, [Success(superclass_method), Failure(param_match)], msgoverload)> newm
+			//;	<task-create-note-on-triggers(|ctx, [Success(superclass_method), Success(param_match)], msgoverride)> newm
+			 	// Failure, Success, Multiple*/

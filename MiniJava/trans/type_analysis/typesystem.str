@@ -11,6 +11,7 @@ imports
   analysis/analysis_constructors
   
   type_analysis/types.generated
+  type_analysis/typesystem-inheritance
   
 rules
   
@@ -23,7 +24,6 @@ rules
   // References, see types.ts
     
   // This binding
-  // TODO: Fix invalid this assignments not giving an error
   create-type-task(|ctx): 
   e -> <type-is(|ctx, [task])> task
   where
@@ -41,7 +41,7 @@ rules
     	;	parammatch			:= <type-match(|ctx, task_expectedPTypes)> targs;
     	 							<task-create-error-on-failure(|ctx, parammatch, "Invalid number of arguments or incompatible argument type(s)")> callee
  									// Error on arguments would be better, but then you don't get an error if there are no arguments
- 	
+			 		
    task-rewrite:
    		("return-type", compositeMethodType) -> ret
    		where (ret, _) := compositeMethodType
