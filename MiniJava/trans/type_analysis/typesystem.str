@@ -8,6 +8,7 @@ imports
   
   assignment1/MiniJava
   analysis/desugar
+  analysis/analysis_constructors
   
   type_analysis/types.generated
   
@@ -38,7 +39,7 @@ rules
     	 	
    task-rewrite:
    		("return-type", compositeMethodType) -> ret
-   		where (ret, _) := compositeMethodType
+   		where MethodType(ret, _) := compositeMethodType
    /*task-rewrite:
    		("parameter-types", compositeMethodType) -> ptypes
    		where (_, plist) := compositeMethodType

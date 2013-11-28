@@ -6,10 +6,7 @@ imports
 	runtime/task/-
 	runtime/types/-
 	analysis/namebinding
-	
-signature constructors
-	MainClassType : MainClassTypeDecl
-	MethodType : Type * List(Type) -> MethodTypeDecl
+	analysis/analysis_constructors
 	
 strategies
 	nabl-check-disable-duplicate(|uri, ns) = id

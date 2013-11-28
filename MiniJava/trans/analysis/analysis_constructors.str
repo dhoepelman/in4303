@@ -1,0 +1,5 @@
+module analysis/analysis_constructors
+
+signature constructors
+	MainClassType : MainClassTypeDecl
+	MethodType : Type * List(Type) -> MethodTypeDecl

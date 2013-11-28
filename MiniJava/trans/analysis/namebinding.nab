@@ -2,7 +2,7 @@ module analysis/namebinding
  
 imports
 	assignment1/MiniJava
-	analysis/namebinding-constraints
+	analysis/analysis_constructors
 	
 namespaces
 	Class

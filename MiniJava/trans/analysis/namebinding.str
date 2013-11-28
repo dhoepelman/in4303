@@ -7,7 +7,7 @@ imports
   lib/runtime/types/-
   lib/runtime/editor/-
   assignment1/MiniJava
-  analysis/namebinding-constraints
+  analysis/analysis_constructors
 
 
 signature
