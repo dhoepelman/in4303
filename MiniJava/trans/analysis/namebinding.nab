@@ -37,7 +37,8 @@ This():
 // Method definiton, referring
 Method(t, m, params, _, _, _):
 	// TODO: Make MethodType only contain the parameter types
-	defines Method m of type MethodType(t, params)
+	defines Method m of type MethodType(t, paramtypes)
+		where params has type paramtypes
 	scopes Variable
 // Type system required
 Call(exp, callee, _):

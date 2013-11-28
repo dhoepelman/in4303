@@ -324,22 +324,23 @@ rules
   nabl-prop-site(|lang__, partition__, uris__, states__, implicits__) =
     ?Method(t, m, params, _, _, _)
     ; origin-track-forced(
-        Method(
-          id
-        , nabl-store-props(
-          | partition__
-          , [ Prop(
-                Type()
-              , MethodType(t, params)
-              , []
-              )
-            ]
+        where(r8-1-1__ := <get-or-create-property-task(|partition__, Type())> params)
+        ; Method(
+            id
+          , nabl-store-props(
+            | partition__
+            , [ Prop(
+                  Type()
+                , MethodType(t, r8-1-1__)
+                , [r8-1-1__]
+                )
+              ]
+            )
+          , id
+          , id
+          , id
+          , id
           )
-        , id
-        , id
-        , id
-        , id
-        )
       |
       )
 
