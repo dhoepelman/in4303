@@ -26,13 +26,13 @@ rules
     where id
   
   create-type-task(|ctx) :
-    UnExp(operator, exp) -> <type-is(|ctx, [ety1, t2, ty1, ty, eq11])> ty
+    UnExp(operator, exp) -> <type-is(|ctx, [ety1, t27, ty1, ty, eq126])> ty
     where ety1 := <type-task(|ctx)> exp;
-          t2 := <type-task(|ctx)> operator;
-          ty1 := <new-task(|ctx)> Rewrite("proj8", t2);
-          ty := <new-task(|ctx)> Rewrite("proj9", t2);
-          eq11 := <type-match(|ctx, ty1)> ety1;
-          <task-create-error-on-failure(|ctx, eq11, "Incompatible type")> exp
+          t27 := <type-task(|ctx)> operator;
+          ty1 := <new-task(|ctx)> Rewrite("proj68", t27);
+          ty := <new-task(|ctx)> Rewrite("proj69", t27);
+          eq126 := <type-match(|ctx, ty1)> ety1;
+          <task-create-error-on-failure(|ctx, eq126, "Incompatible type")> exp
   
   create-type-task(|ctx) :
     Negation() -> <type-is(|ctx, [])> (Bool(), Bool())
@@ -47,17 +47,17 @@ rules
     where id
   
   create-type-task(|ctx) :
-    BinExp(operator, subexp1, subexp2) -> <type-is(|ctx, [ety1, ety2, t3, ty1, ty2, ty, eq12, eq13])> ty
+    BinExp(operator, subexp1, subexp2) -> <type-is(|ctx, [ety1, ety2, t28, ty1, ty2, ty, eq127, eq128])> ty
     where ety1 := <type-task(|ctx)> subexp1;
           ety2 := <type-task(|ctx)> subexp2;
-          t3 := <type-task(|ctx)> operator;
-          ty1 := <new-task(|ctx)> Rewrite("proj5", t3);
-          ty2 := <new-task(|ctx)> Rewrite("proj6", t3);
-          ty := <new-task(|ctx)> Rewrite("proj7", t3);
-          eq12 := <type-match(|ctx, ty1)> ety1;
-          <task-create-error-on-failure(|ctx, eq12, "Incompatible type")> subexp1;
-          eq13 := <type-match(|ctx, ty2)> ety2;
-          <task-create-error-on-failure(|ctx, eq13, "Incompatible type")> subexp2
+          t28 := <type-task(|ctx)> operator;
+          ty1 := <new-task(|ctx)> Rewrite("proj65", t28);
+          ty2 := <new-task(|ctx)> Rewrite("proj66", t28);
+          ty := <new-task(|ctx)> Rewrite("proj67", t28);
+          eq127 := <type-match(|ctx, ty1)> ety1;
+          <task-create-error-on-failure(|ctx, eq127, "Incompatible type")> subexp1;
+          eq128 := <type-match(|ctx, ty2)> ety2;
+          <task-create-error-on-failure(|ctx, eq128, "Incompatible type")> subexp2
   
   create-type-task(|ctx) :
     LogicalAnd() -> <type-is(|ctx, [])> (Bool(), Bool(), Bool())
@@ -96,59 +96,59 @@ rules
     where tvar := <type-lookup(|ctx)> var;
           tidx := <type-task(|ctx)> idx;
           texp := <type-task(|ctx)> exp;
-          eq14 := <type-match(|ctx, IntArray())> tvar;
-          <task-create-error-on-failure(|ctx, eq14, "Not an array")> var;
-          eq15 := <type-match(|ctx, Int())> tidx;
-          <task-create-error-on-failure(|ctx, eq15, "Array index needs to be an integer")> idx;
-          eq16 := <type-match(|ctx, Int())> texp;
-          <task-create-error-on-failure(|ctx, eq16, "Incompatible array and expression type")> exp
+          eq129 := <type-match(|ctx, IntArray())> tvar;
+          <task-create-error-on-failure(|ctx, eq129, "Not an array")> var;
+          eq130 := <type-match(|ctx, Int())> tidx;
+          <task-create-error-on-failure(|ctx, eq130, "Array index needs to be an integer")> idx;
+          eq131 := <type-match(|ctx, Int())> texp;
+          <task-create-error-on-failure(|ctx, eq131, "Incompatible array and expression type")> exp
   
   nabl-constraint(|ctx) :
     Assign(var, exp) -> <fail>
     where t := <type-lookup(|ctx)> var;
           texp := <type-task(|ctx)> exp;
-          eq17 := <type-match(|ctx, t)> texp;
-          <task-create-error-on-failure(|ctx, eq17, "Incompatible variable and expression type")> exp
+          eq132 := <type-match(|ctx, t)> texp;
+          <task-create-error-on-failure(|ctx, eq132, "Incompatible variable and expression type")> exp
   
   nabl-constraint(|ctx) :
     Print(exp) -> <fail>
     where texp := <type-task(|ctx)> exp;
-          eq18 := <type-match(|ctx, Int())> texp;
-          <task-create-error-on-failure(|ctx, eq18, "Incompatible expression type: can only print integers")> exp
+          eq133 := <type-match(|ctx, Int())> texp;
+          <task-create-error-on-failure(|ctx, eq133, "Incompatible expression type: can only print integers")> exp
   
   nabl-constraint(|ctx) :
     While(exp, statements) -> <fail>
     where texp := <type-task(|ctx)> exp;
-          eq19 := <type-match(|ctx, Bool())> texp;
-          <task-create-error-on-failure(|ctx, eq19, "Incompatible expression type: condition must be boolean")> exp
+          eq134 := <type-match(|ctx, Bool())> texp;
+          <task-create-error-on-failure(|ctx, eq134, "Incompatible expression type: condition must be boolean")> exp
   
   nabl-constraint(|ctx) :
     If(exp, ifstmt, elsestmt) -> <fail>
     where texp := <type-task(|ctx)> exp;
-          eq20 := <type-match(|ctx, Bool())> texp;
-          <task-create-error-on-failure(|ctx, eq20, "Incompatible expression type: condition must be boolean")> exp
+          eq135 := <type-match(|ctx, Bool())> texp;
+          <task-create-error-on-failure(|ctx, eq135, "Incompatible expression type: condition must be boolean")> exp
   
   nabl-constraint(|ctx) :
     Method(treturn, mname, params, vars, statements, retexp) -> <fail>
     where tretexp := <type-task(|ctx)> retexp;
-          eq21 := <type-match(|ctx, treturn)> tretexp;
-          <task-create-error-on-failure(|ctx, eq21, "Incompatible return and expression type")> retexp
+          eq136 := <type-match(|ctx, treturn)> tretexp;
+          <task-create-error-on-failure(|ctx, eq136, "Incompatible return and expression type")> retexp
   
   
 rules // projections
   
   task-rewrite :
-    ("proj9", (ty1, ty)) -> ty
+    ("proj69", (ty1, ty)) -> ty
   
   task-rewrite :
-    ("proj8", (ty1, ty)) -> ty1
+    ("proj68", (ty1, ty)) -> ty1
   
   task-rewrite :
-    ("proj7", (ty1, ty2, ty)) -> ty
+    ("proj67", (ty1, ty2, ty)) -> ty
   
   task-rewrite :
-    ("proj6", (ty1, ty2, ty)) -> ty2
+    ("proj66", (ty1, ty2, ty)) -> ty2
   
   task-rewrite :
-    ("proj5", (ty1, ty2, ty)) -> ty1
+    ("proj65", (ty1, ty2, ty)) -> ty1
   

@@ -36,6 +36,9 @@ rules
     Call(exp, callee, params) -> <type-is(|ctx, [task_compositeMethodType])> task_ReturnType
     where	task_compositeMethodType := <type-lookup(|ctx)> callee
     	;	task_ReturnType := <new-task(|ctx)> Rewrite("return-type", task_compositeMethodType)
+    	;	task_ExpectedParamTypes := <new-task(|ctx)> Rewrite("parameter-types", task_compositeMethodType)
+    	;	parammatch :=	<type-match(|ctx, task_ExpectedParamTypes)> params;
+    	 					<task-create-error-on-failure(|ctx, parammatch, "Invalid number of parameters or incompatible parameter type(s)")> params
    
    /*
    create-type-task(|ctx) :
@@ -51,7 +54,6 @@ rules
    task-rewrite:
    		("return-type", compositeMethodType) -> ret
    		where (ret, _) := compositeMethodType
-   /*task-rewrite:
+   task-rewrite:
    		("parameter-types", compositeMethodType) -> ptypes
-   		where (_, plist) := compositeMethodType
-   		and	List(ptypes) */
+   		where (_, ptypes) := compositeMethodType
