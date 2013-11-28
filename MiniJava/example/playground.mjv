@@ -14,17 +14,27 @@ class B {
 	public int p2() {
 		return 1;
 	}
+	
+	public int p3(int i) {
+		return 1;
+	}
 }
 
 
 class C extends B {
 	//int parentfield;
+	
+	
 		
 	public boolean parentmethod() {
 		return true;
 	}
 	
-	public int p2() {
+	public int p2(int i) {
+		return 1;
+	}
+	
+	public int p3(int i) {
 		return 1;
 	}
 	

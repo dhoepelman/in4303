@@ -27,16 +27,17 @@ rules
 			;	task_superReturnType	:= <new-task(|ctx)> Rewrite("return-type", task_cSuperMethodType)
 			;	task_superParamTypes	:= <new-task(|ctx)> Rewrite("parameter-types", task_cSuperMethodType)
 			 	// Get the new method parameter types and compare
-    		;	tparams			:= <type-task(|ctx)> params
+    		;	tparams	   := <type-task(|ctx)> params
     		;	parammatch := <type-match(|ctx, task_superParamTypes)> tparams
+    		 	// Compare return types
+    		;	retmatch:= <type-match(|ctx, task_superReturnType)> rettype
 			 	// Create error(s) and note(s)
 			;	msgoverload	:= ["Cannot overload superclass method ", m]
 			;	msgoverride	:= ["Method ", m, " overrides superclass method of the same name"]
 			;	msginvreturn:= ["Method ", m, " overrides superclass method and must return compatible types"]
 			;	<task-create-error-on-triggers(|ctx, [Success(task_superm), Failure(parammatch)], msgoverload)> m
-			; 	<task-create-note-on-triggers(|ctx, [Success(task_superm), Success(parammatch)], msgoverride)> m
-			//;	<task-create-note-on-triggers(|ctx, [Success(task_superm), Success(parammatch), Success(retmatch)], msgoverride)> m
-			//;	<task-create-error-on-triggers(|ctx, [Success(task_superm), Success(parammatch), Failure(retmatch)], msgoverload)> m
+			;	<task-create-error-on-triggers(|ctx, [Success(task_superm), Success(parammatch), Failure(retmatch)], msginvreturn)> m
+			;	<task-create-note-on-triggers(|ctx, [Success(task_superm), Success(parammatch), Success(retmatch)], msgoverride)> m
   
 	/*nabl-constraint(|ctx):
 		Method(_, newm, newparams, _, _, _) -> <fail>
