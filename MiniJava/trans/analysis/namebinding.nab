@@ -21,9 +21,10 @@ MainClass(main, mainargs, _):
 	defines Class main of type MainClassType()
 	defines Variable mainargs
 	scopes Variable
-Class(c, _, _, _):
+Class(c, parent, _, _):
 	defines Class c of type ClassType(c)
 	implicitly defines Field This() of type ClassType(c)
+	imports Method, imported Method, Field, imported Field from Class parent
 	scopes Method, Field
 Parent(p):
 	refers to Class p

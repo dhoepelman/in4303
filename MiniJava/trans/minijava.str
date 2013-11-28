@@ -19,6 +19,7 @@ imports
   analysis/desugar
   analysis/namebinding
   analysis/namebinding-constraints
+  analysis/namebinding-inheritance-constraints
   type_analysis/typesystem
   
 rules // Analysis

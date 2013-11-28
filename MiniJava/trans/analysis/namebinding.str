@@ -96,17 +96,11 @@ rules
       )
 
   nabl-get-scope =
-    ?Class(c, _, _, _)
+    ?Class(c, parent, _, _)
     ; ![NablNsMethod(), NablNsField()]
 
-  nabl-get-name :
-    Class(c, _, _, _) -> c
-
-  nabl-name-apply(s) =
-    Class(s, id, id, id)
-
   nabl-def-site(child-uris__, sibl-uris__, implicits__|lang__, partition__, uniques__, uri__, states__) =
-    ?Class(c, _, _, _)
+    ?Class(c, parent, _, _)
     ; origin-track-forced(
         Class(
           nabl-def(
@@ -148,7 +142,7 @@ rules
       )
 
   nabl-prop-site(|lang__, partition__, uris__, states__, implicits__) =
-    ?Class(c, _, _, _)
+    ?Class(c, parent, _, _)
     ; origin-track-forced(
         where([i-2__] := implicits__)
         ; Class(
@@ -174,6 +168,59 @@ rules
                      )
                    ]
                  )> i-2__)
+      |
+      )
+
+  nabl-use-site(|lang__, partition__, uniques__, uris__, states__) =
+    ?Class(c, parent, _, _)
+    ; origin-track-forced(
+        Class(
+          id
+        , nabl-use(
+          | lang__
+          , partition__
+          , uniques__
+          , uris__
+          , [ UseCandidate(
+                NablNsClass()
+              , []
+              , Current()
+              , True()
+              , []
+              )
+            ]
+          )
+        , id
+        , id
+        )
+      |
+      )
+
+  nabl-import-site(|lang__, partition__, uniques__, uris__, states__) =
+    ?Class(c, parent, _, _)
+    ; origin-track-forced(
+        nabl-import(
+        | lang__
+        , partition__
+        , uniques__
+        , uris__
+        , [ Wildcard(
+              [ Import(lang__, NablNsMethod())
+              , Import(lang__, Imported(NablNsMethod()))
+              , Import(lang__, NablNsField())
+              , Import(lang__, Imported(NablNsField()))
+              ]
+            , Context(
+                NablNsClass()
+              , parent
+              , []
+              , Current()
+              )
+            , Current()
+            , []
+            )
+          ]
+        )
       |
       )
 

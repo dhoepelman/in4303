@@ -4,39 +4,25 @@ class MainClassName {
   }
 }
 
-class SomeClassName  {
-  int fielda;
-  public int name ( int i ) {
-    boolean a;
-    int b;
-    C c;
-    SomeClassName scn;
-    scn = this;
-    b = this.name2(1);
-    b = this.name2();
-    b = this.name2(3, 3);
-    b = this.name3();
-    b = this.method4(1,2, 4);
-    return 1;
-  }
-  public int name2 ( int field ) {
-    int b;
-    return 1;
-  }
-  
-  public int name3 () {
-  	return 1 + this.name3();
-  }
-  
-  public int method4(int a, int b) {
-  	return 1;
-  }
+class B {
+	int parentfield;
+	
+	public boolean parentmethod() {
+		return true;
+	}
+	
+	public int testne() {
+		return 1;
+	}
 }
 
-class C {
+
+class C extends B {
 		public boolean foo() {
-			C t;
-			t = this;
-			return true;
+			return this.parentmethod();
+		}
+		
+		public int bar() {
+			return parentfield;
 		}
 	}

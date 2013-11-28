@@ -1,0 +1,12 @@
+module analysis/namebinding-inheritance-constraints
+
+imports
+	assignment1/MiniJava
+	runtime/nabl/-
+	runtime/task/-
+	runtime/types/-
+	analysis/namebinding
+	analysis/analysis_constructors
+	
+rules
+	
