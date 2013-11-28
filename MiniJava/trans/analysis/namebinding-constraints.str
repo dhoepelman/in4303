@@ -9,8 +9,7 @@ imports
 	
 signature constructors
 	MainClassType : MainClassTypeDecl
-	// TODO: Make MethodType only contain the parameter types
-	MethodType : Type * List(ParamDecl) -> MethodTypeDecl
+	MethodType : Type * List(Type) -> MethodTypeDecl
 	
 strategies
 	nabl-check-disable-duplicate(|uri, ns) = id
