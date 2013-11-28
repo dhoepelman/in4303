@@ -48,10 +48,10 @@ rules // Editor services
 	// Returns "hover help" information for a particular node in the editor.
 	// For references, this rule is invoked using the resolved term.
 	editor-hover:
-		(target, position, ast, path, project-path) -> <fail>
-		// where
-		//		t := <get-type> target
-		//	;	p := <pp> target
+		(target, position, ast, path, project-path) -> t
+		where
+				ast2 := <desugar-all> target
+			;	t := <get-type> target
 
 	// Completes an identifier when the user presses control-space
 	// (the completion identifier in the AST provides additional context information)

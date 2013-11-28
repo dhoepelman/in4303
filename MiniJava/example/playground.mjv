@@ -7,19 +7,30 @@ class MainClassName {
 class SomeClassName  {
   int fielda;
   public int name ( int i ) {
-    A a;
-    a = this;
+    boolean a;
+    int b;
+    C c;
+    SomeClassName scn;
+    scn = this;
+    b = this.name2(1);
+    b = this.name2();
+    b = this.name2(1,2,3);
+    b = this.name3();
     return 1;
   }
   public int name2 ( int field ) {
     int b;
     return 1;
   }
+  
+  public int name3 () {
+  	return 1;
+  }
 }
 
-class A {
+class C {
 		public boolean foo() {
-			A t;
+			C t;
 			t = this;
 			return true;
 		}

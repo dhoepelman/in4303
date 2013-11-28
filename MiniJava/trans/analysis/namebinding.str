@@ -12,10 +12,11 @@ imports
 
 signature
   constructors
-    NablNsClass    : Namespace
-    NablNsMethod   : Namespace
-    NablNsField    : Namespace
-    NablNsVariable : Namespace
+    NablNsClass     : Namespace
+    NablNsMethod    : Namespace
+    NablNsField     : Namespace
+    NablNsVariable  : Namespace
+    NablNsClassThis : Namespace
 
 
 rules
@@ -97,7 +98,7 @@ rules
 
   nabl-get-scope =
     ?Class(c, _, _, _)
-    ; ![NablNsMethod(), NablNsField()]
+    ; ![NablNsMethod(), NablNsField(), NablNsClassThis()]
 
   nabl-get-name :
     Class(c, _, _, _) -> c
@@ -120,7 +121,7 @@ rules
           , NablNsClass()
           , Unique()
           , Current()
-          , [NablNsMethod(), NablNsField()]
+          , [NablNsMethod(), NablNsField(), NablNsClassThis()]
           , []
           )
         , id
@@ -135,7 +136,7 @@ rules
                           , uniques__
                           , c-uri1__
                           , s-uri1__
-                          , NablNsClass()
+                          , NablNsClassThis()
                           , Unique()
                           , Current()
                           , []
@@ -270,7 +271,7 @@ rules
         , uniques__
         , uris__
         , [ UseCandidate(
-              NablNsClass()
+              NablNsClassThis()
             , []
             , Current()
             , True()
@@ -331,7 +332,7 @@ rules
             | partition__
             , [ Prop(
                   Type()
-                , MethodType(t, r8-1-1__)
+                , (t, r8-1-1__)
                 , [r8-1-1__]
                 )
               ]

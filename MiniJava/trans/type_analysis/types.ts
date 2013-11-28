@@ -48,6 +48,11 @@ type rules
 	// Methods calls
 	// Call(exp, callee, params): ty
 	// where definition of callee: ty
+	/*Call(exp, callee, params) : rettype
+		where definition of callee : methodtype
+		and methodtype : (rettype, expectedparamtypes)
+		and params : tparams
+		and tparams == expectedparamtypes else error "Incompatible parameter types" on params*/
 	
 	// Method parameters
 	Param(t, name): t
