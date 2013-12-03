@@ -34,9 +34,6 @@ class C extends B {
 		return true;
 	}
 	
-	public int p2(int i) {
-		return 1;
-	}
 	
 	public int p3(int i) {
 		return 1;

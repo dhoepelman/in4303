@@ -145,11 +145,14 @@ rules
     ?Class(c, parent, _, _)
     ; origin-track-forced(
         where([i-2__] := implicits__)
-        ; where(r3-1-1__ := <get-or-create-property-task(|partition__, Type())> parent)
         ; Class(
             nabl-store-props(
             | partition__
-            , [ Prop(Type(), r3-1-1__, [r3-1-1__])
+            , [ Prop(
+                  Type()
+                , ClassType(c)
+                , []
+                )
               ]
             )
           , id

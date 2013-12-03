@@ -1,0 +1,28 @@
+class Main {
+  public static void main ( String [] a ) {
+    System.out.println(42);
+  }
+}
+
+class A  {}
+
+class B extends A {
+	public int foo(B bar) {
+		return 1;
+	}	
+	
+	public int foobar(int a) {
+		return 1;
+	}
+	
+	public int test() {
+		int a;
+		a = this.foo(1);
+		a = this.foobar(true);
+		return a;
+	}
+}
+
+class C extends B {}
+
+class D {}
