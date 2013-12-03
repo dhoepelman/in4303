@@ -59,9 +59,10 @@ type rules
 			and texp == Int() else error "Incompatible array and expression type" on exp
 		
 	Assign(var, exp) :-
-		where	definition of var : t
+		where	definition of var : tvar
 			and	exp: texp
-			and	texp == t else error "Incompatible variable and expression type" on exp
+			and	texp <: tvar else error "Incompatible variable and expression type" on exp
+			//and	tvar <: texp else error "Incompatible variable and expression type" on exp
 			
 	Print(exp) :-
 		where	exp: texp
@@ -78,7 +79,7 @@ type rules
 	// Method return type
 	Method(treturn, mname, params, vars, statements, retexp) :-
 		where	retexp: tretexp
-			and	tretexp == treturn else error "Incompatible return and expression type" on retexp
+			and	tretexp <: treturn else error "Incompatible return and expression type" on retexp
 			
 	/***********
 	 * Subtyping
@@ -88,11 +89,10 @@ type rules
 	 Parent(c) : ClassType(c)
 	 
 	 // Subtyping operator
-	 ty1 <: ty2
-		where ty1 == ty2
-	 /*
-	 ty1 <: ty2
-		where ty1 == ty2
-   			or ty1 => ClassType(c) // extract class name from class type with a pattern match
-  			and c : ctype          // lookup type from class name
-  			and ty2 == ctype       // match type with ty2 */
+	 // Definition: S <: T  means S is a subtype of T or equivalent "S can be safely used when T is expected"
+	type-used <: type-expected
+		where type-used == type-expected
+			or type-used => ClassType(cused) 		// extract class name from class type with a pattern match
+			and definition of cused : parenttype	// lookup type from class name
+			and type-expected == parenttype			// match type with ty2 
+		

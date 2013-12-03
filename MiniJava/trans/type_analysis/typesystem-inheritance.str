@@ -48,6 +48,20 @@ rules
    	 * Subtyping
    	 ***********/
    	 
+   	/*create-subtype-task(|ctx) :
+    ("<:", ty1, ty2) -> t
+    where
+    	 <not(is-list)> ty1
+    	;<not(is-list)> ty2
+    where equiv-match	:= <type-match(|ctx, ty2)> ty1;
+          class-name	:= <new-task(|ctx)> Rewrite("classtype-to-class", ty1);	// Extract class name
+       //  	class-name	:= "B";
+         	parenttype	:= <type-lookup(|ctx)> class-name;
+          	subtype-match	:= <type-match(|ctx, parenttype)> ty2;
+       		t := <new-task(|ctx)> Choice([equiv-match,subtype-match])
+          
+      task-rewrite :
+    ("classtype-to-class", ClassType(parentname)) -> parentname*/
    	 
 			 	
 	/*** Boilerplate code: rules for subtyping ***/

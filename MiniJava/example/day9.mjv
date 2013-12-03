@@ -7,9 +7,6 @@ class Main {
 class A  {}
 
 class B extends A {
-	public int foo(B bar) {
-		return 1;
-	}	
 	
 	public int foobar(int a) {
 		return 1;
@@ -17,9 +14,22 @@ class B extends A {
 	
 	public int test() {
 		int a;
-		a = this.foo(1);
 		a = this.foobar(true);
 		return a;
+	}
+	
+	public A foo() {
+		A a;
+		B b;
+		a = new A();
+		a = new B();
+		a = new C();
+		a = new D();
+		b = new A();
+		b = new B();
+		b = new C();
+		b = new D();
+		return new B();
 	}
 }
 
