@@ -28,20 +28,22 @@ rules
   
   /* Methods */
   // Call binding
-   create-type-task(|ctx) :
-    Call(exp, callee, args) -> <type-is(|ctx, [task_cMethodType, task_ReturnType, task_expectedPTypes])> task_ReturnType
-    where	task_cMethodType	:= <type-lookup(|ctx)> callee
-    	;	task_ReturnType		:= <new-task(|ctx)> Rewrite("return-type", task_cMethodType)
-    	;	task_expectedPTypes	:= <new-task(|ctx)> Rewrite("parameter-types", task_cMethodType)
-    	;	targs				:= <type-task(|ctx)> args
-		;	parammatch			:= <create-subtype-task(|ctx)> ("<list:", targs, task_expectedPTypes);
-    	 							<task-create-error-on-failure(|ctx, parammatch, "Invalid number of arguments or incompatible argument type(s)")> callee
- 									// Error on arguments would be better, but then you don't get an error if there are no arguments
-			 		
-   task-rewrite:
+  create-type-task(|ctx) :
+  	Call(exp, callee, args) -> <type-is(|ctx, [task_cMethodType, task_ReturnType, task_expectedPTypes])> task_ReturnType
+    where
+    	task_cMethodType	:= <type-lookup(|ctx)> callee
+    ;	task_ReturnType		:= <new-task(|ctx)> Rewrite("return-type", task_cMethodType)
+    ;	task_expectedPTypes	:= <new-task(|ctx)> Rewrite("parameter-types", task_cMethodType)
+    ;	targs				:= <type-task(|ctx)> args
+	;	parammatch			:= <create-subtype-task(|ctx)> ("<list:", targs, task_expectedPTypes);
+	 							// Error on arguments would be better, but then you don't get an error if there are no arguments
+     							<task-create-error-on-failure(|ctx, parammatch, "Invalid number of arguments or incompatible argument type(s)")> callee
+ 								
+
+  task-rewrite:
    		("return-type", compositeMethodType) -> ret
    		where (ret, _) := compositeMethodType
-   task-rewrite:
+  task-rewrite:
    		("parameter-types", compositeMethodType) -> ptypes
    		where (_, ptypes) := compositeMethodType
    
@@ -49,47 +51,51 @@ rules
   nabl-constraint(|ctx):
 		Method(rettype, m, params, _, _, _) -> <fail>
 		where
-				// Check for method in superclass
-				task_superm			:= <nabl-lookup-local-import(|ctx)> m
-				// lookup superclass method type
-			;	task_cSuperMethodType	:= <type-lookup(|ctx)> task_superm
-			;	task_superReturnType	:= <new-task(|ctx)> Rewrite("return-type", task_cSuperMethodType)
-			;	task_superParamTypes	:= <new-task(|ctx)> Rewrite("parameter-types", task_cSuperMethodType)
-			 	// Get the new method parameter types and compare
-    		;	tparams	   := <type-task(|ctx)> params
-    		;	parammatch := <type-match(|ctx, task_superParamTypes)> tparams
-    		 	// Compare return types
-    		;	retmatch:= <type-match(|ctx, task_superReturnType)> rettype
-			 	// Create error(s) and note(s)
-			;	msgoverload	:= ["Cannot overload superclass method ", m]
-			;	msgoverride	:= ["Method ", m, " overrides superclass method of the same name"]
-			;	msginvreturn:= ["Method ", m, " overrides superclass method and must return compatible types"]
-			;	<task-create-error-on-triggers(|ctx, [Success(task_superm), Failure(parammatch)], msgoverload)> m
-			;	<task-create-error-on-triggers(|ctx, [Success(task_superm), Success(parammatch), Failure(retmatch)], msginvreturn)> m
-			;	<task-create-note-on-triggers(|ctx, [Success(task_superm), Success(parammatch), Success(retmatch)], msgoverride)> m		
+			// Check for method in superclass
+			task_superm			:= <nabl-lookup-local-import(|ctx)> m
+			// lookup superclass method type
+		;	task_cSuperMethodType	:= <type-lookup(|ctx)> task_superm
+		;	task_superReturnType	:= <new-task(|ctx)> Rewrite("return-type", task_cSuperMethodType)
+		;	task_superParamTypes	:= <new-task(|ctx)> Rewrite("parameter-types", task_cSuperMethodType)
+		 	// Get the new method parameter types and compare
+    	;	tparams	   := <type-task(|ctx)> params
+    	;	parammatch := <type-match(|ctx, task_superParamTypes)> tparams
+    	 	// Compare return types
+    	;	retmatch:= <type-match(|ctx, task_superReturnType)> rettype
+		 	// Create error(s) and note(s)
+		;	msgoverload	:= ["Cannot overload superclass method ", m]
+		;	msgoverride	:= ["Method ", m, " overrides superclass method of the same name"]
+		;	msginvreturn:= ["Method ", m, " overrides superclass method and must return compatible types"]
+		;	<task-create-error-on-triggers(|ctx, [Success(task_superm), Failure(parammatch)], msgoverload)> m
+		;	<task-create-error-on-triggers(|ctx, [Success(task_superm), Success(parammatch), Failure(retmatch)], msginvreturn)> m
+		;	<task-create-note-on-triggers(|ctx, [Success(task_superm), Success(parammatch), Success(retmatch)], msgoverride)> m		
    	
-   	// Subtyping of parents
-   	 create-type-task(|ctx) :
-     Parent(c) -> ty
-     where
-     	initial_type := <type-is(|ctx)> ClassType(c);
-     	supertypes := <type-lookup(|ctx)> c;
-     	ty := <new-task(|ctx)> Combine([initial_type, supertypes])
+  // Subtyping of parents
+  create-type-task(|ctx) :
+	Parent(c) -> ty
+	where
+		initial_type := <type-is(|ctx)> ClassType(c)
+	;	supertypes := <type-lookup(|ctx)> c
+    ; 	ty := <new-task(|ctx)> Combine([initial_type, supertypes])
+     	
+  // Cyclic inheritance constraint
+  /*nabl-constraint(|ctx):
+  	Parent(c) -> <fail>*/
    		
-   /*** Boilerplate code: rules for subtyping ***/
+  /*** Boilerplate code: rules for subtyping ***/
 
-	create-subtype-task(|ctx):
-	  ("<list:", t1*, t2*) -> <type-is(|ctx, [m])> t*
-	  where 
-	     t* := <zip(create-subtype-task(|ctx, "<:"))> (t1*, t2*)
-	  <+ t* := <map-with-index(create-subtype-task(|ctx, "<:", t2*))> t1*
-	   ; l  := <new-task(|ctx)> Length(t2*)
-	   ; m  := <type-match(|ctx, <length> t1*)> l 
+  create-subtype-task(|ctx):
+  	("<list:", t1*, t2*) -> <type-is(|ctx, [m])> t*
+	where
+		t* := <zip(create-subtype-task(|ctx, "<:"))> (t1*, t2*)
+	<+	t* := <map-with-index(create-subtype-task(|ctx, "<:", t2*))> t1*
+	;	l  := <new-task(|ctx)> Length(t2*)
+	;	m  := <type-match(|ctx, <length> t1*)> l 
 	
-	create-subtype-task(|ctx, op):
+  create-subtype-task(|ctx, op):
 	  (t1, t2) -> <create-subtype-task(|ctx)> (op, t1, t2)
 	
-	create-subtype-task(|ctx, op, t*):
+  create-subtype-task(|ctx, op, t*):
 	  (i, t) -> st
 	  where
 	    t' := <new-task(|ctx)> Index(i, t*)
