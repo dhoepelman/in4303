@@ -32,10 +32,14 @@ class B extends A {
 		b = new B();
 		b = new C();
 		b = new D();
-		return new B();
+		return new E();
 	}
 }
 
 class C extends B {}
 
-class D {}
+class D extends C {}
+class E extends C {}
+
+class Cyclic1 extends Cyclic2 {}
+class Cyclic2 extends Cyclic1 {}

@@ -70,7 +70,11 @@ rules
    	
    	// Subtyping of parents
    	 create-type-task(|ctx) :
-    Parent(c) -> <type-is(|ctx)> ClassType(c)
+     Parent(c) -> ty
+     where
+     	initial_type := <type-is(|ctx)> ClassType(c);
+     	supertypes := <type-lookup(|ctx)> c;
+     	ty := <new-task(|ctx)> Combine([initial_type, supertypes])
    		
    /*** Boilerplate code: rules for subtyping ***/
 

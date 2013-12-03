@@ -26,13 +26,13 @@ rules
     where id
   
   create-type-task(|ctx) :
-    UnExp(operator, exp) -> <type-is(|ctx, [ety1, t62, ty1, ty, eq346])> ty
+    UnExp(operator, exp) -> <type-is(|ctx, [ety1, t64, ty1, ty, eq357])> ty
     where ety1 := <type-task(|ctx)> exp;
-          t62 := <type-task(|ctx)> operator;
-          ty1 := <new-task(|ctx)> Rewrite("proj190", t62);
-          ty := <new-task(|ctx)> Rewrite("proj191", t62);
-          eq346 := <type-match(|ctx, ty1)> ety1;
-          <task-create-error-on-failure(|ctx, eq346, "Incompatible type")> exp
+          t64 := <type-task(|ctx)> operator;
+          ty1 := <new-task(|ctx)> Rewrite("proj196", t64);
+          ty := <new-task(|ctx)> Rewrite("proj197", t64);
+          eq357 := <type-match(|ctx, ty1)> ety1;
+          <task-create-error-on-failure(|ctx, eq357, "Incompatible type")> exp
   
   create-type-task(|ctx) :
     Negation() -> <type-is(|ctx, [])> (Bool(), Bool())
@@ -47,17 +47,17 @@ rules
     where id
   
   create-type-task(|ctx) :
-    BinExp(operator, subexp1, subexp2) -> <type-is(|ctx, [ety1, ety2, t63, ty1, ty2, ty, eq347, eq348])> ty
+    BinExp(operator, subexp1, subexp2) -> <type-is(|ctx, [ety1, ety2, t65, ty1, ty2, ty, eq358, eq359])> ty
     where ety1 := <type-task(|ctx)> subexp1;
           ety2 := <type-task(|ctx)> subexp2;
-          t63 := <type-task(|ctx)> operator;
-          ty1 := <new-task(|ctx)> Rewrite("proj187", t63);
-          ty2 := <new-task(|ctx)> Rewrite("proj188", t63);
-          ty := <new-task(|ctx)> Rewrite("proj189", t63);
-          eq347 := <type-match(|ctx, ty1)> ety1;
-          <task-create-error-on-failure(|ctx, eq347, "Incompatible type")> subexp1;
-          eq348 := <type-match(|ctx, ty2)> ety2;
-          <task-create-error-on-failure(|ctx, eq348, "Incompatible type")> subexp2
+          t65 := <type-task(|ctx)> operator;
+          ty1 := <new-task(|ctx)> Rewrite("proj193", t65);
+          ty2 := <new-task(|ctx)> Rewrite("proj194", t65);
+          ty := <new-task(|ctx)> Rewrite("proj195", t65);
+          eq358 := <type-match(|ctx, ty1)> ety1;
+          <task-create-error-on-failure(|ctx, eq358, "Incompatible type")> subexp1;
+          eq359 := <type-match(|ctx, ty2)> ety2;
+          <task-create-error-on-failure(|ctx, eq359, "Incompatible type")> subexp2
   
   create-type-task(|ctx) :
     LogicalAnd() -> <type-is(|ctx, [])> (Bool(), Bool(), Bool())
@@ -96,74 +96,74 @@ rules
     where tvar := <type-lookup(|ctx)> var;
           tidx := <type-task(|ctx)> idx;
           texp := <type-task(|ctx)> exp;
-          eq349 := <type-match(|ctx, IntArray())> tvar;
-          <task-create-error-on-failure(|ctx, eq349, "Not an array")> var;
-          eq350 := <type-match(|ctx, Int())> tidx;
-          <task-create-error-on-failure(|ctx, eq350, "Array index needs to be an integer")> idx;
-          eq351 := <type-match(|ctx, Int())> texp;
-          <task-create-error-on-failure(|ctx, eq351, "Incompatible array and expression type")> exp
+          eq360 := <type-match(|ctx, IntArray())> tvar;
+          <task-create-error-on-failure(|ctx, eq360, "Not an array")> var;
+          eq361 := <type-match(|ctx, Int())> tidx;
+          <task-create-error-on-failure(|ctx, eq361, "Array index needs to be an integer")> idx;
+          eq362 := <type-match(|ctx, Int())> texp;
+          <task-create-error-on-failure(|ctx, eq362, "Incompatible array and expression type")> exp
   
   nabl-constraint(|ctx) :
     Assign(var, exp) -> <fail>
     where tvar := <type-lookup(|ctx)> var;
           texp := <type-task(|ctx)> exp;
-          subtype68 := <create-subtype-task(|ctx)>("<:", texp, tvar);
-          <task-create-error-on-failure(|ctx, subtype68, "Incompatible variable and expression type")> exp
+          subtype70 := <create-subtype-task(|ctx)>("<:", texp, tvar);
+          <task-create-error-on-failure(|ctx, subtype70, "Incompatible variable and expression type")> exp
   
   nabl-constraint(|ctx) :
     Print(exp) -> <fail>
     where texp := <type-task(|ctx)> exp;
-          eq352 := <type-match(|ctx, Int())> texp;
-          <task-create-error-on-failure(|ctx, eq352, "Incompatible expression type: can only print integers")> exp
+          eq363 := <type-match(|ctx, Int())> texp;
+          <task-create-error-on-failure(|ctx, eq363, "Incompatible expression type: can only print integers")> exp
   
   nabl-constraint(|ctx) :
     While(exp, statements) -> <fail>
     where texp := <type-task(|ctx)> exp;
-          eq353 := <type-match(|ctx, Bool())> texp;
-          <task-create-error-on-failure(|ctx, eq353, "Incompatible expression type: condition must be boolean")> exp
+          eq364 := <type-match(|ctx, Bool())> texp;
+          <task-create-error-on-failure(|ctx, eq364, "Incompatible expression type: condition must be boolean")> exp
   
   nabl-constraint(|ctx) :
     If(exp, ifstmt, elsestmt) -> <fail>
     where texp := <type-task(|ctx)> exp;
-          eq354 := <type-match(|ctx, Bool())> texp;
-          <task-create-error-on-failure(|ctx, eq354, "Incompatible expression type: condition must be boolean")> exp
+          eq365 := <type-match(|ctx, Bool())> texp;
+          <task-create-error-on-failure(|ctx, eq365, "Incompatible expression type: condition must be boolean")> exp
   
   nabl-constraint(|ctx) :
     Method(treturn, mname, params, vars, statements, retexp) -> <fail>
     where tretexp := <type-task(|ctx)> retexp;
-          subtype69 := <create-subtype-task(|ctx)>("<:", tretexp, treturn);
-          <task-create-error-on-failure(|ctx, subtype69, "Incompatible return and expression type")> retexp
+          subtype71 := <create-subtype-task(|ctx)>("<:", tretexp, treturn);
+          <task-create-error-on-failure(|ctx, subtype71, "Incompatible return and expression type")> retexp
   
   create-type-task(|ctx) :
     None() -> <type-is(|ctx, [])> Top()
     where id
   
   create-subtype-task(|ctx) :
-    ("<:", type-used, type-expected) -> or31
-    where eq355 := <type-match(|ctx, type-expected)> type-used;
-          cused := <new-task(|ctx)> Rewrite("proj186", type-used);
+    ("<:", type-used, type-expected) -> or32
+    where eq366 := <type-match(|ctx, type-expected)> type-used;
+          cused := <new-task(|ctx)> Rewrite("proj192", type-used);
           parenttype := <type-lookup(|ctx)> cused;
-          eq356 := <type-match(|ctx, parenttype)> type-expected;
-          or31 := <new-task(|ctx)> Choice([eq355,eq356])
+          eq367 := <type-match(|ctx, parenttype)> type-expected;
+          or32 := <new-task(|ctx)> Choice([eq366,eq367])
   
   
 rules // projections
   
   task-rewrite :
-    ("proj191", (ty1, ty)) -> ty
+    ("proj197", (ty1, ty)) -> ty
   
   task-rewrite :
-    ("proj190", (ty1, ty)) -> ty1
+    ("proj196", (ty1, ty)) -> ty1
   
   task-rewrite :
-    ("proj189", (ty1, ty2, ty)) -> ty
+    ("proj195", (ty1, ty2, ty)) -> ty
   
   task-rewrite :
-    ("proj188", (ty1, ty2, ty)) -> ty2
+    ("proj194", (ty1, ty2, ty)) -> ty2
   
   task-rewrite :
-    ("proj187", (ty1, ty2, ty)) -> ty1
+    ("proj193", (ty1, ty2, ty)) -> ty1
   
   task-rewrite :
-    ("proj186", ClassType(cused)) -> cused
+    ("proj192", ClassType(cused)) -> cused
   
