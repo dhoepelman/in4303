@@ -79,8 +79,13 @@ rules
     ; 	ty := <new-task(|ctx)> Combine([initial_type, supertypes])
      	
   // Cyclic inheritance constraint
-  /*nabl-constraint(|ctx):
-  	Parent(c) -> <fail>*/
+  nabl-constraint(|ctx):
+  	Parent(c) -> <fail>
+  	where
+  		new_type	:= ClassType(c)
+  	;	supertypes	:= <type-lookup(|ctx)> c
+  	;	match		:= <type-match(|ctx, supertypes)> new_type
+  	;	<task-create-error-on-triggers(|ctx, [Success(match)], ["Cyclic inheritance involving ", c])> c
    		
   /*** Boilerplate code: rules for subtyping ***/
 
