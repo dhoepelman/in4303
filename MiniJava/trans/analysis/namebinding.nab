@@ -23,6 +23,8 @@ MainClass(main, mainargs, _):
 	scopes Variable
 Class(c, parent, _, _):
 	defines Class c of type ClassType(c)
+	//defines Class c of type parenttype
+	//	where parent has type parenttype
 	implicitly defines Field This() of type ClassType(c)
 	imports Method, imported Method, Field, imported Field from Class parent
 	scopes Method, Field

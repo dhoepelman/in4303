@@ -43,17 +43,6 @@ type rules
 	VarRef(r): ty
 	where definition of r: ty
 	
-	
-	/* Methods */
-	// Methods calls
-	// Call(exp, callee, params): ty
-	// where definition of callee: ty
-	/*Call(exp, callee, args) : rettype
-		where definition of callee : methodtype
-		and methodtype : (rettype, expectedparamtypes)
-		and args : targs
-		and targs == expectedparamtypes else error "Invalid number of arguments or incompatible argument type(s)" on args*/
-	
 	// Method parameters
 	Param(t, name): t
 	
@@ -94,7 +83,16 @@ type rules
 	/***********
 	 * Subtyping
 	 ***********/
+	 // No parent class
+	 None() : Top()
+	 Parent(c) : ClassType(c)
 	 
 	 // Subtyping operator
 	 ty1 <: ty2
-	 	where ty1 == ty2
+		where ty1 == ty2
+	 /*
+	 ty1 <: ty2
+		where ty1 == ty2
+   			or ty1 => ClassType(c) // extract class name from class type with a pattern match
+  			and c : ctype          // lookup type from class name
+  			and ty2 == ctype       // match type with ty2 */

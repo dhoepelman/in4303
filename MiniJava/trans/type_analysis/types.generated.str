@@ -26,13 +26,13 @@ rules
     where id
   
   create-type-task(|ctx) :
-    UnExp(operator, exp) -> <type-is(|ctx, [ety1, t6, ty1, ty, eq22])> ty
+    UnExp(operator, exp) -> <type-is(|ctx, [ety1, t37, ty1, ty, eq189])> ty
     where ety1 := <type-task(|ctx)> exp;
-          t6 := <type-task(|ctx)> operator;
-          ty1 := <new-task(|ctx)> Rewrite("proj13", t6);
-          ty := <new-task(|ctx)> Rewrite("proj14", t6);
-          eq22 := <type-match(|ctx, ty1)> ety1;
-          <task-create-error-on-failure(|ctx, eq22, "Incompatible type")> exp
+          t37 := <type-task(|ctx)> operator;
+          ty1 := <new-task(|ctx)> Rewrite("proj98", t37);
+          ty := <new-task(|ctx)> Rewrite("proj99", t37);
+          eq189 := <type-match(|ctx, ty1)> ety1;
+          <task-create-error-on-failure(|ctx, eq189, "Incompatible type")> exp
   
   create-type-task(|ctx) :
     Negation() -> <type-is(|ctx, [])> (Bool(), Bool())
@@ -47,17 +47,17 @@ rules
     where id
   
   create-type-task(|ctx) :
-    BinExp(operator, subexp1, subexp2) -> <type-is(|ctx, [ety1, ety2, t7, ty1, ty2, ty, eq23, eq24])> ty
+    BinExp(operator, subexp1, subexp2) -> <type-is(|ctx, [ety1, ety2, t38, ty1, ty2, ty, eq190, eq191])> ty
     where ety1 := <type-task(|ctx)> subexp1;
           ety2 := <type-task(|ctx)> subexp2;
-          t7 := <type-task(|ctx)> operator;
-          ty1 := <new-task(|ctx)> Rewrite("proj10", t7);
-          ty2 := <new-task(|ctx)> Rewrite("proj11", t7);
-          ty := <new-task(|ctx)> Rewrite("proj12", t7);
-          eq23 := <type-match(|ctx, ty1)> ety1;
-          <task-create-error-on-failure(|ctx, eq23, "Incompatible type")> subexp1;
-          eq24 := <type-match(|ctx, ty2)> ety2;
-          <task-create-error-on-failure(|ctx, eq24, "Incompatible type")> subexp2
+          t38 := <type-task(|ctx)> operator;
+          ty1 := <new-task(|ctx)> Rewrite("proj95", t38);
+          ty2 := <new-task(|ctx)> Rewrite("proj96", t38);
+          ty := <new-task(|ctx)> Rewrite("proj97", t38);
+          eq190 := <type-match(|ctx, ty1)> ety1;
+          <task-create-error-on-failure(|ctx, eq190, "Incompatible type")> subexp1;
+          eq191 := <type-match(|ctx, ty2)> ety2;
+          <task-create-error-on-failure(|ctx, eq191, "Incompatible type")> subexp2
   
   create-type-task(|ctx) :
     LogicalAnd() -> <type-is(|ctx, [])> (Bool(), Bool(), Bool())
@@ -96,63 +96,71 @@ rules
     where tvar := <type-lookup(|ctx)> var;
           tidx := <type-task(|ctx)> idx;
           texp := <type-task(|ctx)> exp;
-          eq25 := <type-match(|ctx, IntArray())> tvar;
-          <task-create-error-on-failure(|ctx, eq25, "Not an array")> var;
-          eq26 := <type-match(|ctx, Int())> tidx;
-          <task-create-error-on-failure(|ctx, eq26, "Array index needs to be an integer")> idx;
-          eq27 := <type-match(|ctx, Int())> texp;
-          <task-create-error-on-failure(|ctx, eq27, "Incompatible array and expression type")> exp
+          eq192 := <type-match(|ctx, IntArray())> tvar;
+          <task-create-error-on-failure(|ctx, eq192, "Not an array")> var;
+          eq193 := <type-match(|ctx, Int())> tidx;
+          <task-create-error-on-failure(|ctx, eq193, "Array index needs to be an integer")> idx;
+          eq194 := <type-match(|ctx, Int())> texp;
+          <task-create-error-on-failure(|ctx, eq194, "Incompatible array and expression type")> exp
   
   nabl-constraint(|ctx) :
     Assign(var, exp) -> <fail>
     where t := <type-lookup(|ctx)> var;
           texp := <type-task(|ctx)> exp;
-          eq28 := <type-match(|ctx, t)> texp;
-          <task-create-error-on-failure(|ctx, eq28, "Incompatible variable and expression type")> exp
+          subtype36 := <create-subtype-task(|ctx)>("<:", t, texp);
+          <task-create-error-on-failure(|ctx, subtype36, "Incompatible variable and expression type")> exp
   
   nabl-constraint(|ctx) :
     Print(exp) -> <fail>
     where texp := <type-task(|ctx)> exp;
-          eq29 := <type-match(|ctx, Int())> texp;
-          <task-create-error-on-failure(|ctx, eq29, "Incompatible expression type: can only print integers")> exp
+          eq195 := <type-match(|ctx, Int())> texp;
+          <task-create-error-on-failure(|ctx, eq195, "Incompatible expression type: can only print integers")> exp
   
   nabl-constraint(|ctx) :
     While(exp, statements) -> <fail>
     where texp := <type-task(|ctx)> exp;
-          eq30 := <type-match(|ctx, Bool())> texp;
-          <task-create-error-on-failure(|ctx, eq30, "Incompatible expression type: condition must be boolean")> exp
+          eq196 := <type-match(|ctx, Bool())> texp;
+          <task-create-error-on-failure(|ctx, eq196, "Incompatible expression type: condition must be boolean")> exp
   
   nabl-constraint(|ctx) :
     If(exp, ifstmt, elsestmt) -> <fail>
     where texp := <type-task(|ctx)> exp;
-          eq31 := <type-match(|ctx, Bool())> texp;
-          <task-create-error-on-failure(|ctx, eq31, "Incompatible expression type: condition must be boolean")> exp
+          eq197 := <type-match(|ctx, Bool())> texp;
+          <task-create-error-on-failure(|ctx, eq197, "Incompatible expression type: condition must be boolean")> exp
   
   nabl-constraint(|ctx) :
     Method(treturn, mname, params, vars, statements, retexp) -> <fail>
     where tretexp := <type-task(|ctx)> retexp;
-          eq32 := <type-match(|ctx, treturn)> tretexp;
-          <task-create-error-on-failure(|ctx, eq32, "Incompatible return and expression type")> retexp
+          subtype37 := <create-subtype-task(|ctx)>("<:", treturn, tretexp);
+          <task-create-error-on-failure(|ctx, subtype37, "Incompatible return and expression type")> retexp
+  
+  create-type-task(|ctx) :
+    None() -> <type-is(|ctx, [])> Top()
+    where id
+  
+  create-type-task(|ctx) :
+    Parent(c) -> <type-is(|ctx, [])> ClassType(c)
+    where id
   
   create-subtype-task(|ctx) :
-    ("<:", ty1, ty2) -> eq33
-    where eq33 := <type-match(|ctx, ty2)> ty1
+    ("<:", ty1, ty2) -> eq198
+    where eq198 := <type-match(|ctx, ty2)> ty1
   
   
 rules // projections
   
   task-rewrite :
-    ("proj14", (ty1, ty)) -> ty
+    ("proj99", (ty1, ty)) -> ty
   
   task-rewrite :
-    ("proj13", (ty1, ty)) -> ty1
+    ("proj98", (ty1, ty)) -> ty1
   
   task-rewrite :
-    ("proj12", (ty1, ty2, ty)) -> ty
+    ("proj97", (ty1, ty2, ty)) -> ty
   
   task-rewrite :
-    ("proj11", (ty1, ty2, ty)) -> ty2
+    ("proj96", (ty1, ty2, ty)) -> ty2
   
   task-rewrite :
-    ("proj10", (ty1, ty2, ty)) -> ty1
+    ("proj95", (ty1, ty2, ty)) -> ty1
   
