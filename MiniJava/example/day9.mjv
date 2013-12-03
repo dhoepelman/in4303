@@ -8,13 +8,13 @@ class A  {}
 
 class B extends A {
 	
-	public int foobar(int a) {
+	public int foobar(B a) {
 		return 1;
 	}
 	
 	public int test() {
 		int a;
-		a = this.foobar(true);
+		a = this.foobar(new B());
 		return a;
 	}
 	
