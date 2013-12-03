@@ -30,7 +30,7 @@ test missing method [[
 			return this.[[bar]]();
 		}
 	}
-]] 1 error
+]] 2 errors
 
 test overloaded method [[
 	class A {

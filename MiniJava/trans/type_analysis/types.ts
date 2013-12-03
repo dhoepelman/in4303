@@ -90,3 +90,11 @@ type rules
 	Method(treturn, mname, params, vars, statements, retexp) :-
 		where	retexp: tretexp
 			and	tretexp == treturn else error "Incompatible return and expression type" on retexp
+			
+	/***********
+	 * Subtyping
+	 ***********/
+	 
+	 // Subtyping operator
+	 ty1 <: ty2
+	 	where ty1 == ty2
