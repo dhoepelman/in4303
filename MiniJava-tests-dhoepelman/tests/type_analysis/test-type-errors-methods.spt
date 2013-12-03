@@ -65,7 +65,6 @@ test method returns invalid superclass [[
 		public B foo() {
 			return [[new A()]];
 		}
-	}
 ]] 1 error
 
 setup MiniJavaEnd [[

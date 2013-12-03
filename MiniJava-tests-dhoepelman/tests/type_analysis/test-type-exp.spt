@@ -22,12 +22,12 @@ test exp add [[
 test exp and [[
 	boolean b;
 	b = [[true && false]];
-]] run get-type to Boolean()
+]] run get-type to Bool()
 
 test exp lt [[
 	boolean b;
 	b = [[1 < 2]];
-]] run get-type to Boolean()
+]] run get-type to Bool()
 
 test exp Mul [[
 	int b;
