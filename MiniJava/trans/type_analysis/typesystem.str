@@ -67,6 +67,10 @@ rules
 			;	<task-create-error-on-triggers(|ctx, [Success(task_superm), Failure(parammatch)], msgoverload)> m
 			;	<task-create-error-on-triggers(|ctx, [Success(task_superm), Success(parammatch), Failure(retmatch)], msginvreturn)> m
 			;	<task-create-note-on-triggers(|ctx, [Success(task_superm), Success(parammatch), Success(retmatch)], msgoverride)> m		
+   	
+   	// Subtyping of parents
+   	 create-type-task(|ctx) :
+    Parent(c) -> <type-is(|ctx)> ClassType(c)
    		
    /*** Boilerplate code: rules for subtyping ***/
 

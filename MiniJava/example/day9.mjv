@@ -14,7 +14,10 @@ class B extends A {
 	
 	public int test() {
 		int a;
+		a = this.foobar(new A());
 		a = this.foobar(new B());
+		a = this.foobar(new C());
+		a = this.foobar(new D());
 		return a;
 	}
 	

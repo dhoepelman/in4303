@@ -86,7 +86,6 @@ type rules
 	 ***********/
 	 // No parent class
 	 None() : Top()
-	 Parent(c) : ClassType(c)
 	 
 	 // Subtyping operator
 	 // Definition: S <: T  means S is a subtype of T or equivalent "S can be safely used when T is expected"
