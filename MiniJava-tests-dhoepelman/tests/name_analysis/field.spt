@@ -95,7 +95,7 @@ test error on missing field defintion [[
 			return [[foo]];
 		}
 	}
-]] 1 error
+]] /resolved/
 
 test warning on unused field [[
   class A {
