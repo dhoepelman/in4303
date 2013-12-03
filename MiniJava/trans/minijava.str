@@ -49,7 +49,7 @@ rules // Editor services
 	// Returns "hover help" information for a particular node in the editor.
 	// For references, this rule is invoked using the resolved term.
 	editor-hover:
-		(target, position, ast, path, project-path) -> ast2
+		(target, position, ast, path, project-path) -> ["Type: ", t, "AST:", ast2] // ["Type: ", " AST: "]
 		where
 				ast2 := <desugar-all> target
 			;	t := <get-type> target
