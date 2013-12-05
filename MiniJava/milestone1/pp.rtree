@@ -1,0 +1,2974 @@
+Module(
+  "pp"
+, [ Imports(
+      [ Import("libstratego-gpp")
+      , Import("libstratego-lib")
+      , Import("milestone1/MiniJava")
+      , Import("milestone1/MiniJava-parenthesize")
+      , Import("lib/runtime/tmpl/pp")
+      ]
+    )
+  , Rules(
+      [ SDefT(
+          "pp-builder"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(
+                Tuple(
+                  [ Var("selected")
+                  , Var("position")
+                  , Var("ast")
+                  , Var("path")
+                  , Var("project-path")
+                  ]
+                )
+              )
+            , NoAnnoList(Tuple([Var("filename"), Var("result")]))
+            , [ WithClause(
+                  Seq(
+                    Assign(
+                      Var("filename")
+                    , App(
+                        CallT(SVar("guarantee-extension"), [], [NoAnnoList(Str("\"mjv\""))])
+                      , Var("path")
+                      )
+                    )
+                  , Seq(
+                      Assign(
+                        Var("ast'")
+                      , App(CallT(SVar("parenthesize-MiniJava"), [], []), Var("ast"))
+                      )
+                    , Seq(
+                        Assign(
+                          Var("box")
+                        , NoAnnoList(
+                            Op(
+                              "V"
+                            , [ NoAnnoList(List([]))
+                              , App(CallT(SVar("prettyprint-Program"), [], []), Var("ast'"))
+                              ]
+                            )
+                          )
+                        )
+                      , Assign(
+                          Var("result")
+                        , App(
+                            CallT(SVar("box2text-string"), [], [NoAnnoList(Int("100"))])
+                          , Var("box")
+                          )
+                        )
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      ]
+    )
+  , Strategies(
+      [ SDefT(
+          "prettyprint-Statement"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("Block", [Var("a")]))
+            , NoAnnoList(
+                List(
+                  [ NoAnnoList(
+                      Op(
+                        "H"
+                      , [ NoAnnoList(
+                            List(
+                              [ NoAnnoList(
+                                  Op(
+                                    "SOpt"
+                                  , [NoAnnoList(Op("HS", [])), NoAnnoList(Str("\"0\""))]
+                                  )
+                                )
+                              ]
+                            )
+                          )
+                        , NoAnnoList(
+                            List(
+                              [NoAnnoList(Op("S", [NoAnnoList(Str("\"{\""))]))]
+                            )
+                          )
+                        ]
+                      )
+                    )
+                  , Var("a99")
+                  , NoAnnoList(
+                      Op(
+                        "H"
+                      , [ NoAnnoList(
+                            List(
+                              [ NoAnnoList(
+                                  Op(
+                                    "SOpt"
+                                  , [NoAnnoList(Op("HS", [])), NoAnnoList(Str("\"0\""))]
+                                  )
+                                )
+                              ]
+                            )
+                          )
+                        , NoAnnoList(
+                            List(
+                              [NoAnnoList(Op("S", [NoAnnoList(Str("\"}\""))]))]
+                            )
+                          )
+                        ]
+                      )
+                    )
+                  ]
+                )
+              )
+            , [ WhereClause(
+                  Assign(
+                    Var("a99")
+                  , App(
+                      CallT(SVar("pp-indent"), [], [NoAnnoList(Str("\"2\""))])
+                    , NoAnnoList(
+                        List(
+                          [ App(
+                              CallT(
+                                SVar("pp-V-list")
+                              , [CallT(SVar("prettyprint-Statement"), [], [])]
+                              , []
+                              )
+                            , Var("a")
+                            )
+                          ]
+                        )
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      , SDefT(
+          "prettyprint-Statement"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("Assign", [Var("a"), Var("b")]))
+            , NoAnnoList(
+                List(
+                  [ NoAnnoList(
+                      Op(
+                        "H"
+                      , [ NoAnnoList(
+                            List(
+                              [ NoAnnoList(
+                                  Op(
+                                    "SOpt"
+                                  , [NoAnnoList(Op("HS", [])), NoAnnoList(Str("\"0\""))]
+                                  )
+                                )
+                              ]
+                            )
+                          )
+                        , NoAnnoList(
+                            List(
+                              [ Var("a100")
+                              , NoAnnoList(Op("S", [NoAnnoList(Str("\" = \""))]))
+                              , Var("b54")
+                              , NoAnnoList(Op("S", [NoAnnoList(Str("\";\""))]))
+                              ]
+                            )
+                          )
+                        ]
+                      )
+                    )
+                  ]
+                )
+              )
+            , [ WhereClause(
+                  Assign(
+                    Var("a100")
+                  , App(
+                      CallT(
+                        SVar("pp-one-Z")
+                      , [CallT(SVar("prettyprint-VarRef"), [], [])]
+                      , []
+                      )
+                    , Var("a")
+                    )
+                  )
+                )
+              , WhereClause(
+                  Assign(
+                    Var("b54")
+                  , App(
+                      CallT(
+                        SVar("pp-one-Z")
+                      , [CallT(SVar("prettyprint-Exp"), [], [])]
+                      , []
+                      )
+                    , Var("b")
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      , SDefT(
+          "prettyprint-Statement"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(
+                Op(
+                  "ArrayAssign"
+                , [Var("a"), Var("b"), Var("c")]
+                )
+              )
+            , NoAnnoList(
+                List(
+                  [ NoAnnoList(
+                      Op(
+                        "H"
+                      , [ NoAnnoList(
+                            List(
+                              [ NoAnnoList(
+                                  Op(
+                                    "SOpt"
+                                  , [NoAnnoList(Op("HS", [])), NoAnnoList(Str("\"0\""))]
+                                  )
+                                )
+                              ]
+                            )
+                          )
+                        , NoAnnoList(
+                            List(
+                              [ Var("a101")
+                              , NoAnnoList(Op("S", [NoAnnoList(Str("\"[\""))]))
+                              , Var("b55")
+                              , NoAnnoList(Op("S", [NoAnnoList(Str("\"] = \""))]))
+                              , Var("c20")
+                              , NoAnnoList(Op("S", [NoAnnoList(Str("\";\""))]))
+                              ]
+                            )
+                          )
+                        ]
+                      )
+                    )
+                  ]
+                )
+              )
+            , [ WhereClause(
+                  Assign(
+                    Var("a101")
+                  , App(
+                      CallT(
+                        SVar("pp-one-Z")
+                      , [CallT(SVar("prettyprint-VarRef"), [], [])]
+                      , []
+                      )
+                    , Var("a")
+                    )
+                  )
+                )
+              , WhereClause(
+                  Assign(
+                    Var("b55")
+                  , App(
+                      CallT(
+                        SVar("pp-one-Z")
+                      , [CallT(SVar("prettyprint-Exp"), [], [])]
+                      , []
+                      )
+                    , Var("b")
+                    )
+                  )
+                )
+              , WhereClause(
+                  Assign(
+                    Var("c20")
+                  , App(
+                      CallT(
+                        SVar("pp-one-Z")
+                      , [CallT(SVar("prettyprint-Exp"), [], [])]
+                      , []
+                      )
+                    , Var("c")
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      , SDefT(
+          "prettyprint-Statement"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(
+                Op(
+                  "If"
+                , [Var("a"), Var("b"), Var("c")]
+                )
+              )
+            , NoAnnoList(
+                List(
+                  [ NoAnnoList(
+                      Op(
+                        "H"
+                      , [ NoAnnoList(
+                            List(
+                              [ NoAnnoList(
+                                  Op(
+                                    "SOpt"
+                                  , [NoAnnoList(Op("HS", [])), NoAnnoList(Str("\"0\""))]
+                                  )
+                                )
+                              ]
+                            )
+                          )
+                        , NoAnnoList(
+                            List(
+                              [ NoAnnoList(Op("S", [NoAnnoList(Str("\"if (\""))]))
+                              , Var("a102")
+                              , NoAnnoList(Op("S", [NoAnnoList(Str("\") \""))]))
+                              , Var("b56")
+                              ]
+                            )
+                          )
+                        ]
+                      )
+                    )
+                  , NoAnnoList(
+                      Op(
+                        "H"
+                      , [ NoAnnoList(
+                            List(
+                              [ NoAnnoList(
+                                  Op(
+                                    "SOpt"
+                                  , [NoAnnoList(Op("HS", [])), NoAnnoList(Str("\"0\""))]
+                                  )
+                                )
+                              ]
+                            )
+                          )
+                        , NoAnnoList(
+                            List(
+                              [NoAnnoList(Op("S", [NoAnnoList(Str("\"else \""))])), Var("c21")]
+                            )
+                          )
+                        ]
+                      )
+                    )
+                  ]
+                )
+              )
+            , [ WhereClause(
+                  Assign(
+                    Var("a102")
+                  , App(
+                      CallT(
+                        SVar("pp-one-Z")
+                      , [CallT(SVar("prettyprint-Exp"), [], [])]
+                      , []
+                      )
+                    , Var("a")
+                    )
+                  )
+                )
+              , WhereClause(
+                  Assign(
+                    Var("b56")
+                  , App(
+                      CallT(
+                        SVar("pp-one-Z")
+                      , [CallT(SVar("prettyprint-Statement"), [], [])]
+                      , []
+                      )
+                    , Var("b")
+                    )
+                  )
+                )
+              , WhereClause(
+                  Assign(
+                    Var("c21")
+                  , App(
+                      CallT(
+                        SVar("pp-one-Z")
+                      , [CallT(SVar("prettyprint-Statement"), [], [])]
+                      , []
+                      )
+                    , Var("c")
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      , SDefT(
+          "prettyprint-Statement"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("While", [Var("a"), Var("b")]))
+            , NoAnnoList(
+                List(
+                  [ NoAnnoList(
+                      Op(
+                        "H"
+                      , [ NoAnnoList(
+                            List(
+                              [ NoAnnoList(
+                                  Op(
+                                    "SOpt"
+                                  , [NoAnnoList(Op("HS", [])), NoAnnoList(Str("\"0\""))]
+                                  )
+                                )
+                              ]
+                            )
+                          )
+                        , NoAnnoList(
+                            List(
+                              [ NoAnnoList(Op("S", [NoAnnoList(Str("\"while (\""))]))
+                              , Var("a103")
+                              , NoAnnoList(Op("S", [NoAnnoList(Str("\") \""))]))
+                              , Var("b57")
+                              ]
+                            )
+                          )
+                        ]
+                      )
+                    )
+                  ]
+                )
+              )
+            , [ WhereClause(
+                  Assign(
+                    Var("a103")
+                  , App(
+                      CallT(
+                        SVar("pp-one-Z")
+                      , [CallT(SVar("prettyprint-Exp"), [], [])]
+                      , []
+                      )
+                    , Var("a")
+                    )
+                  )
+                )
+              , WhereClause(
+                  Assign(
+                    Var("b57")
+                  , App(
+                      CallT(
+                        SVar("pp-one-Z")
+                      , [CallT(SVar("prettyprint-Statement"), [], [])]
+                      , []
+                      )
+                    , Var("b")
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      , SDefT(
+          "prettyprint-Statement"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("Print", [Var("a")]))
+            , NoAnnoList(
+                List(
+                  [ NoAnnoList(
+                      Op(
+                        "H"
+                      , [ NoAnnoList(
+                            List(
+                              [ NoAnnoList(
+                                  Op(
+                                    "SOpt"
+                                  , [NoAnnoList(Op("HS", [])), NoAnnoList(Str("\"0\""))]
+                                  )
+                                )
+                              ]
+                            )
+                          )
+                        , NoAnnoList(
+                            List(
+                              [ NoAnnoList(Op("S", [NoAnnoList(Str("\"System.out.println(\""))]))
+                              , Var("a104")
+                              , NoAnnoList(Op("S", [NoAnnoList(Str("\");\""))]))
+                              ]
+                            )
+                          )
+                        ]
+                      )
+                    )
+                  ]
+                )
+              )
+            , [ WhereClause(
+                  Assign(
+                    Var("a104")
+                  , App(
+                      CallT(
+                        SVar("pp-one-Z")
+                      , [CallT(SVar("prettyprint-Exp"), [], [])]
+                      , []
+                      )
+                    , Var("a")
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      , SDefT(
+          "prettyprint-example"
+        , []
+        , []
+        , CallT(SVar("prettyprint-Statement"), [], [])
+        )
+      ]
+    )
+  , Strategies(
+      [ SDefT(
+          "prettyprint-Start"
+        , []
+        , []
+        , SRule(
+            Rule(
+              Var("a")
+            , NoAnnoList(
+                List(
+                  [ NoAnnoList(
+                      Op(
+                        "H"
+                      , [ NoAnnoList(
+                            List(
+                              [ NoAnnoList(
+                                  Op(
+                                    "SOpt"
+                                  , [NoAnnoList(Op("HS", [])), NoAnnoList(Str("\"0\""))]
+                                  )
+                                )
+                              ]
+                            )
+                          )
+                        , NoAnnoList(List([Var("a105")]))
+                        ]
+                      )
+                    )
+                  ]
+                )
+              )
+            , [ WhereClause(
+                  Assign(
+                    Var("a105")
+                  , App(
+                      CallT(
+                        SVar("pp-one-Z")
+                      , [CallT(SVar("prettyprint-Program"), [], [])]
+                      , []
+                      )
+                    , Var("a")
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      , SDefT(
+          "prettyprint-Program"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("Program", [Var("a"), Var("b")]))
+            , NoAnnoList(
+                List(
+                  [ NoAnnoList(
+                      Op(
+                        "H"
+                      , [ NoAnnoList(
+                            List(
+                              [ NoAnnoList(
+                                  Op(
+                                    "SOpt"
+                                  , [NoAnnoList(Op("HS", [])), NoAnnoList(Str("\"0\""))]
+                                  )
+                                )
+                              ]
+                            )
+                          )
+                        , NoAnnoList(List([Var("a106")]))
+                        ]
+                      )
+                    )
+                  , NoAnnoList(
+                      Op(
+                        "H"
+                      , [ NoAnnoList(List([]))
+                        , NoAnnoList(
+                            List(
+                              [NoAnnoList(Op("S", [NoAnnoList(Str("\"\""))]))]
+                            )
+                          )
+                        ]
+                      )
+                    )
+                  , NoAnnoList(
+                      Op(
+                        "H"
+                      , [ NoAnnoList(
+                            List(
+                              [ NoAnnoList(
+                                  Op(
+                                    "SOpt"
+                                  , [NoAnnoList(Op("HS", [])), NoAnnoList(Str("\"0\""))]
+                                  )
+                                )
+                              ]
+                            )
+                          )
+                        , NoAnnoList(List([Var("b58")]))
+                        ]
+                      )
+                    )
+                  ]
+                )
+              )
+            , [ WhereClause(
+                  Assign(
+                    Var("a106")
+                  , App(
+                      CallT(
+                        SVar("pp-one-Z")
+                      , [CallT(SVar("prettyprint-MainClass"), [], [])]
+                      , []
+                      )
+                    , Var("a")
+                    )
+                  )
+                )
+              , WhereClause(
+                  Assign(
+                    Var("b58")
+                  , App(
+                      CallT(
+                        SVar("pp-V-list")
+                      , [CallT(SVar("prettyprint-ClassDecl"), [], [])]
+                      , [NoAnnoList(Str("\"1\""))]
+                      )
+                    , Var("b")
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      , SDefT(
+          "prettyprint-MainClass"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(
+                Op(
+                  "MainClass"
+                , [Var("a"), Var("b"), Var("c")]
+                )
+              )
+            , NoAnnoList(
+                List(
+                  [ NoAnnoList(
+                      Op(
+                        "H"
+                      , [ NoAnnoList(
+                            List(
+                              [ NoAnnoList(
+                                  Op(
+                                    "SOpt"
+                                  , [NoAnnoList(Op("HS", [])), NoAnnoList(Str("\"0\""))]
+                                  )
+                                )
+                              ]
+                            )
+                          )
+                        , NoAnnoList(
+                            List(
+                              [ NoAnnoList(Op("S", [NoAnnoList(Str("\"class \""))]))
+                              , Var("a107")
+                              , NoAnnoList(Op("S", [NoAnnoList(Str("\" {\""))]))
+                              ]
+                            )
+                          )
+                        ]
+                      )
+                    )
+                  , Var("b59")
+                  , Var("c22")
+                  , Var("a108")
+                  , NoAnnoList(
+                      Op(
+                        "H"
+                      , [ NoAnnoList(
+                            List(
+                              [ NoAnnoList(
+                                  Op(
+                                    "SOpt"
+                                  , [NoAnnoList(Op("HS", [])), NoAnnoList(Str("\"0\""))]
+                                  )
+                                )
+                              ]
+                            )
+                          )
+                        , NoAnnoList(
+                            List(
+                              [NoAnnoList(Op("S", [NoAnnoList(Str("\"}\""))]))]
+                            )
+                          )
+                        ]
+                      )
+                    )
+                  ]
+                )
+              )
+            , [ WhereClause(
+                  Assign(
+                    Var("a107")
+                  , App(
+                      CallT(
+                        SVar("pp-one-Z")
+                      , [CallT(SVar("prettyprint-ID"), [], [])]
+                      , []
+                      )
+                    , Var("a")
+                    )
+                  )
+                )
+              , WhereClause(
+                  Assign(
+                    Var("b59")
+                  , App(
+                      CallT(SVar("pp-indent"), [], [NoAnnoList(Str("\"2\""))])
+                    , NoAnnoList(
+                        List(
+                          [ NoAnnoList(Op("S", [NoAnnoList(Str("\"public static void main (String[] \""))]))
+                          , App(
+                              CallT(
+                                SVar("pp-one-Z")
+                              , [CallT(SVar("prettyprint-ID"), [], [])]
+                              , []
+                              )
+                            , Var("b")
+                            )
+                          , NoAnnoList(Op("S", [NoAnnoList(Str("\") {\""))]))
+                          ]
+                        )
+                      )
+                    )
+                  )
+                )
+              , WhereClause(
+                  Assign(
+                    Var("c22")
+                  , App(
+                      CallT(SVar("pp-indent"), [], [NoAnnoList(Str("\"4\""))])
+                    , NoAnnoList(
+                        List(
+                          [ App(
+                              CallT(
+                                SVar("pp-one-Z")
+                              , [CallT(SVar("prettyprint-Statement"), [], [])]
+                              , []
+                              )
+                            , Var("c")
+                            )
+                          ]
+                        )
+                      )
+                    )
+                  )
+                )
+              , WhereClause(
+                  Assign(
+                    Var("a108")
+                  , App(
+                      CallT(SVar("pp-indent"), [], [NoAnnoList(Str("\"2\""))])
+                    , NoAnnoList(
+                        List(
+                          [NoAnnoList(Op("S", [NoAnnoList(Str("\"}\""))]))]
+                        )
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      , SDefT(
+          "prettyprint-example"
+        , []
+        , []
+        , CallT(SVar("prettyprint-Start"), [], [])
+        )
+      , SDefT(
+          "prettyprint-example"
+        , []
+        , []
+        , CallT(SVar("prettyprint-Program"), [], [])
+        )
+      , SDefT(
+          "prettyprint-example"
+        , []
+        , []
+        , CallT(SVar("prettyprint-MainClass"), [], [])
+        )
+      ]
+    )
+  , Strategies(
+      [ SDefT(
+          "prettyprint-INT"
+        , []
+        , []
+        , Build(
+            NoAnnoList(
+              List(
+                [ NoAnnoList(
+                    Op(
+                      "S"
+                    , [RootApp(CallT(SVar("is-string"), [], []))]
+                    )
+                  )
+                ]
+              )
+            )
+          )
+        )
+      , SDefT(
+          "prettyprint-ID"
+        , []
+        , []
+        , Build(
+            NoAnnoList(
+              List(
+                [ NoAnnoList(
+                    Op(
+                      "S"
+                    , [RootApp(CallT(SVar("is-string"), [], []))]
+                    )
+                  )
+                ]
+              )
+            )
+          )
+        )
+      , SDefT(
+          "prettyprint-MainID"
+        , []
+        , []
+        , Build(
+            NoAnnoList(
+              List(
+                [ NoAnnoList(
+                    Op(
+                      "S"
+                    , [RootApp(CallT(SVar("is-string"), [], []))]
+                    )
+                  )
+                ]
+              )
+            )
+          )
+        )
+      , SDefT(
+          "prettyprint-EOF"
+        , []
+        , []
+        , Build(
+            NoAnnoList(
+              List(
+                [ NoAnnoList(
+                    Op(
+                      "S"
+                    , [RootApp(CallT(SVar("is-string"), [], []))]
+                    )
+                  )
+                ]
+              )
+            )
+          )
+        )
+      , SDefT(
+          "prettyprint-BlockComment"
+        , []
+        , []
+        , Build(
+            NoAnnoList(
+              List(
+                [ NoAnnoList(
+                    Op(
+                      "S"
+                    , [RootApp(CallT(SVar("is-string"), [], []))]
+                    )
+                  )
+                ]
+              )
+            )
+          )
+        )
+      , SDefT(
+          "prettyprint-CommPart"
+        , []
+        , []
+        , Build(
+            NoAnnoList(
+              List(
+                [ NoAnnoList(
+                    Op(
+                      "S"
+                    , [RootApp(CallT(SVar("is-string"), [], []))]
+                    )
+                  )
+                ]
+              )
+            )
+          )
+        )
+      , SDefT(
+          "prettyprint-Asterisk"
+        , []
+        , []
+        , Build(
+            NoAnnoList(
+              List(
+                [ NoAnnoList(
+                    Op(
+                      "S"
+                    , [RootApp(CallT(SVar("is-string"), [], []))]
+                    )
+                  )
+                ]
+              )
+            )
+          )
+        )
+      , SDefT(
+          "prettyprint-Slash"
+        , []
+        , []
+        , Build(
+            NoAnnoList(
+              List(
+                [ NoAnnoList(
+                    Op(
+                      "S"
+                    , [RootApp(CallT(SVar("is-string"), [], []))]
+                    )
+                  )
+                ]
+              )
+            )
+          )
+        )
+      , SDefT(
+          "prettyprint-example"
+        , []
+        , []
+        , CallT(SVar("prettyprint-INT"), [], [])
+        )
+      , SDefT(
+          "prettyprint-example"
+        , []
+        , []
+        , CallT(SVar("prettyprint-ID"), [], [])
+        )
+      , SDefT(
+          "prettyprint-example"
+        , []
+        , []
+        , CallT(SVar("prettyprint-MainID"), [], [])
+        )
+      , SDefT(
+          "prettyprint-example"
+        , []
+        , []
+        , CallT(SVar("prettyprint-EOF"), [], [])
+        )
+      , SDefT(
+          "prettyprint-example"
+        , []
+        , []
+        , CallT(SVar("prettyprint-BlockComment"), [], [])
+        )
+      , SDefT(
+          "prettyprint-example"
+        , []
+        , []
+        , CallT(SVar("prettyprint-CommPart"), [], [])
+        )
+      , SDefT(
+          "prettyprint-example"
+        , []
+        , []
+        , CallT(SVar("prettyprint-Asterisk"), [], [])
+        )
+      , SDefT(
+          "prettyprint-example"
+        , []
+        , []
+        , CallT(SVar("prettyprint-Slash"), [], [])
+        )
+      ]
+    )
+  , Strategies(
+      [ SDefT(
+          "prettyprint-ID"
+        , []
+        , []
+        , Build(
+            NoAnnoList(
+              List(
+                [ NoAnnoList(
+                    Op(
+                      "S"
+                    , [RootApp(CallT(SVar("is-string"), [], []))]
+                    )
+                  )
+                ]
+              )
+            )
+          )
+        )
+      , SDefT(
+          "prettyprint-example"
+        , []
+        , []
+        , CallT(SVar("prettyprint-ID"), [], [])
+        )
+      ]
+    )
+  , Strategies(
+      [ SDefT(
+          "prettyprint-Exp"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("True", []))
+            , NoAnnoList(
+                List(
+                  [ NoAnnoList(
+                      Op(
+                        "H"
+                      , [ NoAnnoList(
+                            List(
+                              [ NoAnnoList(
+                                  Op(
+                                    "SOpt"
+                                  , [NoAnnoList(Op("HS", [])), NoAnnoList(Str("\"0\""))]
+                                  )
+                                )
+                              ]
+                            )
+                          )
+                        , NoAnnoList(
+                            List(
+                              [NoAnnoList(Op("S", [NoAnnoList(Str("\"true\""))]))]
+                            )
+                          )
+                        ]
+                      )
+                    )
+                  ]
+                )
+              )
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "prettyprint-Exp"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("False", []))
+            , NoAnnoList(
+                List(
+                  [ NoAnnoList(
+                      Op(
+                        "H"
+                      , [ NoAnnoList(
+                            List(
+                              [ NoAnnoList(
+                                  Op(
+                                    "SOpt"
+                                  , [NoAnnoList(Op("HS", [])), NoAnnoList(Str("\"0\""))]
+                                  )
+                                )
+                              ]
+                            )
+                          )
+                        , NoAnnoList(
+                            List(
+                              [NoAnnoList(Op("S", [NoAnnoList(Str("\"false\""))]))]
+                            )
+                          )
+                        ]
+                      )
+                    )
+                  ]
+                )
+              )
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "prettyprint-Exp"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("This", []))
+            , NoAnnoList(
+                List(
+                  [ NoAnnoList(
+                      Op(
+                        "H"
+                      , [ NoAnnoList(
+                            List(
+                              [ NoAnnoList(
+                                  Op(
+                                    "SOpt"
+                                  , [NoAnnoList(Op("HS", [])), NoAnnoList(Str("\"0\""))]
+                                  )
+                                )
+                              ]
+                            )
+                          )
+                        , NoAnnoList(
+                            List(
+                              [NoAnnoList(Op("S", [NoAnnoList(Str("\"this\""))]))]
+                            )
+                          )
+                        ]
+                      )
+                    )
+                  ]
+                )
+              )
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "prettyprint-VarRef"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("VarRef", [Var("a")]))
+            , NoAnnoList(
+                List(
+                  [ NoAnnoList(
+                      Op(
+                        "H"
+                      , [ NoAnnoList(
+                            List(
+                              [ NoAnnoList(
+                                  Op(
+                                    "SOpt"
+                                  , [NoAnnoList(Op("HS", [])), NoAnnoList(Str("\"0\""))]
+                                  )
+                                )
+                              ]
+                            )
+                          )
+                        , NoAnnoList(List([Var("a109")]))
+                        ]
+                      )
+                    )
+                  ]
+                )
+              )
+            , [ WhereClause(
+                  Assign(
+                    Var("a109")
+                  , App(
+                      CallT(
+                        SVar("pp-one-Z")
+                      , [CallT(SVar("prettyprint-ID"), [], [])]
+                      , []
+                      )
+                    , Var("a")
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      , SDefT(
+          "prettyprint-Exp"
+        , []
+        , []
+        , SRule(
+            Rule(
+              Var("a")
+            , NoAnnoList(
+                List(
+                  [ NoAnnoList(
+                      Op(
+                        "H"
+                      , [ NoAnnoList(
+                            List(
+                              [ NoAnnoList(
+                                  Op(
+                                    "SOpt"
+                                  , [NoAnnoList(Op("HS", [])), NoAnnoList(Str("\"0\""))]
+                                  )
+                                )
+                              ]
+                            )
+                          )
+                        , NoAnnoList(List([Var("a110")]))
+                        ]
+                      )
+                    )
+                  ]
+                )
+              )
+            , [ WhereClause(
+                  Assign(
+                    Var("a110")
+                  , App(
+                      CallT(
+                        SVar("pp-one-Z")
+                      , [CallT(SVar("prettyprint-VarRef"), [], [])]
+                      , []
+                      )
+                    , Var("a")
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      , SDefT(
+          "prettyprint-Exp"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("IntValue", [Var("a")]))
+            , NoAnnoList(
+                List(
+                  [ NoAnnoList(
+                      Op(
+                        "H"
+                      , [ NoAnnoList(
+                            List(
+                              [ NoAnnoList(
+                                  Op(
+                                    "SOpt"
+                                  , [NoAnnoList(Op("HS", [])), NoAnnoList(Str("\"0\""))]
+                                  )
+                                )
+                              ]
+                            )
+                          )
+                        , NoAnnoList(List([Var("a111")]))
+                        ]
+                      )
+                    )
+                  ]
+                )
+              )
+            , [ WhereClause(
+                  Assign(
+                    Var("a111")
+                  , App(
+                      CallT(
+                        SVar("pp-one-Z")
+                      , [CallT(SVar("prettyprint-INT"), [], [])]
+                      , []
+                      )
+                    , Var("a")
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      , SDefT(
+          "prettyprint-Exp"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("Not", [Var("a")]))
+            , NoAnnoList(
+                List(
+                  [ NoAnnoList(
+                      Op(
+                        "H"
+                      , [ NoAnnoList(
+                            List(
+                              [ NoAnnoList(
+                                  Op(
+                                    "SOpt"
+                                  , [NoAnnoList(Op("HS", [])), NoAnnoList(Str("\"0\""))]
+                                  )
+                                )
+                              ]
+                            )
+                          )
+                        , NoAnnoList(
+                            List(
+                              [NoAnnoList(Op("S", [NoAnnoList(Str("\"!\""))])), Var("a112")]
+                            )
+                          )
+                        ]
+                      )
+                    )
+                  ]
+                )
+              )
+            , [ WhereClause(
+                  Assign(
+                    Var("a112")
+                  , App(
+                      CallT(
+                        SVar("pp-one-Z")
+                      , [CallT(SVar("prettyprint-Exp"), [], [])]
+                      , []
+                      )
+                    , Var("a")
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      , SDefT(
+          "prettyprint-Exp"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("Add", [Var("a"), Var("b")]))
+            , NoAnnoList(
+                List(
+                  [ NoAnnoList(
+                      Op(
+                        "H"
+                      , [ NoAnnoList(
+                            List(
+                              [ NoAnnoList(
+                                  Op(
+                                    "SOpt"
+                                  , [NoAnnoList(Op("HS", [])), NoAnnoList(Str("\"0\""))]
+                                  )
+                                )
+                              ]
+                            )
+                          )
+                        , NoAnnoList(
+                            List(
+                              [ Var("a113")
+                              , NoAnnoList(Op("S", [NoAnnoList(Str("\" + \""))]))
+                              , Var("b60")
+                              ]
+                            )
+                          )
+                        ]
+                      )
+                    )
+                  ]
+                )
+              )
+            , [ WhereClause(
+                  Assign(
+                    Var("a113")
+                  , App(
+                      CallT(
+                        SVar("pp-one-Z")
+                      , [CallT(SVar("prettyprint-Exp"), [], [])]
+                      , []
+                      )
+                    , Var("a")
+                    )
+                  )
+                )
+              , WhereClause(
+                  Assign(
+                    Var("b60")
+                  , App(
+                      CallT(
+                        SVar("pp-one-Z")
+                      , [CallT(SVar("prettyprint-Exp"), [], [])]
+                      , []
+                      )
+                    , Var("b")
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      , SDefT(
+          "prettyprint-Exp"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("Sub", [Var("a"), Var("b")]))
+            , NoAnnoList(
+                List(
+                  [ NoAnnoList(
+                      Op(
+                        "H"
+                      , [ NoAnnoList(
+                            List(
+                              [ NoAnnoList(
+                                  Op(
+                                    "SOpt"
+                                  , [NoAnnoList(Op("HS", [])), NoAnnoList(Str("\"0\""))]
+                                  )
+                                )
+                              ]
+                            )
+                          )
+                        , NoAnnoList(
+                            List(
+                              [ Var("a114")
+                              , NoAnnoList(Op("S", [NoAnnoList(Str("\" - \""))]))
+                              , Var("b61")
+                              ]
+                            )
+                          )
+                        ]
+                      )
+                    )
+                  ]
+                )
+              )
+            , [ WhereClause(
+                  Assign(
+                    Var("a114")
+                  , App(
+                      CallT(
+                        SVar("pp-one-Z")
+                      , [CallT(SVar("prettyprint-Exp"), [], [])]
+                      , []
+                      )
+                    , Var("a")
+                    )
+                  )
+                )
+              , WhereClause(
+                  Assign(
+                    Var("b61")
+                  , App(
+                      CallT(
+                        SVar("pp-one-Z")
+                      , [CallT(SVar("prettyprint-Exp"), [], [])]
+                      , []
+                      )
+                    , Var("b")
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      , SDefT(
+          "prettyprint-Exp"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("Mul", [Var("a"), Var("b")]))
+            , NoAnnoList(
+                List(
+                  [ NoAnnoList(
+                      Op(
+                        "H"
+                      , [ NoAnnoList(
+                            List(
+                              [ NoAnnoList(
+                                  Op(
+                                    "SOpt"
+                                  , [NoAnnoList(Op("HS", [])), NoAnnoList(Str("\"0\""))]
+                                  )
+                                )
+                              ]
+                            )
+                          )
+                        , NoAnnoList(
+                            List(
+                              [ Var("a115")
+                              , NoAnnoList(Op("S", [NoAnnoList(Str("\" * \""))]))
+                              , Var("b62")
+                              ]
+                            )
+                          )
+                        ]
+                      )
+                    )
+                  ]
+                )
+              )
+            , [ WhereClause(
+                  Assign(
+                    Var("a115")
+                  , App(
+                      CallT(
+                        SVar("pp-one-Z")
+                      , [CallT(SVar("prettyprint-Exp"), [], [])]
+                      , []
+                      )
+                    , Var("a")
+                    )
+                  )
+                )
+              , WhereClause(
+                  Assign(
+                    Var("b62")
+                  , App(
+                      CallT(
+                        SVar("pp-one-Z")
+                      , [CallT(SVar("prettyprint-Exp"), [], [])]
+                      , []
+                      )
+                    , Var("b")
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      , SDefT(
+          "prettyprint-Exp"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("Lt", [Var("a"), Var("b")]))
+            , NoAnnoList(
+                List(
+                  [ NoAnnoList(
+                      Op(
+                        "H"
+                      , [ NoAnnoList(
+                            List(
+                              [ NoAnnoList(
+                                  Op(
+                                    "SOpt"
+                                  , [NoAnnoList(Op("HS", [])), NoAnnoList(Str("\"0\""))]
+                                  )
+                                )
+                              ]
+                            )
+                          )
+                        , NoAnnoList(
+                            List(
+                              [ Var("a116")
+                              , NoAnnoList(Op("S", [NoAnnoList(Str("\" < \""))]))
+                              , Var("b63")
+                              ]
+                            )
+                          )
+                        ]
+                      )
+                    )
+                  ]
+                )
+              )
+            , [ WhereClause(
+                  Assign(
+                    Var("a116")
+                  , App(
+                      CallT(
+                        SVar("pp-one-Z")
+                      , [CallT(SVar("prettyprint-Exp"), [], [])]
+                      , []
+                      )
+                    , Var("a")
+                    )
+                  )
+                )
+              , WhereClause(
+                  Assign(
+                    Var("b63")
+                  , App(
+                      CallT(
+                        SVar("pp-one-Z")
+                      , [CallT(SVar("prettyprint-Exp"), [], [])]
+                      , []
+                      )
+                    , Var("b")
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      , SDefT(
+          "prettyprint-Exp"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("And", [Var("a"), Var("b")]))
+            , NoAnnoList(
+                List(
+                  [ NoAnnoList(
+                      Op(
+                        "H"
+                      , [ NoAnnoList(
+                            List(
+                              [ NoAnnoList(
+                                  Op(
+                                    "SOpt"
+                                  , [NoAnnoList(Op("HS", [])), NoAnnoList(Str("\"0\""))]
+                                  )
+                                )
+                              ]
+                            )
+                          )
+                        , NoAnnoList(
+                            List(
+                              [ Var("a117")
+                              , NoAnnoList(Op("S", [NoAnnoList(Str("\" && \""))]))
+                              , Var("b64")
+                              ]
+                            )
+                          )
+                        ]
+                      )
+                    )
+                  ]
+                )
+              )
+            , [ WhereClause(
+                  Assign(
+                    Var("a117")
+                  , App(
+                      CallT(
+                        SVar("pp-one-Z")
+                      , [CallT(SVar("prettyprint-Exp"), [], [])]
+                      , []
+                      )
+                    , Var("a")
+                    )
+                  )
+                )
+              , WhereClause(
+                  Assign(
+                    Var("b64")
+                  , App(
+                      CallT(
+                        SVar("pp-one-Z")
+                      , [CallT(SVar("prettyprint-Exp"), [], [])]
+                      , []
+                      )
+                    , Var("b")
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      , SDefT(
+          "prettyprint-Exp"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(
+                Op(
+                  "Call"
+                , [Var("a"), Var("b"), Var("c")]
+                )
+              )
+            , NoAnnoList(
+                List(
+                  [ NoAnnoList(
+                      Op(
+                        "H"
+                      , [ NoAnnoList(
+                            List(
+                              [ NoAnnoList(
+                                  Op(
+                                    "SOpt"
+                                  , [NoAnnoList(Op("HS", [])), NoAnnoList(Str("\"0\""))]
+                                  )
+                                )
+                              ]
+                            )
+                          )
+                        , NoAnnoList(
+                            List(
+                              [ Var("a118")
+                              , NoAnnoList(Op("S", [NoAnnoList(Str("\".\""))]))
+                              , Var("b65")
+                              , NoAnnoList(Op("S", [NoAnnoList(Str("\"(\""))]))
+                              , Var("c23")
+                              , NoAnnoList(Op("S", [NoAnnoList(Str("\")\""))]))
+                              ]
+                            )
+                          )
+                        ]
+                      )
+                    )
+                  ]
+                )
+              )
+            , [ WhereClause(
+                  Assign(
+                    Var("a118")
+                  , App(
+                      CallT(
+                        SVar("pp-one-Z")
+                      , [CallT(SVar("prettyprint-Exp"), [], [])]
+                      , []
+                      )
+                    , Var("a")
+                    )
+                  )
+                )
+              , WhereClause(
+                  Assign(
+                    Var("b65")
+                  , App(
+                      CallT(
+                        SVar("pp-one-Z")
+                      , [CallT(SVar("prettyprint-ID"), [], [])]
+                      , []
+                      )
+                    , Var("b")
+                    )
+                  )
+                )
+              , WhereClause(
+                  Assign(
+                    Var("c23")
+                  , App(
+                      CallT(
+                        SVar("pp-H-list")
+                      , [CallT(SVar("prettyprint-Exp"), [], [])]
+                      , [NoAnnoList(Str("\", \""))]
+                      )
+                    , Var("c")
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      , SDefT(
+          "prettyprint-Exp"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("NewArray", [Var("a")]))
+            , NoAnnoList(
+                List(
+                  [ NoAnnoList(
+                      Op(
+                        "H"
+                      , [ NoAnnoList(
+                            List(
+                              [ NoAnnoList(
+                                  Op(
+                                    "SOpt"
+                                  , [NoAnnoList(Op("HS", [])), NoAnnoList(Str("\"0\""))]
+                                  )
+                                )
+                              ]
+                            )
+                          )
+                        , NoAnnoList(
+                            List(
+                              [ NoAnnoList(Op("S", [NoAnnoList(Str("\"new int [\""))]))
+                              , Var("a119")
+                              , NoAnnoList(Op("S", [NoAnnoList(Str("\"]\""))]))
+                              ]
+                            )
+                          )
+                        ]
+                      )
+                    )
+                  ]
+                )
+              )
+            , [ WhereClause(
+                  Assign(
+                    Var("a119")
+                  , App(
+                      CallT(
+                        SVar("pp-one-Z")
+                      , [CallT(SVar("prettyprint-Exp"), [], [])]
+                      , []
+                      )
+                    , Var("a")
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      , SDefT(
+          "prettyprint-Exp"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("Subscript", [Var("a"), Var("b")]))
+            , NoAnnoList(
+                List(
+                  [ NoAnnoList(
+                      Op(
+                        "H"
+                      , [ NoAnnoList(
+                            List(
+                              [ NoAnnoList(
+                                  Op(
+                                    "SOpt"
+                                  , [NoAnnoList(Op("HS", [])), NoAnnoList(Str("\"0\""))]
+                                  )
+                                )
+                              ]
+                            )
+                          )
+                        , NoAnnoList(
+                            List(
+                              [ Var("a120")
+                              , NoAnnoList(Op("S", [NoAnnoList(Str("\"[\""))]))
+                              , Var("b66")
+                              , NoAnnoList(Op("S", [NoAnnoList(Str("\"]\""))]))
+                              ]
+                            )
+                          )
+                        ]
+                      )
+                    )
+                  ]
+                )
+              )
+            , [ WhereClause(
+                  Assign(
+                    Var("a120")
+                  , App(
+                      CallT(
+                        SVar("pp-one-Z")
+                      , [CallT(SVar("prettyprint-Exp"), [], [])]
+                      , []
+                      )
+                    , Var("a")
+                    )
+                  )
+                )
+              , WhereClause(
+                  Assign(
+                    Var("b66")
+                  , App(
+                      CallT(
+                        SVar("pp-one-Z")
+                      , [CallT(SVar("prettyprint-IndexExp"), [], [])]
+                      , []
+                      )
+                    , Var("b")
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      , SDefT(
+          "prettyprint-IndexExp"
+        , []
+        , []
+        , SRule(
+            Rule(
+              Var("a")
+            , NoAnnoList(
+                List(
+                  [ NoAnnoList(
+                      Op(
+                        "H"
+                      , [ NoAnnoList(
+                            List(
+                              [ NoAnnoList(
+                                  Op(
+                                    "SOpt"
+                                  , [NoAnnoList(Op("HS", [])), NoAnnoList(Str("\"0\""))]
+                                  )
+                                )
+                              ]
+                            )
+                          )
+                        , NoAnnoList(List([Var("a121")]))
+                        ]
+                      )
+                    )
+                  ]
+                )
+              )
+            , [ WhereClause(
+                  Assign(
+                    Var("a121")
+                  , App(
+                      CallT(
+                        SVar("pp-one-Z")
+                      , [CallT(SVar("prettyprint-Exp"), [], [])]
+                      , []
+                      )
+                    , Var("a")
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      , SDefT(
+          "prettyprint-Exp"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("Length", [Var("a")]))
+            , NoAnnoList(
+                List(
+                  [ NoAnnoList(
+                      Op(
+                        "H"
+                      , [ NoAnnoList(
+                            List(
+                              [ NoAnnoList(
+                                  Op(
+                                    "SOpt"
+                                  , [NoAnnoList(Op("HS", [])), NoAnnoList(Str("\"0\""))]
+                                  )
+                                )
+                              ]
+                            )
+                          )
+                        , NoAnnoList(
+                            List(
+                              [Var("a122"), NoAnnoList(Op("S", [NoAnnoList(Str("\".length\""))]))]
+                            )
+                          )
+                        ]
+                      )
+                    )
+                  ]
+                )
+              )
+            , [ WhereClause(
+                  Assign(
+                    Var("a122")
+                  , App(
+                      CallT(
+                        SVar("pp-one-Z")
+                      , [CallT(SVar("prettyprint-Exp"), [], [])]
+                      , []
+                      )
+                    , Var("a")
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      , SDefT(
+          "prettyprint-Exp"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("NewObject", [Var("a")]))
+            , NoAnnoList(
+                List(
+                  [ NoAnnoList(
+                      Op(
+                        "H"
+                      , [ NoAnnoList(
+                            List(
+                              [ NoAnnoList(
+                                  Op(
+                                    "SOpt"
+                                  , [NoAnnoList(Op("HS", [])), NoAnnoList(Str("\"0\""))]
+                                  )
+                                )
+                              ]
+                            )
+                          )
+                        , NoAnnoList(
+                            List(
+                              [ NoAnnoList(Op("S", [NoAnnoList(Str("\"new \""))]))
+                              , Var("a123")
+                              , NoAnnoList(Op("S", [NoAnnoList(Str("\"()\""))]))
+                              ]
+                            )
+                          )
+                        ]
+                      )
+                    )
+                  ]
+                )
+              )
+            , [ WhereClause(
+                  Assign(
+                    Var("a123")
+                  , App(
+                      CallT(
+                        SVar("pp-one-Z")
+                      , [CallT(SVar("prettyprint-ID"), [], [])]
+                      , []
+                      )
+                    , Var("a")
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      , SDefT(
+          "prettyprint-Exp"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("Parenthetical", [Var("a")]))
+            , NoAnnoList(
+                List(
+                  [ NoAnnoList(
+                      Op(
+                        "H"
+                      , [ NoAnnoList(
+                            List(
+                              [ NoAnnoList(
+                                  Op(
+                                    "SOpt"
+                                  , [NoAnnoList(Op("HS", [])), NoAnnoList(Str("\"0\""))]
+                                  )
+                                )
+                              ]
+                            )
+                          )
+                        , NoAnnoList(
+                            List(
+                              [ NoAnnoList(Op("S", [NoAnnoList(Str("\"(\""))]))
+                              , Var("a124")
+                              , NoAnnoList(Op("S", [NoAnnoList(Str("\")\""))]))
+                              ]
+                            )
+                          )
+                        ]
+                      )
+                    )
+                  ]
+                )
+              )
+            , [ WhereClause(
+                  Assign(
+                    Var("a124")
+                  , App(
+                      CallT(
+                        SVar("pp-one-Z")
+                      , [CallT(SVar("prettyprint-Exp"), [], [])]
+                      , []
+                      )
+                    , Var("a")
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      , SDefT(
+          "prettyprint-example"
+        , []
+        , []
+        , CallT(SVar("prettyprint-VarRef"), [], [])
+        )
+      , SDefT(
+          "prettyprint-example"
+        , []
+        , []
+        , CallT(SVar("prettyprint-IndexExp"), [], [])
+        )
+      , SDefT(
+          "prettyprint-example"
+        , []
+        , []
+        , CallT(SVar("prettyprint-Exp"), [], [])
+        )
+      ]
+    )
+  , Strategies(
+      [ SDefT(
+          "prettyprint-ClassDecl"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(
+                Op(
+                  "Class"
+                , [Var("a"), Var("b"), Var("c"), Var("d")]
+                )
+              )
+            , NoAnnoList(
+                List(
+                  [ NoAnnoList(
+                      Op(
+                        "H"
+                      , [ NoAnnoList(
+                            List(
+                              [ NoAnnoList(
+                                  Op(
+                                    "SOpt"
+                                  , [NoAnnoList(Op("HS", [])), NoAnnoList(Str("\"0\""))]
+                                  )
+                                )
+                              ]
+                            )
+                          )
+                        , NoAnnoList(
+                            List(
+                              [ NoAnnoList(Op("S", [NoAnnoList(Str("\"class \""))]))
+                              , Var("a125")
+                              , NoAnnoList(Op("S", [NoAnnoList(Str("\" \""))]))
+                              , Var("b67")
+                              , NoAnnoList(Op("S", [NoAnnoList(Str("\" {\""))]))
+                              ]
+                            )
+                          )
+                        ]
+                      )
+                    )
+                  , Var("c24")
+                  , NoAnnoList(
+                      Op(
+                        "H"
+                      , [ NoAnnoList(List([]))
+                        , NoAnnoList(
+                            List(
+                              [NoAnnoList(Op("S", [NoAnnoList(Str("\"\""))]))]
+                            )
+                          )
+                        ]
+                      )
+                    )
+                  , Var("d6")
+                  , NoAnnoList(
+                      Op(
+                        "H"
+                      , [ NoAnnoList(
+                            List(
+                              [ NoAnnoList(
+                                  Op(
+                                    "SOpt"
+                                  , [NoAnnoList(Op("HS", [])), NoAnnoList(Str("\"0\""))]
+                                  )
+                                )
+                              ]
+                            )
+                          )
+                        , NoAnnoList(
+                            List(
+                              [NoAnnoList(Op("S", [NoAnnoList(Str("\"}\""))]))]
+                            )
+                          )
+                        ]
+                      )
+                    )
+                  ]
+                )
+              )
+            , [ WhereClause(
+                  Assign(
+                    Var("a125")
+                  , App(
+                      CallT(
+                        SVar("pp-one-Z")
+                      , [CallT(SVar("prettyprint-ID"), [], [])]
+                      , []
+                      )
+                    , Var("a")
+                    )
+                  )
+                )
+              , WhereClause(
+                  Assign(
+                    Var("b67")
+                  , App(
+                      CallT(
+                        SVar("pp-one-Z")
+                      , [CallT(SVar("prettyprint-ParentDecl"), [], [])]
+                      , []
+                      )
+                    , Var("b")
+                    )
+                  )
+                )
+              , WhereClause(
+                  Assign(
+                    Var("c24")
+                  , App(
+                      CallT(SVar("pp-indent"), [], [NoAnnoList(Str("\"2\""))])
+                    , NoAnnoList(
+                        List(
+                          [ App(
+                              CallT(
+                                SVar("pp-V-list")
+                              , [CallT(SVar("prettyprint-FieldDecl"), [], [])]
+                              , []
+                              )
+                            , Var("c")
+                            )
+                          ]
+                        )
+                      )
+                    )
+                  )
+                )
+              , WhereClause(
+                  Assign(
+                    Var("d6")
+                  , App(
+                      CallT(SVar("pp-indent"), [], [NoAnnoList(Str("\"2\""))])
+                    , NoAnnoList(
+                        List(
+                          [ App(
+                              CallT(
+                                SVar("pp-V-list")
+                              , [CallT(SVar("prettyprint-MethodDecl"), [], [])]
+                              , []
+                              )
+                            , Var("d")
+                            )
+                          ]
+                        )
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      , SDefT(
+          "prettyprint-ParentDecl"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("None", []))
+            , NoAnnoList(
+                List(
+                  [ NoAnnoList(
+                      Op(
+                        "H"
+                      , [ NoAnnoList(List([]))
+                        , NoAnnoList(
+                            List(
+                              [NoAnnoList(Op("S", [NoAnnoList(Str("\"\""))]))]
+                            )
+                          )
+                        ]
+                      )
+                    )
+                  ]
+                )
+              )
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "prettyprint-ParentDecl"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("Parent", [Var("a")]))
+            , NoAnnoList(
+                List(
+                  [ NoAnnoList(
+                      Op(
+                        "H"
+                      , [ NoAnnoList(
+                            List(
+                              [ NoAnnoList(
+                                  Op(
+                                    "SOpt"
+                                  , [NoAnnoList(Op("HS", [])), NoAnnoList(Str("\"0\""))]
+                                  )
+                                )
+                              ]
+                            )
+                          )
+                        , NoAnnoList(
+                            List(
+                              [NoAnnoList(Op("S", [NoAnnoList(Str("\"extends \""))])), Var("a126")]
+                            )
+                          )
+                        ]
+                      )
+                    )
+                  ]
+                )
+              )
+            , [ WhereClause(
+                  Assign(
+                    Var("a126")
+                  , App(
+                      CallT(
+                        SVar("pp-one-Z")
+                      , [CallT(SVar("prettyprint-ID"), [], [])]
+                      , []
+                      )
+                    , Var("a")
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      , SDefT(
+          "prettyprint-FieldDecl"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("Field", [Var("a"), Var("b")]))
+            , NoAnnoList(
+                List(
+                  [ NoAnnoList(
+                      Op(
+                        "H"
+                      , [ NoAnnoList(
+                            List(
+                              [ NoAnnoList(
+                                  Op(
+                                    "SOpt"
+                                  , [NoAnnoList(Op("HS", [])), NoAnnoList(Str("\"0\""))]
+                                  )
+                                )
+                              ]
+                            )
+                          )
+                        , NoAnnoList(
+                            List(
+                              [ Var("a127")
+                              , NoAnnoList(Op("S", [NoAnnoList(Str("\" \""))]))
+                              , Var("b68")
+                              , NoAnnoList(Op("S", [NoAnnoList(Str("\";\""))]))
+                              ]
+                            )
+                          )
+                        ]
+                      )
+                    )
+                  ]
+                )
+              )
+            , [ WhereClause(
+                  Assign(
+                    Var("a127")
+                  , App(
+                      CallT(
+                        SVar("pp-one-Z")
+                      , [CallT(SVar("prettyprint-Type"), [], [])]
+                      , []
+                      )
+                    , Var("a")
+                    )
+                  )
+                )
+              , WhereClause(
+                  Assign(
+                    Var("b68")
+                  , App(
+                      CallT(
+                        SVar("pp-one-Z")
+                      , [CallT(SVar("prettyprint-ID"), [], [])]
+                      , []
+                      )
+                    , Var("b")
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      , SDefT(
+          "prettyprint-MethodDecl"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(
+                Op(
+                  "Method"
+                , [ Var("a")
+                  , Var("b")
+                  , Var("c")
+                  , Var("d")
+                  , Var("e")
+                  , Var("f")
+                  ]
+                )
+              )
+            , NoAnnoList(
+                List(
+                  [ NoAnnoList(
+                      Op(
+                        "H"
+                      , [ NoAnnoList(
+                            List(
+                              [ NoAnnoList(
+                                  Op(
+                                    "SOpt"
+                                  , [NoAnnoList(Op("HS", [])), NoAnnoList(Str("\"0\""))]
+                                  )
+                                )
+                              ]
+                            )
+                          )
+                        , NoAnnoList(
+                            List(
+                              [ NoAnnoList(Op("S", [NoAnnoList(Str("\"public \""))]))
+                              , Var("a128")
+                              , NoAnnoList(Op("S", [NoAnnoList(Str("\" \""))]))
+                              , Var("b69")
+                              , NoAnnoList(Op("S", [NoAnnoList(Str("\" (\""))]))
+                              , Var("c25")
+                              , NoAnnoList(Op("S", [NoAnnoList(Str("\") {\""))]))
+                              ]
+                            )
+                          )
+                        ]
+                      )
+                    )
+                  , Var("d7")
+                  , Var("e5")
+                  , Var("f3")
+                  , NoAnnoList(
+                      Op(
+                        "H"
+                      , [ NoAnnoList(
+                            List(
+                              [ NoAnnoList(
+                                  Op(
+                                    "SOpt"
+                                  , [NoAnnoList(Op("HS", [])), NoAnnoList(Str("\"0\""))]
+                                  )
+                                )
+                              ]
+                            )
+                          )
+                        , NoAnnoList(
+                            List(
+                              [NoAnnoList(Op("S", [NoAnnoList(Str("\"}\""))]))]
+                            )
+                          )
+                        ]
+                      )
+                    )
+                  ]
+                )
+              )
+            , [ WhereClause(
+                  Assign(
+                    Var("a128")
+                  , App(
+                      CallT(
+                        SVar("pp-one-Z")
+                      , [CallT(SVar("prettyprint-Type"), [], [])]
+                      , []
+                      )
+                    , Var("a")
+                    )
+                  )
+                )
+              , WhereClause(
+                  Assign(
+                    Var("b69")
+                  , App(
+                      CallT(
+                        SVar("pp-one-Z")
+                      , [CallT(SVar("prettyprint-ID"), [], [])]
+                      , []
+                      )
+                    , Var("b")
+                    )
+                  )
+                )
+              , WhereClause(
+                  Assign(
+                    Var("c25")
+                  , App(
+                      CallT(
+                        SVar("pp-H-list")
+                      , [CallT(SVar("prettyprint-ParamDecl"), [], [])]
+                      , [NoAnnoList(Str("\", \""))]
+                      )
+                    , Var("c")
+                    )
+                  )
+                )
+              , WhereClause(
+                  Assign(
+                    Var("d7")
+                  , App(
+                      CallT(SVar("pp-indent"), [], [NoAnnoList(Str("\"2\""))])
+                    , NoAnnoList(
+                        List(
+                          [ App(
+                              CallT(
+                                SVar("pp-V-list")
+                              , [CallT(SVar("prettyprint-VarDecl"), [], [])]
+                              , []
+                              )
+                            , Var("d")
+                            )
+                          ]
+                        )
+                      )
+                    )
+                  )
+                )
+              , WhereClause(
+                  Assign(
+                    Var("e5")
+                  , App(
+                      CallT(SVar("pp-indent"), [], [NoAnnoList(Str("\"2\""))])
+                    , NoAnnoList(
+                        List(
+                          [ App(
+                              CallT(
+                                SVar("pp-V-list")
+                              , [CallT(SVar("prettyprint-Statement"), [], [])]
+                              , []
+                              )
+                            , Var("e")
+                            )
+                          ]
+                        )
+                      )
+                    )
+                  )
+                )
+              , WhereClause(
+                  Assign(
+                    Var("f3")
+                  , App(
+                      CallT(SVar("pp-indent"), [], [NoAnnoList(Str("\"2\""))])
+                    , NoAnnoList(
+                        List(
+                          [ NoAnnoList(Op("S", [NoAnnoList(Str("\"return \""))]))
+                          , App(
+                              CallT(
+                                SVar("pp-one-Z")
+                              , [CallT(SVar("prettyprint-Exp"), [], [])]
+                              , []
+                              )
+                            , Var("f")
+                            )
+                          , NoAnnoList(Op("S", [NoAnnoList(Str("\";\""))]))
+                          ]
+                        )
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      , SDefT(
+          "prettyprint-VarDecl"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("Var", [Var("a"), Var("b")]))
+            , NoAnnoList(
+                List(
+                  [ NoAnnoList(
+                      Op(
+                        "H"
+                      , [ NoAnnoList(
+                            List(
+                              [ NoAnnoList(
+                                  Op(
+                                    "SOpt"
+                                  , [NoAnnoList(Op("HS", [])), NoAnnoList(Str("\"0\""))]
+                                  )
+                                )
+                              ]
+                            )
+                          )
+                        , NoAnnoList(
+                            List(
+                              [ Var("a129")
+                              , NoAnnoList(Op("S", [NoAnnoList(Str("\" \""))]))
+                              , Var("b70")
+                              , NoAnnoList(Op("S", [NoAnnoList(Str("\";\""))]))
+                              ]
+                            )
+                          )
+                        ]
+                      )
+                    )
+                  ]
+                )
+              )
+            , [ WhereClause(
+                  Assign(
+                    Var("a129")
+                  , App(
+                      CallT(
+                        SVar("pp-one-Z")
+                      , [CallT(SVar("prettyprint-Type"), [], [])]
+                      , []
+                      )
+                    , Var("a")
+                    )
+                  )
+                )
+              , WhereClause(
+                  Assign(
+                    Var("b70")
+                  , App(
+                      CallT(
+                        SVar("pp-one-Z")
+                      , [CallT(SVar("prettyprint-ID"), [], [])]
+                      , []
+                      )
+                    , Var("b")
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      , SDefT(
+          "prettyprint-ParamDecl"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("Param", [Var("a"), Var("b")]))
+            , NoAnnoList(
+                List(
+                  [ NoAnnoList(
+                      Op(
+                        "H"
+                      , [ NoAnnoList(
+                            List(
+                              [ NoAnnoList(
+                                  Op(
+                                    "SOpt"
+                                  , [NoAnnoList(Op("HS", [])), NoAnnoList(Str("\"0\""))]
+                                  )
+                                )
+                              ]
+                            )
+                          )
+                        , NoAnnoList(
+                            List(
+                              [ Var("a130")
+                              , NoAnnoList(Op("S", [NoAnnoList(Str("\" \""))]))
+                              , Var("b71")
+                              ]
+                            )
+                          )
+                        ]
+                      )
+                    )
+                  ]
+                )
+              )
+            , [ WhereClause(
+                  Assign(
+                    Var("a130")
+                  , App(
+                      CallT(
+                        SVar("pp-one-Z")
+                      , [CallT(SVar("prettyprint-Type"), [], [])]
+                      , []
+                      )
+                    , Var("a")
+                    )
+                  )
+                )
+              , WhereClause(
+                  Assign(
+                    Var("b71")
+                  , App(
+                      CallT(
+                        SVar("pp-one-Z")
+                      , [CallT(SVar("prettyprint-ID"), [], [])]
+                      , []
+                      )
+                    , Var("b")
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      , SDefT(
+          "prettyprint-Type"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("Int", []))
+            , NoAnnoList(
+                List(
+                  [ NoAnnoList(
+                      Op(
+                        "H"
+                      , [ NoAnnoList(
+                            List(
+                              [ NoAnnoList(
+                                  Op(
+                                    "SOpt"
+                                  , [NoAnnoList(Op("HS", [])), NoAnnoList(Str("\"0\""))]
+                                  )
+                                )
+                              ]
+                            )
+                          )
+                        , NoAnnoList(
+                            List(
+                              [NoAnnoList(Op("S", [NoAnnoList(Str("\"int\""))]))]
+                            )
+                          )
+                        ]
+                      )
+                    )
+                  ]
+                )
+              )
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "prettyprint-Type"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("Bool", []))
+            , NoAnnoList(
+                List(
+                  [ NoAnnoList(
+                      Op(
+                        "H"
+                      , [ NoAnnoList(
+                            List(
+                              [ NoAnnoList(
+                                  Op(
+                                    "SOpt"
+                                  , [NoAnnoList(Op("HS", [])), NoAnnoList(Str("\"0\""))]
+                                  )
+                                )
+                              ]
+                            )
+                          )
+                        , NoAnnoList(
+                            List(
+                              [NoAnnoList(Op("S", [NoAnnoList(Str("\"boolean\""))]))]
+                            )
+                          )
+                        ]
+                      )
+                    )
+                  ]
+                )
+              )
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "prettyprint-Type"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("IntArray", []))
+            , NoAnnoList(
+                List(
+                  [ NoAnnoList(
+                      Op(
+                        "H"
+                      , [ NoAnnoList(
+                            List(
+                              [ NoAnnoList(
+                                  Op(
+                                    "SOpt"
+                                  , [NoAnnoList(Op("HS", [])), NoAnnoList(Str("\"0\""))]
+                                  )
+                                )
+                              ]
+                            )
+                          )
+                        , NoAnnoList(
+                            List(
+                              [NoAnnoList(Op("S", [NoAnnoList(Str("\"int[]\""))]))]
+                            )
+                          )
+                        ]
+                      )
+                    )
+                  ]
+                )
+              )
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "prettyprint-Type"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("ClassType", [Var("a")]))
+            , NoAnnoList(
+                List(
+                  [ NoAnnoList(
+                      Op(
+                        "H"
+                      , [ NoAnnoList(
+                            List(
+                              [ NoAnnoList(
+                                  Op(
+                                    "SOpt"
+                                  , [NoAnnoList(Op("HS", [])), NoAnnoList(Str("\"0\""))]
+                                  )
+                                )
+                              ]
+                            )
+                          )
+                        , NoAnnoList(List([Var("a131")]))
+                        ]
+                      )
+                    )
+                  ]
+                )
+              )
+            , [ WhereClause(
+                  Assign(
+                    Var("a131")
+                  , App(
+                      CallT(
+                        SVar("pp-one-Z")
+                      , [CallT(SVar("prettyprint-ID"), [], [])]
+                      , []
+                      )
+                    , Var("a")
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      , SDefT(
+          "prettyprint-example"
+        , []
+        , []
+        , CallT(SVar("prettyprint-ClassDecl"), [], [])
+        )
+      , SDefT(
+          "prettyprint-example"
+        , []
+        , []
+        , CallT(SVar("prettyprint-ParentDecl"), [], [])
+        )
+      , SDefT(
+          "prettyprint-example"
+        , []
+        , []
+        , CallT(SVar("prettyprint-FieldDecl"), [], [])
+        )
+      , SDefT(
+          "prettyprint-example"
+        , []
+        , []
+        , CallT(SVar("prettyprint-MethodDecl"), [], [])
+        )
+      , SDefT(
+          "prettyprint-example"
+        , []
+        , []
+        , CallT(SVar("prettyprint-VarDecl"), [], [])
+        )
+      , SDefT(
+          "prettyprint-example"
+        , []
+        , []
+        , CallT(SVar("prettyprint-ParamDecl"), [], [])
+        )
+      , SDefT(
+          "prettyprint-example"
+        , []
+        , []
+        , CallT(SVar("prettyprint-Type"), [], [])
+        )
+      ]
+    )
+  ]
+)

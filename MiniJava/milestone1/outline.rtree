@@ -1,0 +1,222 @@
+Module(
+  "outline"
+, [ Imports(
+      [Import("libstratego-lib"), Import("milestone1/MiniJava"), Import("lib/runtime/editor/origins"), Import("lib/runtime/editor/outline-library")]
+    )
+  , Rules(
+      [ SDefT("outline-expand-to-level", [], [], Build(NoAnnoList(Int("4"))))
+      , SDefT(
+          "outline"
+        , []
+        , []
+        , CallT(
+            SVar("simple-label-outline")
+          , [CallT(SVar("to-outline-label"), [], [])]
+          , []
+          )
+        )
+      ]
+    )
+  , Rules(
+      [ SDefT(
+          "to-outline-label"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("Program", [Wld(), Wld()]))
+            , AnnoList(
+                RootApp(CallT(SVar("origin-file"), [], []))
+              , [NoAnnoList(Str("\"icons/class_hi.gif\""))]
+              )
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "to-outline-label"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("MainClass", [Var("c"), Wld(), Wld()]))
+            , AnnoList(Var("c"), [NoAnnoList(Str("\"icons/classfo_obj.gif\""))])
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "to-outline-label"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(
+                Op("Class", [Var("c"), Wld(), Wld(), Wld()])
+              )
+            , AnnoList(Var("c"), [NoAnnoList(Str("\"icons/class_obj.gif\""))])
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "to-outline-label"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("Field", [Var("t"), Var("f")]))
+            , AnnoList(
+                StringQuotation1(
+                  "                                            "
+                , [ StringEscape1("                                            ", Var("f"))
+                  , QStr(": ")
+                  , StringEscape1(
+                      "                                                 "
+                    , App(CallT(SVar("pp-type"), [], []), Var("t"))
+                    )
+                  ]
+                )
+              , [NoAnnoList(Str("\"icons/field_default_obj.gif\""))]
+              )
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "to-outline-label"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(
+                Op(
+                  "Method"
+                , [Var("t"), Var("m"), Var("arg*"), Wld(), Wld(), Wld()]
+                )
+              )
+            , AnnoList(
+                StringQuotation1(
+                  "                                                     "
+                , [ StringEscape1("                                                     ", Var("m"))
+                  , QStr("(")
+                  , StringEscape1(
+                      "                                                         "
+                    , App(CallT(SVar("pp-args"), [], []), Var("arg*"))
+                    )
+                  , QStr("): ")
+                  , StringEscape1(
+                      "                                                                            "
+                    , App(CallT(SVar("pp-type"), [], []), Var("t"))
+                    )
+                  ]
+                )
+              , [NoAnnoList(Str("\"icons/methpub_obj.gif\""))]
+              )
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "to-outline-label"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("Var", [Var("t"), Var("v")]))
+            , AnnoList(
+                StringQuotation1(
+                  "                                            "
+                , [ StringEscape1("                                            ", Var("v"))
+                  , QStr(": ")
+                  , StringEscape1(
+                      "                                                 "
+                    , App(CallT(SVar("pp-type"), [], []), Var("t"))
+                    )
+                  ]
+                )
+              , [NoAnnoList(Str("\"icons/localvariable_obj.gif\""))]
+              )
+            , []
+            )
+          )
+        )
+      ]
+    )
+  , Rules(
+      [ SDefT(
+          "pp-type"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("Int", []))
+            , NoAnnoList(Str("\"int\""))
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "pp-type"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("Bool", []))
+            , NoAnnoList(Str("\"boolean\""))
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "pp-type"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("IntArray", []))
+            , NoAnnoList(Str("\"int[]\""))
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "pp-type"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("ClassType", [Var("c")]))
+            , Var("c")
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "pp-args"
+        , []
+        , []
+        , Seq(
+            CallT(
+              SVar("map")
+            , [ Match(
+                  NoAnnoList(
+                    Op(
+                      "Param"
+                    , [RootApp(CallT(SVar("pp-type"), [], [])), Wld()]
+                    )
+                  )
+                )
+              ]
+            , []
+            )
+          , Seq(
+              CallT(SVar("separate-by"), [], [NoAnnoList(Str("\", \""))])
+            , CallT(SVar("concat-strings"), [], [])
+            )
+          )
+        )
+      ]
+    )
+  ]
+)

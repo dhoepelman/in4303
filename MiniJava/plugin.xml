@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?eclipse version="3.0"?>
+
+<plugin>
+       <extension point="org.eclipse.imp.runtime.languageDescription">
+          <language extensions="min" description="MiniJava" language="MiniJava" derivedFrom="DynamicRoot" validator="org.strategoxt.spoofax.minijava.MiniJavaValidator" validatorClass="org.strategoxt.spoofax.minijava.MiniJavaValidator"></language>
+       </extension>
+       <extension id="org.strategoxt.spoofax.minijava.parser" name="MiniJava Parser" point="org.eclipse.imp.runtime.parser">
+          <parser class="org.strategoxt.spoofax.minijava.MiniJavaParseController" language="MiniJava">
+          </parser>
+       </extension>    
+    </plugin>

@@ -1,0 +1,20 @@
+module milestone2/MiniJava.core
+
+signature constructors
+  
+  Not       : UnOp
+  Length    : UnOp
+  NewArray  : UnOp
+  
+  Plus      : BinOp
+  Minus     : BinOp
+  Times     : BinOp
+  Lt        : BinOp
+  And       : BinOp
+  Subscript : BinOp
+  
+  UnExp     : UnOp * Exp -> Exp
+  BinExp    : BinOp * Exp * Exp -> Exp
+  
+  FieldRef  : String -> Exp
+

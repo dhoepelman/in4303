@@ -1,0 +1,9 @@
+definition
+module MiniJava
+exports
+  context-free start-symbols
+    Start 
+    
+  context-free syntax
+    
+    "dummy" -> Start {cons("Dummy")}

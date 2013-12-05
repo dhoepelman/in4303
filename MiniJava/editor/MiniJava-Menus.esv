@@ -1,0 +1,21 @@
+module MiniJava-Menus
+
+menus
+
+  menu: "Syntax" 
+  
+    action : "Show abstract syntax"     = debug-show-aterm (openeditor) (realtime) (meta) (source)                     
+    action : "Show desugared syntax"    = debug-show-desugared (openeditor) (realtime) (meta) (source)
+    action : "Show analyzed syntax"     = debug-show-analyzed (openeditor) (realtime) (meta)
+    action  : "Pretty-print"            = pp-builder (source) (meta)                                    
+  
+  menu: "Analysis"
+    
+    action: "Reset and reanalyze"       = debug-reanalyze (meta)   
+    action: "Show analysis (project)"   = debug-project (openeditor) (meta)
+    action: "Show analysis (partition)" = debug-partition (openeditor) (meta)
+    action: "Show index (project)"      = debug-index-project (openeditor) (meta)
+    action: "Show index (partition)"    = debug-index-partition (openeditor) (meta)
+    action: "Show tasks (project)"      = debug-task-project (openeditor) (meta)
+    action: "Show tasks (partition)"    = debug-task-partition (openeditor) (meta)
+    action: "Show tasks (selection)"    = debug-task-selection (openeditor) (meta)

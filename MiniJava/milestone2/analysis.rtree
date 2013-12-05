@@ -1,0 +1,4265 @@
+Module(
+  "analysis"
+, [ Imports(
+      [ Import("milestone1/MiniJava")
+      , Import("milestone2/MiniJava.core")
+      , ImportWildcard("lib/runtime/editor")
+      , ImportWildcard("lib/runtime/nabl")
+      , ImportWildcard("lib/runtime/properties")
+      , ImportWildcard("lib/runtime/types")
+      , ImportWildcard("lib/runtime/task")
+      ]
+    )
+  , Signature(
+      [Constructors([OpDecl("MainType", ConstType(SortNoArgs("Type")))])]
+    )
+  , Rules(
+      [ SDefT(
+          "create-type-task"
+        , []
+        , [VarDec("ctx", ConstType(SortNoArgs("ATerm")))]
+        , SRule(
+            Rule(
+              As(Var("t"), NoAnnoList(Op("This", [])))
+            , App(
+                CallT(
+                  SVar("type-is")
+                , []
+                , [Var("ctx"), NoAnnoList(List([Var("ty")]))]
+                )
+              , Var("ty")
+              )
+            , [ WhereClause(
+                  Assign(
+                    Var("ty")
+                  , App(
+                      CallT(SVar("type-lookup"), [], [Var("ctx")])
+                    , Var("t")
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      ]
+    )
+  , Rules(
+      [ SDefT(
+          "create-type-task"
+        , []
+        , [VarDec("ctx", ConstType(SortNoArgs("ATerm")))]
+        , SRule(
+            Rule(
+              NoAnnoList(Op("True", []))
+            , App(
+                CallT(
+                  SVar("type-is")
+                , []
+                , [Var("ctx"), NoAnnoList(List([]))]
+                )
+              , NoAnnoList(Op("Bool", []))
+              )
+            , [WhereClause(Id())]
+            )
+          )
+        )
+      , SDefT(
+          "create-type-task"
+        , []
+        , [VarDec("ctx", ConstType(SortNoArgs("ATerm")))]
+        , SRule(
+            Rule(
+              NoAnnoList(Op("False", []))
+            , App(
+                CallT(
+                  SVar("type-is")
+                , []
+                , [Var("ctx"), NoAnnoList(List([]))]
+                )
+              , NoAnnoList(Op("Bool", []))
+              )
+            , [WhereClause(Id())]
+            )
+          )
+        )
+      , SDefT(
+          "create-type-task"
+        , []
+        , [VarDec("ctx", ConstType(SortNoArgs("ATerm")))]
+        , SRule(
+            Rule(
+              NoAnnoList(Op("IntValue", [Var("x")]))
+            , App(
+                CallT(
+                  SVar("type-is")
+                , []
+                , [Var("ctx"), NoAnnoList(List([]))]
+                )
+              , NoAnnoList(Op("Int", []))
+              )
+            , [WhereClause(Id())]
+            )
+          )
+        )
+      , SDefT(
+          "create-type-task"
+        , []
+        , [VarDec("ctx", ConstType(SortNoArgs("ATerm")))]
+        , SRule(
+            Rule(
+              NoAnnoList(Op("NewObject", [Var("c")]))
+            , App(
+                CallT(
+                  SVar("type-is")
+                , []
+                , [Var("ctx"), NoAnnoList(List([]))]
+                )
+              , NoAnnoList(Op("ClassType", [Var("c")]))
+              )
+            , [WhereClause(Id())]
+            )
+          )
+        )
+      , SDefT(
+          "create-type-task"
+        , []
+        , [VarDec("ctx", ConstType(SortNoArgs("ATerm")))]
+        , SRule(
+            Rule(
+              NoAnnoList(Op("VarRef", [Var("x")]))
+            , App(
+                CallT(
+                  SVar("type-is")
+                , []
+                , [Var("ctx"), NoAnnoList(List([Var("ty")]))]
+                )
+              , Var("ty")
+              )
+            , [ WhereClause(
+                  Seq(
+                    Assign(
+                      Var("ty")
+                    , App(
+                        CallT(SVar("type-lookup"), [], [Var("ctx")])
+                      , Var("x")
+                      )
+                    )
+                  , BA(
+                      CallT(
+                        SVar("task-create-error-on-failure")
+                      , []
+                      , [Var("ctx"), Var("ty"), NoAnnoList(Str("\"Missing definition of variable or field\""))]
+                      )
+                    , Var("x")
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      , SDefT(
+          "create-type-task"
+        , []
+        , [VarDec("ctx", ConstType(SortNoArgs("ATerm")))]
+        , SRule(
+            Rule(
+              NoAnnoList(Op("Param", [Var("t"), Var("p")]))
+            , App(
+                CallT(
+                  SVar("type-is")
+                , []
+                , [Var("ctx"), NoAnnoList(List([]))]
+                )
+              , Var("t")
+              )
+            , [WhereClause(Id())]
+            )
+          )
+        )
+      , SDefT(
+          "create-type-task"
+        , []
+        , [VarDec("ctx", ConstType(SortNoArgs("ATerm")))]
+        , SRule(
+            Rule(
+              NoAnnoList(
+                Op(
+                  "Call"
+                , [Var("e"), Var("m"), Var("a_")]
+                )
+              )
+            , App(
+                CallT(
+                  SVar("type-is")
+                , []
+                , [ Var("ctx")
+                  , NoAnnoList(
+                      List(
+                        [ Var("t209")
+                        , Var("ty_")
+                        , Var("ty")
+                        , Var("ty'_")
+                        , Var("subtype69")
+                        ]
+                      )
+                    )
+                  ]
+                )
+              , Var("ty")
+              )
+            , [ WhereClause(
+                  Seq(
+                    Assign(
+                      Var("t209")
+                    , App(
+                        CallT(SVar("type-lookup"), [], [Var("ctx")])
+                      , Var("m")
+                      )
+                    )
+                  , Seq(
+                      Assign(
+                        Var("ty_")
+                      , App(
+                          CallT(SVar("new-task"), [], [Var("ctx")])
+                        , NoAnnoList(
+                            Op("Rewrite", [NoAnnoList(Str("\"proj213\"")), Var("t209")])
+                          )
+                        )
+                      )
+                    , Seq(
+                        Assign(
+                          Var("ty")
+                        , App(
+                            CallT(SVar("new-task"), [], [Var("ctx")])
+                          , NoAnnoList(
+                              Op("Rewrite", [NoAnnoList(Str("\"proj214\"")), Var("t209")])
+                            )
+                          )
+                        )
+                      , Seq(
+                          BA(
+                            CallT(
+                              SVar("task-create-error-on-failure")
+                            , []
+                            , [Var("ctx"), Var("ty_"), NoAnnoList(Str("\"Missing definition of method\""))]
+                            )
+                          , Var("m")
+                          )
+                        , Seq(
+                            Assign(
+                              Var("ty'_")
+                            , App(
+                                CallT(SVar("type-task"), [], [Var("ctx")])
+                              , Var("a_")
+                              )
+                            )
+                          , Seq(
+                              Assign(
+                                Var("subtype69")
+                              , App(
+                                  CallT(SVar("create-subtype-task"), [], [Var("ctx")])
+                                , NoAnnoList(
+                                    Tuple(
+                                      [NoAnnoList(Str("\"<list:\"")), Var("ty'_"), Var("ty_")]
+                                    )
+                                  )
+                                )
+                              )
+                            , BA(
+                                CallT(
+                                  SVar("task-create-error-on-failure")
+                                , []
+                                , [Var("ctx"), Var("subtype69"), NoAnnoList(Str("\"Type mismatch in method arguments\""))]
+                                )
+                              , Var("a_")
+                              )
+                            )
+                          )
+                        )
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      , SDefT(
+          "create-type-task"
+        , []
+        , [VarDec("ctx", ConstType(SortNoArgs("ATerm")))]
+        , SRule(
+            Rule(
+              NoAnnoList(Op("UnExp", [Var("o"), Var("e")]))
+            , App(
+                CallT(
+                  SVar("type-is")
+                , []
+                , [ Var("ctx")
+                  , NoAnnoList(
+                      List(
+                        [ Var("t210")
+                        , Var("ety")
+                        , Var("ty")
+                        , Var("msg")
+                        , Var("ety'")
+                        , Var("eq115")
+                        ]
+                      )
+                    )
+                  ]
+                )
+              , Var("ty")
+              )
+            , [ WhereClause(
+                  Seq(
+                    Assign(
+                      Var("t210")
+                    , App(
+                        CallT(SVar("type-task"), [], [Var("ctx")])
+                      , Var("o")
+                      )
+                    )
+                  , Seq(
+                      Assign(
+                        Var("ety")
+                      , App(
+                          CallT(SVar("new-task"), [], [Var("ctx")])
+                        , NoAnnoList(
+                            Op("Rewrite", [NoAnnoList(Str("\"proj210\"")), Var("t210")])
+                          )
+                        )
+                      )
+                    , Seq(
+                        Assign(
+                          Var("ty")
+                        , App(
+                            CallT(SVar("new-task"), [], [Var("ctx")])
+                          , NoAnnoList(
+                              Op("Rewrite", [NoAnnoList(Str("\"proj211\"")), Var("t210")])
+                            )
+                          )
+                        )
+                      , Seq(
+                          Assign(
+                            Var("msg")
+                          , App(
+                              CallT(SVar("new-task"), [], [Var("ctx")])
+                            , NoAnnoList(
+                                Op("Rewrite", [NoAnnoList(Str("\"proj212\"")), Var("t210")])
+                              )
+                            )
+                          )
+                        , Seq(
+                            Assign(
+                              Var("ety'")
+                            , App(
+                                CallT(SVar("type-task"), [], [Var("ctx")])
+                              , Var("e")
+                              )
+                            )
+                          , Seq(
+                              Assign(
+                                Var("eq115")
+                              , App(
+                                  CallT(
+                                    SVar("type-match")
+                                  , []
+                                  , [Var("ctx"), Var("ety'")]
+                                  )
+                                , Var("ety")
+                                )
+                              )
+                            , BA(
+                                CallT(
+                                  SVar("task-create-error-on-failure")
+                                , []
+                                , [Var("ctx"), Var("eq115"), Var("msg")]
+                                )
+                              , Var("e")
+                              )
+                            )
+                          )
+                        )
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      , SDefT(
+          "create-type-task"
+        , []
+        , [VarDec("ctx", ConstType(SortNoArgs("ATerm")))]
+        , SRule(
+            Rule(
+              NoAnnoList(Op("Not", []))
+            , App(
+                CallT(
+                  SVar("type-is")
+                , []
+                , [Var("ctx"), NoAnnoList(List([]))]
+                )
+              , NoAnnoList(
+                  Tuple(
+                    [ NoAnnoList(Op("Bool", []))
+                    , NoAnnoList(Op("Bool", []))
+                    , NoAnnoList(Str("\"expects a boolean\""))
+                    ]
+                  )
+                )
+              )
+            , [WhereClause(Id())]
+            )
+          )
+        )
+      , SDefT(
+          "create-type-task"
+        , []
+        , [VarDec("ctx", ConstType(SortNoArgs("ATerm")))]
+        , SRule(
+            Rule(
+              NoAnnoList(Op("Length", []))
+            , App(
+                CallT(
+                  SVar("type-is")
+                , []
+                , [Var("ctx"), NoAnnoList(List([]))]
+                )
+              , NoAnnoList(
+                  Tuple(
+                    [ NoAnnoList(Op("IntArray", []))
+                    , NoAnnoList(Op("Int", []))
+                    , NoAnnoList(Str("\"\""))
+                    ]
+                  )
+                )
+              )
+            , [WhereClause(Id())]
+            )
+          )
+        )
+      , SDefT(
+          "create-type-task"
+        , []
+        , [VarDec("ctx", ConstType(SortNoArgs("ATerm")))]
+        , SRule(
+            Rule(
+              NoAnnoList(Op("NewArray", []))
+            , App(
+                CallT(
+                  SVar("type-is")
+                , []
+                , [Var("ctx"), NoAnnoList(List([]))]
+                )
+              , NoAnnoList(
+                  Tuple(
+                    [ NoAnnoList(Op("Int", []))
+                    , NoAnnoList(Op("IntArray", []))
+                    , NoAnnoList(Str("\"\""))
+                    ]
+                  )
+                )
+              )
+            , [WhereClause(Id())]
+            )
+          )
+        )
+      , SDefT(
+          "create-type-task"
+        , []
+        , [VarDec("ctx", ConstType(SortNoArgs("ATerm")))]
+        , SRule(
+            Rule(
+              NoAnnoList(
+                Op(
+                  "BinExp"
+                , [Var("o"), Var("e1"), Var("e2")]
+                )
+              )
+            , App(
+                CallT(
+                  SVar("type-is")
+                , []
+                , [ Var("ctx")
+                  , NoAnnoList(
+                      List(
+                        [ Var("t211")
+                        , Var("ety1")
+                        , Var("ety2")
+                        , Var("ty")
+                        , Var("ety1'")
+                        , Var("eq116")
+                        , Var("ety2'")
+                        , Var("eq117")
+                        ]
+                      )
+                    )
+                  ]
+                )
+              , Var("ty")
+              )
+            , [ WhereClause(
+                  Seq(
+                    Assign(
+                      Var("t211")
+                    , App(
+                        CallT(SVar("type-task"), [], [Var("ctx")])
+                      , Var("o")
+                      )
+                    )
+                  , Seq(
+                      Assign(
+                        Var("ety1")
+                      , App(
+                          CallT(SVar("new-task"), [], [Var("ctx")])
+                        , NoAnnoList(
+                            Op("Rewrite", [NoAnnoList(Str("\"proj207\"")), Var("t211")])
+                          )
+                        )
+                      )
+                    , Seq(
+                        Assign(
+                          Var("ety2")
+                        , App(
+                            CallT(SVar("new-task"), [], [Var("ctx")])
+                          , NoAnnoList(
+                              Op("Rewrite", [NoAnnoList(Str("\"proj208\"")), Var("t211")])
+                            )
+                          )
+                        )
+                      , Seq(
+                          Assign(
+                            Var("ty")
+                          , App(
+                              CallT(SVar("new-task"), [], [Var("ctx")])
+                            , NoAnnoList(
+                                Op("Rewrite", [NoAnnoList(Str("\"proj209\"")), Var("t211")])
+                              )
+                            )
+                          )
+                        , Seq(
+                            Assign(
+                              Var("ety1'")
+                            , App(
+                                CallT(SVar("type-task"), [], [Var("ctx")])
+                              , Var("e1")
+                              )
+                            )
+                          , Seq(
+                              Assign(
+                                Var("eq116")
+                              , App(
+                                  CallT(
+                                    SVar("type-match")
+                                  , []
+                                  , [Var("ctx"), Var("ety1")]
+                                  )
+                                , Var("ety1'")
+                                )
+                              )
+                            , Seq(
+                                BA(
+                                  CallT(
+                                    SVar("task-create-error-on-failure")
+                                  , []
+                                  , [Var("ctx"), Var("eq116"), NoAnnoList(Str("\"Type mismatch\""))]
+                                  )
+                                , Var("e1")
+                                )
+                              , Seq(
+                                  Assign(
+                                    Var("ety2'")
+                                  , App(
+                                      CallT(SVar("type-task"), [], [Var("ctx")])
+                                    , Var("e2")
+                                    )
+                                  )
+                                , Seq(
+                                    Assign(
+                                      Var("eq117")
+                                    , App(
+                                        CallT(
+                                          SVar("type-match")
+                                        , []
+                                        , [Var("ctx"), Var("ety2")]
+                                        )
+                                      , Var("ety2'")
+                                      )
+                                    )
+                                  , BA(
+                                      CallT(
+                                        SVar("task-create-error-on-failure")
+                                      , []
+                                      , [Var("ctx"), Var("eq117"), NoAnnoList(Str("\"Type mismatch\""))]
+                                      )
+                                    , Var("e2")
+                                    )
+                                  )
+                                )
+                              )
+                            )
+                          )
+                        )
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      , SDefT(
+          "create-type-task"
+        , []
+        , [VarDec("ctx", ConstType(SortNoArgs("ATerm")))]
+        , SRule(
+            Rule(
+              NoAnnoList(Op("Lt", []))
+            , App(
+                CallT(
+                  SVar("type-is")
+                , []
+                , [Var("ctx"), NoAnnoList(List([]))]
+                )
+              , NoAnnoList(
+                  Tuple(
+                    [ NoAnnoList(Op("Int", []))
+                    , NoAnnoList(Op("Int", []))
+                    , NoAnnoList(Op("Bool", []))
+                    ]
+                  )
+                )
+              )
+            , [WhereClause(Id())]
+            )
+          )
+        )
+      , SDefT(
+          "create-type-task"
+        , []
+        , [VarDec("ctx", ConstType(SortNoArgs("ATerm")))]
+        , SRule(
+            Rule(
+              NoAnnoList(Op("And", []))
+            , App(
+                CallT(
+                  SVar("type-is")
+                , []
+                , [Var("ctx"), NoAnnoList(List([]))]
+                )
+              , NoAnnoList(
+                  Tuple(
+                    [ NoAnnoList(Op("Bool", []))
+                    , NoAnnoList(Op("Bool", []))
+                    , NoAnnoList(Op("Bool", []))
+                    ]
+                  )
+                )
+              )
+            , [WhereClause(Id())]
+            )
+          )
+        )
+      , SDefT(
+          "create-type-task"
+        , []
+        , [VarDec("ctx", ConstType(SortNoArgs("ATerm")))]
+        , SRule(
+            Rule(
+              NoAnnoList(Op("Plus", []))
+            , App(
+                CallT(
+                  SVar("type-is")
+                , []
+                , [Var("ctx"), NoAnnoList(List([]))]
+                )
+              , NoAnnoList(
+                  Tuple(
+                    [ NoAnnoList(Op("Int", []))
+                    , NoAnnoList(Op("Int", []))
+                    , NoAnnoList(Op("Int", []))
+                    ]
+                  )
+                )
+              )
+            , [WhereClause(Id())]
+            )
+          )
+        )
+      , SDefT(
+          "create-type-task"
+        , []
+        , [VarDec("ctx", ConstType(SortNoArgs("ATerm")))]
+        , SRule(
+            Rule(
+              NoAnnoList(Op("Minus", []))
+            , App(
+                CallT(
+                  SVar("type-is")
+                , []
+                , [Var("ctx"), NoAnnoList(List([]))]
+                )
+              , NoAnnoList(
+                  Tuple(
+                    [ NoAnnoList(Op("Int", []))
+                    , NoAnnoList(Op("Int", []))
+                    , NoAnnoList(Op("Int", []))
+                    ]
+                  )
+                )
+              )
+            , [WhereClause(Id())]
+            )
+          )
+        )
+      , SDefT(
+          "create-type-task"
+        , []
+        , [VarDec("ctx", ConstType(SortNoArgs("ATerm")))]
+        , SRule(
+            Rule(
+              NoAnnoList(Op("Times", []))
+            , App(
+                CallT(
+                  SVar("type-is")
+                , []
+                , [Var("ctx"), NoAnnoList(List([]))]
+                )
+              , NoAnnoList(
+                  Tuple(
+                    [ NoAnnoList(Op("Int", []))
+                    , NoAnnoList(Op("Int", []))
+                    , NoAnnoList(Op("Int", []))
+                    ]
+                  )
+                )
+              )
+            , [WhereClause(Id())]
+            )
+          )
+        )
+      , SDefT(
+          "create-type-task"
+        , []
+        , [VarDec("ctx", ConstType(SortNoArgs("ATerm")))]
+        , SRule(
+            Rule(
+              NoAnnoList(Op("Subscript", []))
+            , App(
+                CallT(
+                  SVar("type-is")
+                , []
+                , [Var("ctx"), NoAnnoList(List([]))]
+                )
+              , NoAnnoList(
+                  Tuple(
+                    [ NoAnnoList(Op("IntArray", []))
+                    , NoAnnoList(Op("Int", []))
+                    , NoAnnoList(Op("Int", []))
+                    ]
+                  )
+                )
+              )
+            , [WhereClause(Id())]
+            )
+          )
+        )
+      ]
+    )
+  , Rules(
+      [ SDefT(
+          "task-rewrite"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(
+                Tuple(
+                  [ NoAnnoList(Str("\"proj214\""))
+                  , NoAnnoList(Tuple([Var("ty_"), Var("ty")]))
+                  ]
+                )
+              )
+            , Var("ty")
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "task-rewrite"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(
+                Tuple(
+                  [ NoAnnoList(Str("\"proj213\""))
+                  , NoAnnoList(Tuple([Var("ty_"), Var("ty")]))
+                  ]
+                )
+              )
+            , Var("ty_")
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "task-rewrite"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(
+                Tuple(
+                  [ NoAnnoList(Str("\"proj212\""))
+                  , NoAnnoList(
+                      Tuple([Var("ety"), Var("ty"), Var("msg")])
+                    )
+                  ]
+                )
+              )
+            , Var("msg")
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "task-rewrite"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(
+                Tuple(
+                  [ NoAnnoList(Str("\"proj211\""))
+                  , NoAnnoList(
+                      Tuple([Var("ety"), Var("ty"), Var("msg")])
+                    )
+                  ]
+                )
+              )
+            , Var("ty")
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "task-rewrite"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(
+                Tuple(
+                  [ NoAnnoList(Str("\"proj210\""))
+                  , NoAnnoList(
+                      Tuple([Var("ety"), Var("ty"), Var("msg")])
+                    )
+                  ]
+                )
+              )
+            , Var("ety")
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "task-rewrite"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(
+                Tuple(
+                  [ NoAnnoList(Str("\"proj209\""))
+                  , NoAnnoList(
+                      Tuple([Var("ety1"), Var("ety2"), Var("ty")])
+                    )
+                  ]
+                )
+              )
+            , Var("ty")
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "task-rewrite"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(
+                Tuple(
+                  [ NoAnnoList(Str("\"proj208\""))
+                  , NoAnnoList(
+                      Tuple([Var("ety1"), Var("ety2"), Var("ty")])
+                    )
+                  ]
+                )
+              )
+            , Var("ety2")
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "task-rewrite"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(
+                Tuple(
+                  [ NoAnnoList(Str("\"proj207\""))
+                  , NoAnnoList(
+                      Tuple([Var("ety1"), Var("ety2"), Var("ty")])
+                    )
+                  ]
+                )
+              )
+            , Var("ety1")
+            , []
+            )
+          )
+        )
+      ]
+    )
+  , Rules(
+      [ SDefT(
+          "create-type-task"
+        , []
+        , [VarDec("ctx", ConstType(SortNoArgs("ATerm")))]
+        , SRule(
+            Rule(
+              NoAnnoList(Op("Parent", [Var("p")]))
+            , Var("t")
+            , [ WhereClause(
+                  Seq(
+                    Assign(
+                      Var("t1")
+                    , App(
+                        CallT(SVar("type-lookup"), [], [Var("ctx")])
+                      , Var("p")
+                      )
+                    )
+                  , Seq(
+                      Assign(
+                        Var("t2")
+                      , App(
+                          CallT(SVar("type-is"), [], [Var("ctx")])
+                        , NoAnnoList(Op("ClassType", [Var("p")]))
+                        )
+                      )
+                    , Assign(
+                        Var("t")
+                      , App(
+                          CallT(SVar("new-task"), [], [Var("ctx")])
+                        , NoAnnoList(
+                            Op(
+                              "Combine"
+                            , [NoAnnoList(List([Var("t1"), Var("t2")]))]
+                            )
+                          )
+                        )
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      , SDefT(
+          "create-subtype-task"
+        , []
+        , [VarDec("ctx", ConstType(SortNoArgs("ATerm")))]
+        , SRule(
+            Rule(
+              NoAnnoList(
+                Tuple(
+                  [NoAnnoList(Str("\"<list:\"")), Var("t1*"), Var("t2*")]
+                )
+              )
+            , App(
+                CallT(
+                  SVar("type-is")
+                , []
+                , [Var("ctx"), Var("dep")]
+                )
+              , Var("t*")
+              )
+            , [ WhereClause(
+                  GuardedLChoice(
+                    Seq(
+                      Assign(
+                        Var("t*")
+                      , App(
+                          CallT(
+                            SVar("zip")
+                          , [ CallT(
+                                SVar("create-subtype-task")
+                              , []
+                              , [Var("ctx"), NoAnnoList(Str("\"<:\""))]
+                              )
+                            ]
+                          , []
+                          )
+                        , NoAnnoList(Tuple([Var("t1*"), Var("t2*")]))
+                        )
+                      )
+                    , Assign(Var("dep"), Var("t*"))
+                    )
+                  , Id()
+                  , Seq(
+                      Assign(
+                        Var("t*")
+                      , App(
+                          CallT(
+                            SVar("map-with-index")
+                          , [ CallT(
+                                SVar("create-subtype-task")
+                              , []
+                              , [Var("ctx"), NoAnnoList(Str("\"<:\"")), Var("t2*")]
+                              )
+                            ]
+                          , []
+                          )
+                        , Var("t1*")
+                        )
+                      )
+                    , Seq(
+                        Assign(
+                          Var("l")
+                        , App(
+                            CallT(SVar("new-task"), [], [Var("ctx")])
+                          , NoAnnoList(Op("Length", [Var("t2*")]))
+                          )
+                        )
+                      , Seq(
+                          Assign(
+                            Var("m")
+                          , App(
+                              CallT(
+                                SVar("type-match")
+                              , []
+                              , [ Var("ctx")
+                                , App(CallT(SVar("length"), [], []), Var("t1*"))
+                                ]
+                              )
+                            , Var("l")
+                            )
+                          )
+                        , Assign(
+                            Var("dep")
+                          , NoAnnoList(
+                              List([Var("t*"), Var("l"), Var("m")])
+                            )
+                          )
+                        )
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      , SDefT(
+          "create-subtype-task"
+        , []
+        , [ VarDec("ctx", ConstType(SortNoArgs("ATerm")))
+          , VarDec("op", ConstType(SortNoArgs("ATerm")))
+          ]
+        , SRule(
+            Rule(
+              NoAnnoList(Tuple([Var("t1"), Var("t2")]))
+            , App(
+                CallT(SVar("create-subtype-task"), [], [Var("ctx")])
+              , NoAnnoList(
+                  Tuple([Var("op"), Var("t1"), Var("t2")])
+                )
+              )
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "create-subtype-task"
+        , []
+        , [ VarDec("ctx", ConstType(SortNoArgs("ATerm")))
+          , VarDec("op", ConstType(SortNoArgs("ATerm")))
+          , VarDec("t*", ConstType(SortNoArgs("ATerm")))
+          ]
+        , SRule(
+            Rule(
+              NoAnnoList(Tuple([Var("i"), Var("t")]))
+            , Var("st")
+            , [ WhereClause(
+                  Seq(
+                    Assign(
+                      Var("t'")
+                    , App(
+                        CallT(SVar("new-task"), [], [Var("ctx")])
+                      , NoAnnoList(Op("Index", [Var("i"), Var("t*")]))
+                      )
+                    )
+                  , Assign(
+                      Var("st")
+                    , App(
+                        CallT(SVar("create-subtype-task"), [], [Var("ctx")])
+                      , NoAnnoList(
+                          Tuple([Var("op"), Var("t"), Var("t'")])
+                        )
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      ]
+    )
+  , Rules(
+      [ SDefT(
+          "create-subtype-task"
+        , []
+        , [VarDec("ctx", ConstType(SortNoArgs("ATerm")))]
+        , SRule(
+            Rule(
+              NoAnnoList(
+                Tuple(
+                  [NoAnnoList(Str("\"<:\"")), Var("t1"), Var("t2")]
+                )
+              )
+            , Var("or22")
+            , [ WhereClause(
+                  Seq(
+                    Assign(
+                      Var("eq113")
+                    , App(
+                        CallT(
+                          SVar("type-match")
+                        , []
+                        , [Var("ctx"), Var("t2")]
+                        )
+                      , Var("t1")
+                      )
+                    )
+                  , Seq(
+                      Assign(
+                        Var("c1")
+                      , App(
+                          CallT(SVar("new-task"), [], [Var("ctx")])
+                        , NoAnnoList(
+                            Op("Rewrite", [NoAnnoList(Str("\"proj206\"")), Var("t1")])
+                          )
+                        )
+                      )
+                    , Seq(
+                        Assign(
+                          Var("t")
+                        , App(
+                            CallT(SVar("type-lookup"), [], [Var("ctx")])
+                          , Var("c1")
+                          )
+                        )
+                      , Seq(
+                          Assign(
+                            Var("eq114")
+                          , App(
+                              CallT(
+                                SVar("type-match")
+                              , []
+                              , [Var("ctx"), Var("t2")]
+                              )
+                            , Var("t")
+                            )
+                          )
+                        , Assign(
+                            Var("or22")
+                          , App(
+                              CallT(SVar("new-task"), [], [Var("ctx")])
+                            , NoAnnoList(
+                                Op(
+                                  "Choice"
+                                , [NoAnnoList(List([Var("eq113"), Var("eq114")]))]
+                                )
+                              )
+                            )
+                          )
+                        )
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      , SDefT(
+          "create-type-task"
+        , []
+        , [VarDec("ctx", ConstType(SortNoArgs("ATerm")))]
+        , SRule(
+            Rule(
+              NoAnnoList(Op("None", []))
+            , App(
+                CallT(
+                  SVar("type-is")
+                , []
+                , [Var("ctx"), NoAnnoList(List([]))]
+                )
+              , NoAnnoList(Op("None", []))
+              )
+            , [WhereClause(Id())]
+            )
+          )
+        )
+      ]
+    )
+  , Rules(
+      [ SDefT(
+          "task-rewrite"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(
+                Tuple(
+                  [NoAnnoList(Str("\"proj206\"")), NoAnnoList(Op("ClassType", [Var("c1")]))]
+                )
+              )
+            , Var("c1")
+            , []
+            )
+          )
+        )
+      ]
+    )
+  , Signature(
+      [ Constructors(
+          [ OpDecl("NablNsClass", ConstType(SortNoArgs("Namespace")))
+          , OpDecl("NablNsField", ConstType(SortNoArgs("Namespace")))
+          , OpDecl("NablNsMethod", ConstType(SortNoArgs("Namespace")))
+          , OpDecl("NablNsVariable", ConstType(SortNoArgs("Namespace")))
+          , OpDecl("NablNsImplicit", ConstType(SortNoArgs("Namespace")))
+          ]
+        )
+      ]
+    )
+  , Rules(
+      [ SDefT(
+          "nabl-scoping-site"
+        , []
+        , []
+        , Seq(
+            Match(NoAnnoList(Op("Program", [Wld(), Wld()])))
+          , CallT(
+              SVar("origin-track-forced")
+            , [ CallT(
+                  SVar("nabl-scope")
+                , []
+                , [NoAnnoList(List([NoAnnoList(Op("NablNsClass", []))]))]
+                )
+              ]
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "nabl-get-scope"
+        , []
+        , []
+        , Seq(
+            Match(NoAnnoList(Op("Program", [Wld(), Wld()])))
+          , Build(NoAnnoList(List([NoAnnoList(Op("NablNsClass", []))])))
+          )
+        )
+      , SDefT(
+          "nabl-get-name"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("MainClass", [Var("c"), Wld(), Wld()]))
+            , Var("c")
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "nabl-name-apply"
+        , [VarDec("s", ConstType(SortNoArgs("ATerm")))]
+        , []
+        , CallT(
+            SVar("MainClass")
+          , [CallT(SVar("s"), [], []), Id(), Id()]
+          , []
+          )
+        )
+      , SDefT(
+          "nabl-def-site"
+        , [ VarDec("child-uris__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("sibl-uris__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("implicits__", ConstType(SortNoArgs("ATerm")))
+          ]
+        , [ VarDec("lang__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("partition__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("uniques__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("uri__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("states__", ConstType(SortNoArgs("ATerm")))
+          ]
+        , Seq(
+            Match(
+              NoAnnoList(Op("MainClass", [Var("c"), Wld(), Wld()]))
+            )
+          , CallT(
+              SVar("origin-track-forced")
+            , [ Seq(
+                  CallT(
+                    SVar("MainClass")
+                  , [ CallT(
+                        SVar("nabl-def")
+                      , [Match(Var("c-uri1__")), Match(Var("s-uri1__"))]
+                      , [ Var("lang__")
+                        , Var("partition__")
+                        , Var("uniques__")
+                        , Var("uri__")
+                        , Var("uri__")
+                        , NoAnnoList(Op("NablNsClass", []))
+                        , NoAnnoList(Op("Unique", []))
+                        , NoAnnoList(Op("Current", []))
+                        , NoAnnoList(List([]))
+                        , NoAnnoList(List([]))
+                        ]
+                      )
+                    , Id()
+                    , Id()
+                    ]
+                  , []
+                  )
+                , Seq(
+                    CallT(
+                      SVar("match")
+                    , [CallT(SVar("child-uris__"), [], [])]
+                    , [Var("c-uri1__")]
+                    )
+                  , Seq(
+                      CallT(
+                        SVar("match")
+                      , [CallT(SVar("sibl-uris__"), [], [])]
+                      , [Var("s-uri1__")]
+                      )
+                    , CallT(
+                        SVar("match")
+                      , [CallT(SVar("implicits__"), [], [])]
+                      , [NoAnnoList(List([]))]
+                      )
+                    )
+                  )
+                )
+              ]
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "nabl-prop-site"
+        , []
+        , [ VarDec("lang__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("partition__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("uris__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("states__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("implicits__", ConstType(SortNoArgs("ATerm")))
+          ]
+        , Seq(
+            Match(
+              NoAnnoList(Op("MainClass", [Var("c"), Wld(), Wld()]))
+            )
+          , Seq(
+              CallT(
+                SVar("MainClass")
+              , [ CallT(
+                    SVar("nabl-store-props")
+                  , []
+                  , [ Var("partition__")
+                    , NoAnnoList(
+                        List(
+                          [ NoAnnoList(
+                              Op(
+                                "Prop"
+                              , [ NoAnnoList(Op("Type", []))
+                                , NoAnnoList(Op("MainType", []))
+                                , NoAnnoList(List([]))
+                                ]
+                              )
+                            )
+                          ]
+                        )
+                      )
+                    ]
+                  )
+                , Id()
+                , Id()
+                ]
+              , []
+              )
+            , Fail()
+            )
+          )
+        )
+      , SDefT(
+          "nabl-get-scope"
+        , []
+        , []
+        , Seq(
+            Match(
+              NoAnnoList(
+                Op(
+                  "Class"
+                , [Var("c"), Var("p"), Wld(), Var("ms")]
+                )
+              )
+            )
+          , Build(
+              NoAnnoList(
+                List(
+                  [ NoAnnoList(Op("NablNsField", []))
+                  , NoAnnoList(Op("NablNsMethod", []))
+                  , NoAnnoList(Op("NablNsImplicit", []))
+                  ]
+                )
+              )
+            )
+          )
+        )
+      , SDefT(
+          "nabl-get-name"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(
+                Op(
+                  "Class"
+                , [Var("c"), Var("p"), Wld(), Var("ms")]
+                )
+              )
+            , Var("c")
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "nabl-name-apply"
+        , [VarDec("s", ConstType(SortNoArgs("ATerm")))]
+        , []
+        , CallT(
+            SVar("Class")
+          , [CallT(SVar("s"), [], []), Id(), Id(), Id()]
+          , []
+          )
+        )
+      , SDefT(
+          "nabl-def-site"
+        , [ VarDec("child-uris__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("sibl-uris__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("implicits__", ConstType(SortNoArgs("ATerm")))
+          ]
+        , [ VarDec("lang__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("partition__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("uniques__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("uri__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("states__", ConstType(SortNoArgs("ATerm")))
+          ]
+        , Seq(
+            Match(
+              NoAnnoList(
+                Op(
+                  "Class"
+                , [Var("c"), Var("p"), Wld(), Var("ms")]
+                )
+              )
+            )
+          , CallT(
+              SVar("origin-track-forced")
+            , [ Seq(
+                  CallT(
+                    SVar("Class")
+                  , [ CallT(
+                        SVar("nabl-def")
+                      , [Match(Var("c-uri1__")), Match(Var("s-uri1__"))]
+                      , [ Var("lang__")
+                        , Var("partition__")
+                        , Var("uniques__")
+                        , Var("uri__")
+                        , Var("uri__")
+                        , NoAnnoList(Op("NablNsClass", []))
+                        , NoAnnoList(Op("Unique", []))
+                        , NoAnnoList(Op("Current", []))
+                        , NoAnnoList(
+                            List(
+                              [ NoAnnoList(Op("NablNsField", []))
+                              , NoAnnoList(Op("NablNsMethod", []))
+                              , NoAnnoList(Op("NablNsImplicit", []))
+                              ]
+                            )
+                          )
+                        , NoAnnoList(List([]))
+                        ]
+                      )
+                    , Id()
+                    , Id()
+                    , Id()
+                    ]
+                  , []
+                  )
+                , Seq(
+                    Where(
+                      Assign(
+                        Var("i-2__")
+                      , App(
+                          CallT(
+                            SVar("nabl-def")
+                          , [Match(Var("c-uri2__")), Match(Var("s-uri2__"))]
+                          , [ Var("lang__")
+                            , Var("partition__")
+                            , Var("uniques__")
+                            , Var("c-uri1__")
+                            , Var("s-uri1__")
+                            , NoAnnoList(Op("NablNsImplicit", []))
+                            , NoAnnoList(Op("Unique", []))
+                            , NoAnnoList(Op("Current", []))
+                            , NoAnnoList(List([]))
+                            , NoAnnoList(List([]))
+                            ]
+                          )
+                        , NoAnnoList(Op("This", []))
+                        )
+                      )
+                    )
+                  , Seq(
+                      CallT(
+                        SVar("match")
+                      , [CallT(SVar("child-uris__"), [], [])]
+                      , [Var("c-uri2__")]
+                      )
+                    , Seq(
+                        CallT(
+                          SVar("match")
+                        , [CallT(SVar("sibl-uris__"), [], [])]
+                        , [Var("s-uri2__")]
+                        )
+                      , CallT(
+                          SVar("match")
+                        , [CallT(SVar("implicits__"), [], [])]
+                        , [NoAnnoList(List([Var("i-2__")]))]
+                        )
+                      )
+                    )
+                  )
+                )
+              ]
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "nabl-prop-site"
+        , []
+        , [ VarDec("lang__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("partition__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("uris__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("states__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("implicits__", ConstType(SortNoArgs("ATerm")))
+          ]
+        , Seq(
+            Match(
+              NoAnnoList(
+                Op(
+                  "Class"
+                , [Var("c"), Var("p"), Wld(), Var("ms")]
+                )
+              )
+            )
+          , Seq(
+              Seq(
+                Where(
+                  Assign(NoAnnoList(List([Var("i-2__")])), Var("implicits__"))
+                )
+              , Seq(
+                  Where(
+                    Assign(
+                      Var("r3-1-1__")
+                    , App(
+                        CallT(
+                          SVar("get-or-create-property-task")
+                        , []
+                        , [Var("partition__"), NoAnnoList(Op("Type", []))]
+                        )
+                      , Var("p")
+                      )
+                    )
+                  )
+                , Seq(
+                    CallT(
+                      SVar("Class")
+                    , [ CallT(
+                          SVar("nabl-store-props")
+                        , []
+                        , [ Var("partition__")
+                          , NoAnnoList(
+                              List(
+                                [ NoAnnoList(
+                                    Op(
+                                      "Prop"
+                                    , [ NoAnnoList(Op("Type", []))
+                                      , Var("r3-1-1__")
+                                      , NoAnnoList(List([Var("r3-1-1__")]))
+                                      ]
+                                    )
+                                  )
+                                ]
+                              )
+                            )
+                          ]
+                        )
+                      , Id()
+                      , Id()
+                      , Id()
+                      ]
+                    , []
+                    )
+                  , Where(
+                      BA(
+                        CallT(
+                          SVar("nabl-store-props")
+                        , []
+                        , [ Var("partition__")
+                          , NoAnnoList(
+                              List(
+                                [ NoAnnoList(
+                                    Op(
+                                      "Prop"
+                                    , [ NoAnnoList(Op("Type", []))
+                                      , NoAnnoList(Op("ClassType", [Var("c")]))
+                                      , NoAnnoList(List([]))
+                                      ]
+                                    )
+                                  )
+                                ]
+                              )
+                            )
+                          ]
+                        )
+                      , Var("i-2__")
+                      )
+                    )
+                  )
+                )
+              )
+            , Fail()
+            )
+          )
+        )
+      , SDefT(
+          "nabl-get-name"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("Parent", [Var("p")]))
+            , Var("p")
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "nabl-name-apply"
+        , [VarDec("s", ConstType(SortNoArgs("ATerm")))]
+        , []
+        , CallT(
+            SVar("Parent")
+          , [CallT(SVar("s"), [], [])]
+          , []
+          )
+        )
+      , SDefT(
+          "nabl-use-site"
+        , []
+        , [ VarDec("lang__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("partition__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("uniques__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("uris__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("states__", ConstType(SortNoArgs("ATerm")))
+          ]
+        , Seq(
+            Match(NoAnnoList(Op("Parent", [Var("p")])))
+          , CallT(
+              SVar("origin-track-forced")
+            , [ CallT(
+                  SVar("Parent")
+                , [ CallT(
+                      SVar("nabl-use")
+                    , []
+                    , [ Var("lang__")
+                      , Var("partition__")
+                      , Var("uniques__")
+                      , Var("uris__")
+                      , NoAnnoList(
+                          List(
+                            [ NoAnnoList(
+                                Op(
+                                  "UseCandidate"
+                                , [ NoAnnoList(Op("NablNsClass", []))
+                                  , NoAnnoList(List([]))
+                                  , NoAnnoList(Op("Current", []))
+                                  , NoAnnoList(Op("True", []))
+                                  , NoAnnoList(List([]))
+                                  ]
+                                )
+                              )
+                            ]
+                          )
+                        )
+                      ]
+                    )
+                  ]
+                , []
+                )
+              ]
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "nabl-import-site"
+        , []
+        , [ VarDec("lang__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("partition__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("uniques__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("uris__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("states__", ConstType(SortNoArgs("ATerm")))
+          ]
+        , Seq(
+            Match(NoAnnoList(Op("Parent", [Var("p")])))
+          , CallT(
+              SVar("origin-track-forced")
+            , [ CallT(
+                  SVar("nabl-import")
+                , []
+                , [ Var("lang__")
+                  , Var("partition__")
+                  , Var("uniques__")
+                  , Var("uris__")
+                  , NoAnnoList(
+                      List(
+                        [ NoAnnoList(
+                            Op(
+                              "Wildcard"
+                            , [ NoAnnoList(
+                                  List(
+                                    [ NoAnnoList(
+                                        Op(
+                                          "Import"
+                                        , [Var("lang__"), NoAnnoList(Op("NablNsField", []))]
+                                        )
+                                      )
+                                    , NoAnnoList(
+                                        Op(
+                                          "Import"
+                                        , [ Var("lang__")
+                                          , NoAnnoList(Op("Imported", [NoAnnoList(Op("NablNsField", []))]))
+                                          ]
+                                        )
+                                      )
+                                    , NoAnnoList(
+                                        Op(
+                                          "Import"
+                                        , [Var("lang__"), NoAnnoList(Op("NablNsMethod", []))]
+                                        )
+                                      )
+                                    , NoAnnoList(
+                                        Op(
+                                          "Import"
+                                        , [ Var("lang__")
+                                          , NoAnnoList(Op("Imported", [NoAnnoList(Op("NablNsMethod", []))]))
+                                          ]
+                                        )
+                                      )
+                                    ]
+                                  )
+                                )
+                              , NoAnnoList(
+                                  Op(
+                                    "Context"
+                                  , [ NoAnnoList(Op("NablNsClass", []))
+                                    , Var("p")
+                                    , NoAnnoList(List([]))
+                                    , NoAnnoList(Op("Current", []))
+                                    ]
+                                  )
+                                )
+                              , NoAnnoList(Op("Current", []))
+                              , NoAnnoList(List([]))
+                              ]
+                            )
+                          )
+                        ]
+                      )
+                    )
+                  ]
+                )
+              ]
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "nabl-get-name"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("ClassType", [Var("c")]))
+            , Var("c")
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "nabl-name-apply"
+        , [VarDec("s", ConstType(SortNoArgs("ATerm")))]
+        , []
+        , CallT(
+            SVar("ClassType")
+          , [CallT(SVar("s"), [], [])]
+          , []
+          )
+        )
+      , SDefT(
+          "nabl-use-site"
+        , []
+        , [ VarDec("lang__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("partition__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("uniques__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("uris__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("states__", ConstType(SortNoArgs("ATerm")))
+          ]
+        , Seq(
+            Match(NoAnnoList(Op("ClassType", [Var("c")])))
+          , CallT(
+              SVar("origin-track-forced")
+            , [ CallT(
+                  SVar("ClassType")
+                , [ CallT(
+                      SVar("nabl-use")
+                    , []
+                    , [ Var("lang__")
+                      , Var("partition__")
+                      , Var("uniques__")
+                      , Var("uris__")
+                      , NoAnnoList(
+                          List(
+                            [ NoAnnoList(
+                                Op(
+                                  "UseCandidate"
+                                , [ NoAnnoList(Op("NablNsClass", []))
+                                  , NoAnnoList(List([]))
+                                  , NoAnnoList(Op("Current", []))
+                                  , NoAnnoList(Op("True", []))
+                                  , NoAnnoList(List([]))
+                                  ]
+                                )
+                              )
+                            ]
+                          )
+                        )
+                      ]
+                    )
+                  ]
+                , []
+                )
+              ]
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "nabl-get-name"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("NewObject", [Var("c")]))
+            , Var("c")
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "nabl-name-apply"
+        , [VarDec("s", ConstType(SortNoArgs("ATerm")))]
+        , []
+        , CallT(
+            SVar("NewObject")
+          , [CallT(SVar("s"), [], [])]
+          , []
+          )
+        )
+      , SDefT(
+          "nabl-use-site"
+        , []
+        , [ VarDec("lang__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("partition__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("uniques__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("uris__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("states__", ConstType(SortNoArgs("ATerm")))
+          ]
+        , Seq(
+            Match(NoAnnoList(Op("NewObject", [Var("c")])))
+          , CallT(
+              SVar("origin-track-forced")
+            , [ CallT(
+                  SVar("NewObject")
+                , [ CallT(
+                      SVar("nabl-use")
+                    , []
+                    , [ Var("lang__")
+                      , Var("partition__")
+                      , Var("uniques__")
+                      , Var("uris__")
+                      , NoAnnoList(
+                          List(
+                            [ NoAnnoList(
+                                Op(
+                                  "UseCandidate"
+                                , [ NoAnnoList(Op("NablNsClass", []))
+                                  , NoAnnoList(List([]))
+                                  , NoAnnoList(Op("Current", []))
+                                  , NoAnnoList(Op("True", []))
+                                  , NoAnnoList(List([]))
+                                  ]
+                                )
+                              )
+                            ]
+                          )
+                        )
+                      ]
+                    )
+                  ]
+                , []
+                )
+              ]
+            , []
+            )
+          )
+        )
+      ]
+    )
+  , Rules(
+      [ SDefT(
+          "nabl-get-scope"
+        , []
+        , []
+        , Seq(
+            Match(
+              NoAnnoList(
+                Op(
+                  "Method"
+                , [Var("t"), Var("m"), Var("ps"), Wld(), Wld(), Wld()]
+                )
+              )
+            )
+          , Build(NoAnnoList(List([NoAnnoList(Op("NablNsVariable", []))])))
+          )
+        )
+      , SDefT(
+          "nabl-get-name"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(
+                Op(
+                  "Method"
+                , [Var("t"), Var("m"), Var("ps"), Wld(), Wld(), Wld()]
+                )
+              )
+            , Var("m")
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "nabl-name-apply"
+        , [VarDec("s", ConstType(SortNoArgs("ATerm")))]
+        , []
+        , CallT(
+            SVar("Method")
+          , [ Id()
+            , CallT(SVar("s"), [], [])
+            , Id()
+            , Id()
+            , Id()
+            , Id()
+            ]
+          , []
+          )
+        )
+      , SDefT(
+          "nabl-def-site"
+        , [ VarDec("child-uris__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("sibl-uris__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("implicits__", ConstType(SortNoArgs("ATerm")))
+          ]
+        , [ VarDec("lang__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("partition__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("uniques__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("uri__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("states__", ConstType(SortNoArgs("ATerm")))
+          ]
+        , Seq(
+            Match(
+              NoAnnoList(
+                Op(
+                  "Method"
+                , [Var("t"), Var("m"), Var("ps"), Wld(), Wld(), Wld()]
+                )
+              )
+            )
+          , CallT(
+              SVar("origin-track-forced")
+            , [ Seq(
+                  CallT(
+                    SVar("Method")
+                  , [ Id()
+                    , CallT(
+                        SVar("nabl-def")
+                      , [Match(Var("c-uri1__")), Match(Var("s-uri1__"))]
+                      , [ Var("lang__")
+                        , Var("partition__")
+                        , Var("uniques__")
+                        , Var("uri__")
+                        , Var("uri__")
+                        , NoAnnoList(Op("NablNsMethod", []))
+                        , NoAnnoList(Op("Unique", []))
+                        , NoAnnoList(Op("Current", []))
+                        , NoAnnoList(List([NoAnnoList(Op("NablNsVariable", []))]))
+                        , NoAnnoList(List([]))
+                        ]
+                      )
+                    , Id()
+                    , Id()
+                    , Id()
+                    , Id()
+                    ]
+                  , []
+                  )
+                , Seq(
+                    CallT(
+                      SVar("match")
+                    , [CallT(SVar("child-uris__"), [], [])]
+                    , [Var("c-uri1__")]
+                    )
+                  , Seq(
+                      CallT(
+                        SVar("match")
+                      , [CallT(SVar("sibl-uris__"), [], [])]
+                      , [Var("s-uri1__")]
+                      )
+                    , CallT(
+                        SVar("match")
+                      , [CallT(SVar("implicits__"), [], [])]
+                      , [NoAnnoList(List([]))]
+                      )
+                    )
+                  )
+                )
+              ]
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "nabl-prop-site"
+        , []
+        , [ VarDec("lang__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("partition__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("uris__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("states__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("implicits__", ConstType(SortNoArgs("ATerm")))
+          ]
+        , Seq(
+            Match(
+              NoAnnoList(
+                Op(
+                  "Method"
+                , [Var("t"), Var("m"), Var("ps"), Wld(), Wld(), Wld()]
+                )
+              )
+            )
+          , Seq(
+              Seq(
+                Where(
+                  Assign(
+                    Var("r1-1-1__")
+                  , App(
+                      CallT(
+                        SVar("get-or-create-property-task")
+                      , []
+                      , [Var("partition__"), NoAnnoList(Op("Type", []))]
+                      )
+                    , Var("ps")
+                    )
+                  )
+                )
+              , CallT(
+                  SVar("Method")
+                , [ Id()
+                  , CallT(
+                      SVar("nabl-store-props")
+                    , []
+                    , [ Var("partition__")
+                      , NoAnnoList(
+                          List(
+                            [ NoAnnoList(
+                                Op(
+                                  "Prop"
+                                , [ NoAnnoList(Op("Type", []))
+                                  , NoAnnoList(Tuple([Var("r1-1-1__"), Var("t")]))
+                                  , NoAnnoList(List([Var("r1-1-1__")]))
+                                  ]
+                                )
+                              )
+                            ]
+                          )
+                        )
+                      ]
+                    )
+                  , Id()
+                  , Id()
+                  , Id()
+                  , Id()
+                  ]
+                , []
+                )
+              )
+            , Fail()
+            )
+          )
+        )
+      , SDefT(
+          "nabl-get-name"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(
+                Op("Call", [Var("e"), Var("m"), Wld()])
+              )
+            , Var("m")
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "nabl-name-apply"
+        , [VarDec("s", ConstType(SortNoArgs("ATerm")))]
+        , []
+        , CallT(
+            SVar("Call")
+          , [Id(), CallT(SVar("s"), [], []), Id()]
+          , []
+          )
+        )
+      , SDefT(
+          "nabl-use-site"
+        , []
+        , [ VarDec("lang__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("partition__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("uniques__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("uris__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("states__", ConstType(SortNoArgs("ATerm")))
+          ]
+        , Seq(
+            Match(
+              NoAnnoList(
+                Op("Call", [Var("e"), Var("m"), Wld()])
+              )
+            )
+          , CallT(
+              SVar("origin-track-forced")
+            , [ Seq(
+                  Where(
+                    Assign(
+                      Var("r2-1-1-1__")
+                    , App(
+                        CallT(
+                          SVar("get-or-create-property-task")
+                        , []
+                        , [Var("partition__"), NoAnnoList(Op("Type", []))]
+                        )
+                      , Var("e")
+                      )
+                    )
+                  )
+                , Seq(
+                    Where(
+                      Assign(
+                        Var("r2-1-1-1-1__")
+                      , App(
+                          CallT(SVar("new-task"), [], [Var("partition__")])
+                        , NoAnnoList(
+                            Op(
+                              "Rewrite"
+                            , [ NoAnnoList(Str("\"match2-1-1-1-1\""))
+                              , NoAnnoList(Tuple([Var("r2-1-1-1__"), NoAnnoList(List([]))]))
+                              ]
+                            )
+                          )
+                        )
+                      )
+                    )
+                  , CallT(
+                      SVar("Call")
+                    , [ Id()
+                      , CallT(
+                          SVar("nabl-use")
+                        , []
+                        , [ Var("lang__")
+                          , Var("partition__")
+                          , Var("uniques__")
+                          , Var("uris__")
+                          , NoAnnoList(
+                              List(
+                                [ NoAnnoList(
+                                    Op(
+                                      "UseCandidate"
+                                    , [ NoAnnoList(Op("NablNsMethod", []))
+                                      , NoAnnoList(List([]))
+                                      , NoAnnoList(
+                                          Op(
+                                            "Context"
+                                          , [ NoAnnoList(Op("NablNsClass", []))
+                                            , Var("r2-1-1-1-1__")
+                                            , NoAnnoList(List([]))
+                                            , NoAnnoList(Op("Current", []))
+                                            ]
+                                          )
+                                        )
+                                      , NoAnnoList(Op("True", []))
+                                      , NoAnnoList(List([Var("r2-1-1-1-1__")]))
+                                      ]
+                                    )
+                                  )
+                                ]
+                              )
+                            )
+                          ]
+                        )
+                      , Id()
+                      ]
+                    , []
+                    )
+                  )
+                )
+              ]
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "task-rewrite"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(
+                Tuple(
+                  [ NoAnnoList(Str("\"match2-1-1-1-1\""))
+                  , NoAnnoList(
+                      Tuple(
+                        [NoAnnoList(Op("ClassType", [Var("c")])), NoAnnoList(List([]))]
+                      )
+                    )
+                  ]
+                )
+              )
+            , Var("c")
+            , []
+            )
+          )
+        )
+      ]
+    )
+  , Rules(
+      [ SDefT(
+          "nabl-get-name"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("Field", [Var("t"), Var("f")]))
+            , Var("f")
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "nabl-name-apply"
+        , [VarDec("s", ConstType(SortNoArgs("ATerm")))]
+        , []
+        , CallT(
+            SVar("Field")
+          , [Id(), CallT(SVar("s"), [], [])]
+          , []
+          )
+        )
+      , SDefT(
+          "nabl-def-site"
+        , [ VarDec("child-uris__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("sibl-uris__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("implicits__", ConstType(SortNoArgs("ATerm")))
+          ]
+        , [ VarDec("lang__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("partition__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("uniques__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("uri__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("states__", ConstType(SortNoArgs("ATerm")))
+          ]
+        , Seq(
+            Match(
+              NoAnnoList(Op("Field", [Var("t"), Var("f")]))
+            )
+          , CallT(
+              SVar("origin-track-forced")
+            , [ Seq(
+                  CallT(
+                    SVar("Field")
+                  , [ Id()
+                    , CallT(
+                        SVar("nabl-def")
+                      , [Match(Var("c-uri1__")), Match(Var("s-uri1__"))]
+                      , [ Var("lang__")
+                        , Var("partition__")
+                        , Var("uniques__")
+                        , Var("uri__")
+                        , Var("uri__")
+                        , NoAnnoList(Op("NablNsField", []))
+                        , NoAnnoList(Op("Unique", []))
+                        , NoAnnoList(Op("Current", []))
+                        , NoAnnoList(List([]))
+                        , NoAnnoList(List([]))
+                        ]
+                      )
+                    ]
+                  , []
+                  )
+                , Seq(
+                    CallT(
+                      SVar("match")
+                    , [CallT(SVar("child-uris__"), [], [])]
+                    , [Var("c-uri1__")]
+                    )
+                  , Seq(
+                      CallT(
+                        SVar("match")
+                      , [CallT(SVar("sibl-uris__"), [], [])]
+                      , [Var("s-uri1__")]
+                      )
+                    , CallT(
+                        SVar("match")
+                      , [CallT(SVar("implicits__"), [], [])]
+                      , [NoAnnoList(List([]))]
+                      )
+                    )
+                  )
+                )
+              ]
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "nabl-prop-site"
+        , []
+        , [ VarDec("lang__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("partition__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("uris__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("states__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("implicits__", ConstType(SortNoArgs("ATerm")))
+          ]
+        , Seq(
+            Match(
+              NoAnnoList(Op("Field", [Var("t"), Var("f")]))
+            )
+          , Seq(
+              CallT(
+                SVar("Field")
+              , [ Id()
+                , CallT(
+                    SVar("nabl-store-props")
+                  , []
+                  , [ Var("partition__")
+                    , NoAnnoList(
+                        List(
+                          [ NoAnnoList(
+                              Op(
+                                "Prop"
+                              , [NoAnnoList(Op("Type", [])), Var("t"), NoAnnoList(List([]))]
+                              )
+                            )
+                          ]
+                        )
+                      )
+                    ]
+                  )
+                ]
+              , []
+              )
+            , Fail()
+            )
+          )
+        )
+      , SDefT(
+          "nabl-use-site"
+        , []
+        , [ VarDec("lang__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("partition__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("uniques__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("uris__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("states__", ConstType(SortNoArgs("ATerm")))
+          ]
+        , Seq(
+            Match(NoAnnoList(Op("This", [])))
+          , CallT(
+              SVar("origin-track-forced")
+            , [ CallT(
+                  SVar("nabl-use")
+                , []
+                , [ Var("lang__")
+                  , Var("partition__")
+                  , Var("uniques__")
+                  , Var("uris__")
+                  , NoAnnoList(
+                      List(
+                        [ NoAnnoList(
+                            Op(
+                              "UseCandidate"
+                            , [ NoAnnoList(Op("NablNsImplicit", []))
+                              , NoAnnoList(List([]))
+                              , NoAnnoList(Op("Current", []))
+                              , NoAnnoList(Op("True", []))
+                              , NoAnnoList(List([]))
+                              ]
+                            )
+                          )
+                        ]
+                      )
+                    )
+                  ]
+                )
+              ]
+            , []
+            )
+          )
+        )
+      ]
+    )
+  , Rules(
+      [ SDefT(
+          "nabl-get-name"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("Param", [Var("t"), Var("v")]))
+            , Var("v")
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "nabl-name-apply"
+        , [VarDec("s", ConstType(SortNoArgs("ATerm")))]
+        , []
+        , CallT(
+            SVar("Param")
+          , [Id(), CallT(SVar("s"), [], [])]
+          , []
+          )
+        )
+      , SDefT(
+          "nabl-def-site"
+        , [ VarDec("child-uris__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("sibl-uris__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("implicits__", ConstType(SortNoArgs("ATerm")))
+          ]
+        , [ VarDec("lang__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("partition__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("uniques__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("uri__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("states__", ConstType(SortNoArgs("ATerm")))
+          ]
+        , Seq(
+            Match(
+              NoAnnoList(Op("Param", [Var("t"), Var("v")]))
+            )
+          , CallT(
+              SVar("origin-track-forced")
+            , [ Seq(
+                  CallT(
+                    SVar("Param")
+                  , [ Id()
+                    , CallT(
+                        SVar("nabl-def")
+                      , [Match(Var("c-uri1__")), Match(Var("s-uri1__"))]
+                      , [ Var("lang__")
+                        , Var("partition__")
+                        , Var("uniques__")
+                        , Var("uri__")
+                        , Var("uri__")
+                        , NoAnnoList(Op("NablNsVariable", []))
+                        , NoAnnoList(Op("Unique", []))
+                        , NoAnnoList(Op("Current", []))
+                        , NoAnnoList(List([]))
+                        , NoAnnoList(List([]))
+                        ]
+                      )
+                    ]
+                  , []
+                  )
+                , Seq(
+                    CallT(
+                      SVar("match")
+                    , [CallT(SVar("child-uris__"), [], [])]
+                    , [Var("c-uri1__")]
+                    )
+                  , Seq(
+                      CallT(
+                        SVar("match")
+                      , [CallT(SVar("sibl-uris__"), [], [])]
+                      , [Var("s-uri1__")]
+                      )
+                    , CallT(
+                        SVar("match")
+                      , [CallT(SVar("implicits__"), [], [])]
+                      , [NoAnnoList(List([]))]
+                      )
+                    )
+                  )
+                )
+              ]
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "nabl-prop-site"
+        , []
+        , [ VarDec("lang__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("partition__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("uris__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("states__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("implicits__", ConstType(SortNoArgs("ATerm")))
+          ]
+        , Seq(
+            Match(
+              NoAnnoList(Op("Param", [Var("t"), Var("v")]))
+            )
+          , Seq(
+              CallT(
+                SVar("Param")
+              , [ Id()
+                , CallT(
+                    SVar("nabl-store-props")
+                  , []
+                  , [ Var("partition__")
+                    , NoAnnoList(
+                        List(
+                          [ NoAnnoList(
+                              Op(
+                                "Prop"
+                              , [NoAnnoList(Op("Type", [])), Var("t"), NoAnnoList(List([]))]
+                              )
+                            )
+                          ]
+                        )
+                      )
+                    ]
+                  )
+                ]
+              , []
+              )
+            , Fail()
+            )
+          )
+        )
+      , SDefT(
+          "nabl-get-name"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("Var", [Var("t"), Var("v")]))
+            , Var("v")
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "nabl-name-apply"
+        , [VarDec("s", ConstType(SortNoArgs("ATerm")))]
+        , []
+        , CallT(
+            SVar("Var")
+          , [Id(), CallT(SVar("s"), [], [])]
+          , []
+          )
+        )
+      , SDefT(
+          "nabl-def-site"
+        , [ VarDec("child-uris__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("sibl-uris__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("implicits__", ConstType(SortNoArgs("ATerm")))
+          ]
+        , [ VarDec("lang__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("partition__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("uniques__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("uri__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("states__", ConstType(SortNoArgs("ATerm")))
+          ]
+        , Seq(
+            Match(
+              NoAnnoList(Op("Var", [Var("t"), Var("v")]))
+            )
+          , CallT(
+              SVar("origin-track-forced")
+            , [ Seq(
+                  CallT(
+                    SVar("Var")
+                  , [ Id()
+                    , CallT(
+                        SVar("nabl-def")
+                      , [Match(Var("c-uri1__")), Match(Var("s-uri1__"))]
+                      , [ Var("lang__")
+                        , Var("partition__")
+                        , Var("uniques__")
+                        , Var("uri__")
+                        , Var("uri__")
+                        , NoAnnoList(Op("NablNsVariable", []))
+                        , NoAnnoList(Op("Unique", []))
+                        , NoAnnoList(Op("Current", []))
+                        , NoAnnoList(List([]))
+                        , NoAnnoList(List([]))
+                        ]
+                      )
+                    ]
+                  , []
+                  )
+                , Seq(
+                    CallT(
+                      SVar("match")
+                    , [CallT(SVar("child-uris__"), [], [])]
+                    , [Var("c-uri1__")]
+                    )
+                  , Seq(
+                      CallT(
+                        SVar("match")
+                      , [CallT(SVar("sibl-uris__"), [], [])]
+                      , [Var("s-uri1__")]
+                      )
+                    , CallT(
+                        SVar("match")
+                      , [CallT(SVar("implicits__"), [], [])]
+                      , [NoAnnoList(List([]))]
+                      )
+                    )
+                  )
+                )
+              ]
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "nabl-prop-site"
+        , []
+        , [ VarDec("lang__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("partition__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("uris__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("states__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("implicits__", ConstType(SortNoArgs("ATerm")))
+          ]
+        , Seq(
+            Match(
+              NoAnnoList(Op("Var", [Var("t"), Var("v")]))
+            )
+          , Seq(
+              CallT(
+                SVar("Var")
+              , [ Id()
+                , CallT(
+                    SVar("nabl-store-props")
+                  , []
+                  , [ Var("partition__")
+                    , NoAnnoList(
+                        List(
+                          [ NoAnnoList(
+                              Op(
+                                "Prop"
+                              , [NoAnnoList(Op("Type", [])), Var("t"), NoAnnoList(List([]))]
+                              )
+                            )
+                          ]
+                        )
+                      )
+                    ]
+                  )
+                ]
+              , []
+              )
+            , Fail()
+            )
+          )
+        )
+      , SDefT(
+          "nabl-get-name"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("VarRef", [Var("x")]))
+            , Var("x")
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "nabl-name-apply"
+        , [VarDec("s", ConstType(SortNoArgs("ATerm")))]
+        , []
+        , CallT(
+            SVar("VarRef")
+          , [CallT(SVar("s"), [], [])]
+          , []
+          )
+        )
+      , SDefT(
+          "nabl-use-site"
+        , []
+        , [ VarDec("lang__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("partition__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("uniques__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("uris__", ConstType(SortNoArgs("ATerm")))
+          , VarDec("states__", ConstType(SortNoArgs("ATerm")))
+          ]
+        , Seq(
+            Match(NoAnnoList(Op("VarRef", [Var("x")])))
+          , CallT(
+              SVar("origin-track-forced")
+            , [ CallT(
+                  SVar("VarRef")
+                , [ CallT(
+                      SVar("nabl-use")
+                    , []
+                    , [ Var("lang__")
+                      , Var("partition__")
+                      , Var("uniques__")
+                      , Var("uris__")
+                      , NoAnnoList(
+                          List(
+                            [ NoAnnoList(
+                                Op(
+                                  "UseCandidate"
+                                , [ NoAnnoList(Op("NablNsVariable", []))
+                                  , NoAnnoList(List([]))
+                                  , NoAnnoList(Op("Current", []))
+                                  , NoAnnoList(Op("True", []))
+                                  , NoAnnoList(List([]))
+                                  ]
+                                )
+                              )
+                            , NoAnnoList(
+                                Op(
+                                  "UseCandidate"
+                                , [ NoAnnoList(Op("NablNsField", []))
+                                  , NoAnnoList(List([]))
+                                  , NoAnnoList(Op("Current", []))
+                                  , NoAnnoList(Op("True", []))
+                                  , NoAnnoList(List([]))
+                                  ]
+                                )
+                              )
+                            ]
+                          )
+                        )
+                      ]
+                    )
+                  ]
+                , []
+                )
+              ]
+            , []
+            )
+          )
+        )
+      ]
+    )
+  , Strategies(
+      [ SDefT(
+          "desugar-all"
+        , []
+        , []
+        , CallT(
+            SVar("topdown")
+          , [ CallT(
+                SVar("try")
+              , [CallT(SVar("desugar"), [], [])]
+              , []
+              )
+            ]
+          , []
+          )
+        )
+      , SDefT(
+          "desugar-after-all"
+        , []
+        , []
+        , CallT(
+            SVar("topdown")
+          , [ CallT(
+                SVar("try")
+              , [CallT(SVar("desugar-after"), [], [])]
+              , []
+              )
+            ]
+          , []
+          )
+        )
+      ]
+    )
+  , Rules(
+      [ SDefT(
+          "desugar"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("Not", [Var("e")]))
+            , NoAnnoList(
+                Op(
+                  "UnExp"
+                , [NoAnnoList(Op("Not", [])), Var("e")]
+                )
+              )
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "desugar"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("Length", [Var("e")]))
+            , NoAnnoList(
+                Op(
+                  "UnExp"
+                , [NoAnnoList(Op("Length", [])), Var("e")]
+                )
+              )
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "desugar"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("NewArray", [Var("e")]))
+            , NoAnnoList(
+                Op(
+                  "UnExp"
+                , [NoAnnoList(Op("NewArray", [])), Var("e")]
+                )
+              )
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "desugar"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("Lt", [Var("e1"), Var("e2")]))
+            , NoAnnoList(
+                Op(
+                  "BinExp"
+                , [NoAnnoList(Op("Lt", [])), Var("e1"), Var("e2")]
+                )
+              )
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "desugar"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("And", [Var("e1"), Var("e2")]))
+            , NoAnnoList(
+                Op(
+                  "BinExp"
+                , [NoAnnoList(Op("And", [])), Var("e1"), Var("e2")]
+                )
+              )
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "desugar"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("Add", [Var("e1"), Var("e2")]))
+            , NoAnnoList(
+                Op(
+                  "BinExp"
+                , [NoAnnoList(Op("Plus", [])), Var("e1"), Var("e2")]
+                )
+              )
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "desugar"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("Sub", [Var("e1"), Var("e2")]))
+            , NoAnnoList(
+                Op(
+                  "BinExp"
+                , [NoAnnoList(Op("Minus", [])), Var("e1"), Var("e2")]
+                )
+              )
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "desugar"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("Mul", [Var("e1"), Var("e2")]))
+            , NoAnnoList(
+                Op(
+                  "BinExp"
+                , [NoAnnoList(Op("Times", [])), Var("e1"), Var("e2")]
+                )
+              )
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "desugar"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("Subscript", [Var("e1"), Var("e2")]))
+            , NoAnnoList(
+                Op(
+                  "BinExp"
+                , [NoAnnoList(Op("Subscript", [])), Var("e1"), Var("e2")]
+                )
+              )
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "desugar"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("IntValue", [Var("oct")]))
+            , NoAnnoList(Op("IntValue", [Var("dec")]))
+            , [ WhereClause(
+                  Assign(
+                    Var("dec")
+                  , App(
+                      Seq(
+                        CallT(SVar("explode-string"), [], [])
+                      , Seq(
+                          Match(
+                            NoAnnoList(ListTail([NoAnnoList(Char("'0'")), Wld()], Wld()))
+                          )
+                        , Seq(
+                            CallT(SVar("oct-chars-to-int"), [], [])
+                          , CallT(SVar("int-to-string"), [], [])
+                          )
+                        )
+                      )
+                    , Var("oct")
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      ]
+    )
+  , Rules(
+      [ SDefT(
+          "desugar-after"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(Op("VarRef", [Var("f")]))
+            , NoAnnoList(Op("FieldRef", [Var("f")]))
+            , [ WhereClause(
+                  BA(
+                    Seq(
+                      CallT(SVar("nabl-uri"), [], [])
+                    , Seq(
+                        CallT(SVar("nabl-uri-namespace"), [], [])
+                      , Match(NoAnnoList(Op("NablNsField", [])))
+                      )
+                    )
+                  , Var("f")
+                  )
+                )
+              ]
+            )
+          )
+        )
+      ]
+    )
+  , Rules(
+      [ SDefT(
+          "nabl-check-disable-duplicate"
+        , []
+        , [ VarDec("uri", ConstType(SortNoArgs("ATerm")))
+          , VarDec("ns", ConstType(SortNoArgs("ATerm")))
+          ]
+        , Id()
+        )
+      , SDefT(
+          "nabl-check-disable-hiding"
+        , []
+        , [ VarDec("uri", ConstType(SortNoArgs("ATerm")))
+          , VarDec("ns", ConstType(SortNoArgs("ATerm")))
+          ]
+        , Id()
+        )
+      , SDefT(
+          "nabl-constraint"
+        , []
+        , [VarDec("ctx", ConstType(SortNoArgs("ATerm")))]
+        , Seq(
+            Match(
+              NoAnnoList(
+                Op("Class", [Var("c"), Wld(), Wld(), Wld()])
+              )
+            )
+          , Seq(
+              Assign(
+                Var("local")
+              , App(
+                  CallT(SVar("nabl-lookup-local"), [], [Var("ctx")])
+                , Var("c")
+                )
+              )
+            , Seq(
+                BA(
+                  CallT(
+                    SVar("task-create-error-on-multiple")
+                  , []
+                  , [ Var("ctx")
+                    , Var("local")
+                    , NoAnnoList(
+                        StringQuotation1(
+                          "                                                  "
+                        , [QStr("Multiple definitions for class "), StringEscape1("                                                                                 ", Var("c")), QStr(".")]
+                        )
+                      )
+                    ]
+                  )
+                , Var("c")
+                )
+              , Fail()
+              )
+            )
+          )
+        )
+      , SDefT(
+          "nabl-constraint"
+        , []
+        , [VarDec("ctx", ConstType(SortNoArgs("ATerm")))]
+        , Seq(
+            Match(
+              NoAnnoList(
+                Op(
+                  "Method"
+                , [Var("rt1"), Var("m"), Wld(), Wld(), Wld(), Wld()]
+                )
+              )
+            )
+          , Seq(
+              Assign(
+                Var("local")
+              , App(
+                  CallT(SVar("nabl-lookup-local"), [], [Var("ctx")])
+                , Var("m")
+                )
+              )
+            , Seq(
+                BA(
+                  CallT(
+                    SVar("task-create-error-on-multiple")
+                  , []
+                  , [ Var("ctx")
+                    , Var("local")
+                    , NoAnnoList(
+                        StringQuotation1(
+                          "                                                  "
+                        , [QStr("Overloaded method "), StringEscape1("                                                                    ", Var("m")), QStr(".")]
+                        )
+                      )
+                    ]
+                  )
+                , Var("m")
+                )
+              , Seq(
+                  Assign(
+                    Var("imported")
+                  , App(
+                      CallT(SVar("nabl-lookup-local-import"), [], [Var("ctx")])
+                    , Var("m")
+                    )
+                  )
+                , Seq(
+                    Assign(
+                      Var("ty1")
+                    , App(
+                        CallT(SVar("type-lookup"), [], [Var("ctx")])
+                      , Var("m")
+                      )
+                    )
+                  , Seq(
+                      Assign(
+                        Var("pt1")
+                      , App(
+                          CallT(SVar("new-task"), [], [Var("ctx")])
+                        , NoAnnoList(
+                            Op("Rewrite", [NoAnnoList(Str("\"parameter-types\"")), Var("ty1")])
+                          )
+                        )
+                      )
+                    , Seq(
+                        Assign(
+                          Var("ty2")
+                        , App(
+                            CallT(SVar("type-lookup"), [], [Var("ctx")])
+                          , Var("imported")
+                          )
+                        )
+                      , Seq(
+                          Assign(
+                            Var("rt2")
+                          , App(
+                              CallT(SVar("new-task"), [], [Var("ctx")])
+                            , NoAnnoList(
+                                Op("Rewrite", [NoAnnoList(Str("\"return-type\"")), Var("ty2")])
+                              )
+                            )
+                          )
+                        , Seq(
+                            Assign(
+                              Var("pt2")
+                            , App(
+                                CallT(SVar("new-task"), [], [Var("ctx")])
+                              , NoAnnoList(
+                                  Op("Rewrite", [NoAnnoList(Str("\"parameter-types\"")), Var("ty2")])
+                                )
+                              )
+                            )
+                          , Seq(
+                              Assign(
+                                Var("match1")
+                              , App(
+                                  CallT(
+                                    SVar("type-match")
+                                  , []
+                                  , [Var("ctx"), Var("pt1")]
+                                  )
+                                , Var("pt2")
+                                )
+                              )
+                            , Seq(
+                                Assign(
+                                  Var("match2")
+                                , App(
+                                    CallT(SVar("create-subtype-task"), [], [Var("ctx")])
+                                  , NoAnnoList(
+                                      Tuple(
+                                        [NoAnnoList(Str("\"<:\"")), Var("rt1"), Var("rt2")]
+                                      )
+                                    )
+                                  )
+                                )
+                              , Seq(
+                                  BA(
+                                    CallT(
+                                      SVar("task-create-error-on-triggers")
+                                    , []
+                                    , [ Var("ctx")
+                                      , NoAnnoList(
+                                          List(
+                                            [ NoAnnoList(Op("Success", [Var("pt2")]))
+                                            , NoAnnoList(Op("Failure", [Var("match1")]))
+                                            ]
+                                          )
+                                        )
+                                      , NoAnnoList(
+                                          StringQuotation1(
+                                            "                                                                            "
+                                          , [QStr("Overloaded method "), StringEscape1("                                                                                              ", Var("m"))]
+                                          )
+                                        )
+                                      ]
+                                    )
+                                  , Var("m")
+                                  )
+                                , Seq(
+                                    BA(
+                                      CallT(
+                                        SVar("task-create-error-on-triggers")
+                                      , []
+                                      , [ Var("ctx")
+                                        , NoAnnoList(
+                                            List(
+                                              [ NoAnnoList(Op("Success", [Var("match1")]))
+                                              , NoAnnoList(Op("Success", [Var("rt2")]))
+                                              , NoAnnoList(Op("Failure", [Var("match2")]))
+                                              ]
+                                            )
+                                          )
+                                        , NoAnnoList(StringQuotation1("                                                                                             ", [QStr("Incorrect return type")]))
+                                        ]
+                                      )
+                                    , Var("rt1")
+                                    )
+                                  , Seq(
+                                      BA(
+                                        CallT(
+                                          SVar("task-create-note-on-success")
+                                        , []
+                                        , [ Var("ctx")
+                                          , Var("match1")
+                                          , NoAnnoList(
+                                              StringQuotation1(
+                                                "                                                 "
+                                              , [QStr("Overriding method "), StringEscape1("                                                                   ", Var("m"))]
+                                              )
+                                            )
+                                          ]
+                                        )
+                                      , Var("m")
+                                      )
+                                    , Fail()
+                                    )
+                                  )
+                                )
+                              )
+                            )
+                          )
+                        )
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          )
+        )
+      , SDefT(
+          "task-rewrite"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(
+                Tuple(
+                  [NoAnnoList(Str("\"return-type\"")), NoAnnoList(Tuple([Wld(), Var("rt")]))]
+                )
+              )
+            , Var("rt")
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "task-rewrite"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(
+                Tuple(
+                  [NoAnnoList(Str("\"parameter-types\"")), NoAnnoList(Tuple([Var("pt*"), Wld()]))]
+                )
+              )
+            , Var("pt*")
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "nabl-constraint"
+        , []
+        , [VarDec("ctx", ConstType(SortNoArgs("ATerm")))]
+        , Seq(
+            Match(NoAnnoList(Op("Field", [Wld(), Var("f")])))
+          , Seq(
+              Assign(
+                Var("local")
+              , App(
+                  CallT(SVar("nabl-lookup-local"), [], [Var("ctx")])
+                , Var("f")
+                )
+              )
+            , Seq(
+                BA(
+                  CallT(
+                    SVar("task-create-error-on-multiple")
+                  , []
+                  , [ Var("ctx")
+                    , Var("local")
+                    , NoAnnoList(
+                        StringQuotation1(
+                          "                                                  "
+                        , [QStr("Multiple definitions for field "), StringEscape1("                                                                                 ", Var("f")), QStr(".")]
+                        )
+                      )
+                    ]
+                  )
+                , Var("f")
+                )
+              , Seq(
+                  Assign(
+                    Var("imported")
+                  , App(
+                      CallT(SVar("nabl-lookup-local-import"), [], [Var("ctx")])
+                    , Var("f")
+                    )
+                  )
+                , Seq(
+                    BA(
+                      CallT(
+                        SVar("task-create-error-on-success")
+                      , []
+                      , [ Var("ctx")
+                        , Var("imported")
+                        , NoAnnoList(
+                            StringQuotation1(
+                              "                                                    "
+                            , [QStr("Field "), StringEscape1("                                                          ", Var("f")), QStr(" hides inherited field.")]
+                            )
+                          )
+                        ]
+                      )
+                    , Var("f")
+                    )
+                  , Fail()
+                  )
+                )
+              )
+            )
+          )
+        )
+      , SDefT(
+          "nabl-constraint"
+        , []
+        , [VarDec("ctx", ConstType(SortNoArgs("ATerm")))]
+        , Seq(
+            GuardedLChoice(
+              Match(NoAnnoList(Op("Param", [Wld(), Var("v")])))
+            , Id()
+            , Match(NoAnnoList(Op("Var", [Wld(), Var("v")])))
+            )
+          , Seq(
+              Assign(
+                Var("local")
+              , App(
+                  CallT(SVar("nabl-lookup-local"), [], [Var("ctx")])
+                , Var("v")
+                )
+              )
+            , Seq(
+                BA(
+                  CallT(
+                    SVar("task-create-error-on-multiple")
+                  , []
+                  , [ Var("ctx")
+                    , Var("local")
+                    , NoAnnoList(
+                        StringQuotation1(
+                          "                                                  "
+                        , [QStr("Multiple definitions for variable "), StringEscape1("                                                                                    ", Var("v")), QStr(".")]
+                        )
+                      )
+                    ]
+                  )
+                , Var("v")
+                )
+              , Seq(
+                  Assign(
+                    Var("field")
+                  , App(
+                      CallT(
+                        SVar("nabl-lookup-lexical")
+                      , []
+                      , [Var("ctx"), NoAnnoList(Op("NablNsField", []))]
+                      )
+                    , Var("v")
+                    )
+                  )
+                , Seq(
+                    BA(
+                      CallT(
+                        SVar("task-create-warning-on-success")
+                      , []
+                      , [ Var("ctx")
+                        , Var("field")
+                        , NoAnnoList(
+                            StringQuotation1(
+                              "                                                   "
+                            , [QStr("Variable "), StringEscape1("                                                            ", Var("v")), QStr(" hides local field.")]
+                            )
+                          )
+                        ]
+                      )
+                    , Var("v")
+                    )
+                  , Seq(
+                      Assign(
+                        Var("imported")
+                      , App(
+                          CallT(
+                            SVar("nabl-lookup-lexical-import")
+                          , []
+                          , [Var("ctx"), NoAnnoList(Op("NablNsField", []))]
+                          )
+                        , Var("v")
+                        )
+                      )
+                    , Seq(
+                        BA(
+                          CallT(
+                            SVar("task-create-warning-on-success")
+                          , []
+                          , [ Var("ctx")
+                            , Var("imported")
+                            , NoAnnoList(
+                                StringQuotation1(
+                                  "                                                      "
+                                , [QStr("Variable "), StringEscape1("                                                               ", Var("v")), QStr(" hides imported field.")]
+                                )
+                              )
+                            ]
+                          )
+                        , Var("v")
+                        )
+                      , Fail()
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          )
+        )
+      ]
+    )
+  , Rules(
+      [ SDefT("nabl-check-disable-unresolved", [], [], Id())
+      , SDefT(
+          "nabl-constraint"
+        , []
+        , [VarDec("ctx", ConstType(SortNoArgs("ATerm")))]
+        , Seq(
+            GuardedLChoice(
+              Match(NoAnnoList(Op("Parent", [RootApp(Id())])))
+            , Id()
+            , GuardedLChoice(
+                Match(NoAnnoList(Op("NewObject", [RootApp(Id())])))
+              , Id()
+              , Match(NoAnnoList(Op("ClassType", [RootApp(Id())])))
+              )
+            )
+          , Seq(
+              CallT(
+                SVar("task-create-error-on-failure")
+              , []
+              , [ Var("ctx")
+                , RootApp(
+                    CallT(
+                      SVar("has-annotation")
+                    , [Match(NoAnnoList(Op("Use", [RootApp(Id())])))]
+                    , []
+                    )
+                  )
+                , NoAnnoList(
+                    StringQuotation1(
+                      "                                                                       "
+                    , [QStr("Missing definition for class "), StringEscape1("                                                                                                    ", RootApp(Id())), QStr(".")]
+                    )
+                  )
+                ]
+              )
+            , Fail()
+            )
+          )
+        )
+      , SDefT(
+          "nabl-constraint"
+        , []
+        , [VarDec("ctx", ConstType(SortNoArgs("ATerm")))]
+        , Seq(
+            Match(
+              NoAnnoList(Op("Call", [Wld(), RootApp(Id()), Wld()]))
+            )
+          , Seq(
+              CallT(
+                SVar("task-create-error-on-failure")
+              , []
+              , [ Var("ctx")
+                , RootApp(
+                    CallT(
+                      SVar("has-annotation")
+                    , [Match(NoAnnoList(Op("Use", [RootApp(Id())])))]
+                    , []
+                    )
+                  )
+                , NoAnnoList(
+                    StringQuotation1(
+                      "                                                                       "
+                    , [QStr("Missing definition for method "), StringEscape1("                                                                                                     ", RootApp(Id())), QStr(".")]
+                    )
+                  )
+                ]
+              )
+            , Fail()
+            )
+          )
+        )
+      , SDefT(
+          "nabl-constraint"
+        , []
+        , [VarDec("ctx", ConstType(SortNoArgs("ATerm")))]
+        , Seq(
+            Match(NoAnnoList(Op("VarRef", [RootApp(Id())])))
+          , Seq(
+              CallT(
+                SVar("task-create-error-on-failure")
+              , []
+              , [ Var("ctx")
+                , RootApp(
+                    CallT(
+                      SVar("has-annotation")
+                    , [Match(NoAnnoList(Op("Use", [RootApp(Id())])))]
+                    , []
+                    )
+                  )
+                , NoAnnoList(
+                    StringQuotation1(
+                      "                                                                       "
+                    , [QStr("Missing definition for variable or field "), StringEscape1("                                                                                                                ", RootApp(Id())), QStr(".")]
+                    )
+                  )
+                ]
+              )
+            , Fail()
+            )
+          )
+        )
+      ]
+    )
+  , Rules([])
+  , Rules(
+      [ SDefT(
+          "nabl-constraint"
+        , []
+        , [VarDec("ctx", ConstType(SortNoArgs("ATerm")))]
+        , SRule(
+            Rule(
+              NoAnnoList(Op("NewObject", [Var("c")]))
+            , RootApp(Fail())
+            , [ WhereClause(
+                  Seq(
+                    Assign(
+                      Var("ty")
+                    , App(
+                        CallT(SVar("type-lookup"), [], [Var("ctx")])
+                      , Var("c")
+                      )
+                    )
+                  , Seq(
+                      Assign(
+                        Var("m")
+                      , App(
+                          CallT(
+                            SVar("type-match")
+                          , []
+                          , [Var("ctx"), NoAnnoList(Op("MainType", []))]
+                          )
+                        , Var("ty")
+                        )
+                      )
+                    , BA(
+                        CallT(
+                          SVar("task-create-error-on-success")
+                        , []
+                        , [Var("ctx"), Var("m"), NoAnnoList(Str("\"cannot instantiate main class\""))]
+                        )
+                      , Var("c")
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      , SDefT(
+          "nabl-constraint"
+        , []
+        , [VarDec("ctx", ConstType(SortNoArgs("ATerm")))]
+        , SRule(
+            Rule(
+              NoAnnoList(Op("Parent", [Var("c")]))
+            , RootApp(Fail())
+            , [ WhereClause(
+                  Seq(
+                    Assign(
+                      Var("ty")
+                    , App(
+                        CallT(SVar("type-lookup"), [], [Var("ctx")])
+                      , Var("c")
+                      )
+                    )
+                  , Seq(
+                      Assign(
+                        Var("m")
+                      , App(
+                          CallT(
+                            SVar("type-match")
+                          , []
+                          , [Var("ctx"), NoAnnoList(Op("MainType", []))]
+                          )
+                        , Var("ty")
+                        )
+                      )
+                    , BA(
+                        CallT(
+                          SVar("task-create-error-on-success")
+                        , []
+                        , [Var("ctx"), Var("m"), NoAnnoList(Str("\"cannot inherit from main class\""))]
+                        )
+                      , Var("c")
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      , SDefT(
+          "nabl-constraint"
+        , []
+        , [VarDec("ctx", ConstType(SortNoArgs("ATerm")))]
+        , SRule(
+            Rule(
+              NoAnnoList(Op("ClassType", [Var("c")]))
+            , RootApp(Fail())
+            , [ WhereClause(
+                  Seq(
+                    Assign(
+                      Var("ty")
+                    , App(
+                        CallT(SVar("type-lookup"), [], [Var("ctx")])
+                      , Var("c")
+                      )
+                    )
+                  , Seq(
+                      Assign(
+                        Var("m")
+                      , App(
+                          CallT(
+                            SVar("type-match")
+                          , []
+                          , [Var("ctx"), NoAnnoList(Op("MainType", []))]
+                          )
+                        , Var("ty")
+                        )
+                      )
+                    , BA(
+                        CallT(
+                          SVar("task-create-error-on-success")
+                        , []
+                        , [Var("ctx"), Var("m"), NoAnnoList(Str("\"cannot instantiate main class\""))]
+                        )
+                      , Var("c")
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      , SDefT(
+          "nabl-constraint"
+        , []
+        , [VarDec("ctx", ConstType(SortNoArgs("ATerm")))]
+        , SRule(
+            Rule(
+              NoAnnoList(
+                Op(
+                  "Class"
+                , [Var("c"), Var("p"), Var("f*"), Var("m*")]
+                )
+              )
+            , RootApp(Fail())
+            , [ WhereClause(
+                  Seq(
+                    Assign(
+                      Var("ty")
+                    , App(
+                        CallT(SVar("type-task"), [], [Var("ctx")])
+                      , Var("p")
+                      )
+                    )
+                  , Seq(
+                      Assign(
+                        Var("ch")
+                      , App(
+                          CallT(
+                            SVar("type-match")
+                          , []
+                          , [Var("ctx"), NoAnnoList(Op("ClassType", [Var("c")]))]
+                          )
+                        , Var("ty")
+                        )
+                      )
+                    , Seq(
+                        Assign(Var("msg"), NoAnnoList(Str("\"cyclic inheritance\"")))
+                      , BA(
+                          CallT(
+                            SVar("task-create-error-on-success")
+                          , []
+                          , [Var("ctx"), Var("ch"), Var("msg")]
+                          )
+                        , Var("p")
+                        )
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      ]
+    )
+  , Rules(
+      [ SDefT(
+          "nabl-constraint"
+        , []
+        , [VarDec("ctx", ConstType(SortNoArgs("ATerm")))]
+        , SRule(
+            Rule(
+              NoAnnoList(Op("Assign", [Var("v"), Var("e")]))
+            , RootApp(Fail())
+            , [ WhereClause(
+                  Seq(
+                    Assign(
+                      Var("ty1")
+                    , App(
+                        CallT(SVar("type-task"), [], [Var("ctx")])
+                      , Var("v")
+                      )
+                    )
+                  , Seq(
+                      Assign(
+                        Var("ty2")
+                      , App(
+                          CallT(SVar("type-task"), [], [Var("ctx")])
+                        , Var("e")
+                        )
+                      )
+                    , Seq(
+                        Assign(
+                          Var("subtype67")
+                        , App(
+                            CallT(SVar("create-subtype-task"), [], [Var("ctx")])
+                          , NoAnnoList(
+                              Tuple(
+                                [NoAnnoList(Str("\"<:\"")), Var("ty2"), Var("ty1")]
+                              )
+                            )
+                          )
+                        )
+                      , BA(
+                          CallT(
+                            SVar("task-create-error-on-failure")
+                          , []
+                          , [Var("ctx"), Var("subtype67"), NoAnnoList(Str("\"type mismatch in assignment\""))]
+                          )
+                        , Var("v")
+                        )
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      , SDefT(
+          "nabl-constraint"
+        , []
+        , [VarDec("ctx", ConstType(SortNoArgs("ATerm")))]
+        , SRule(
+            Rule(
+              NoAnnoList(
+                Op(
+                  "ArrayAssign"
+                , [Var("v"), Var("e1"), Var("e2")]
+                )
+              )
+            , RootApp(Fail())
+            , [ WhereClause(
+                  Seq(
+                    Assign(
+                      Var("t203")
+                    , App(
+                        CallT(SVar("type-task"), [], [Var("ctx")])
+                      , Var("v")
+                      )
+                    )
+                  , Seq(
+                      Assign(
+                        Var("match264")
+                      , App(
+                          CallT(SVar("new-task"), [], [Var("ctx")])
+                        , NoAnnoList(
+                            Op("Rewrite", [NoAnnoList(Str("\"match273\"")), Var("t203")])
+                          )
+                        )
+                      )
+                    , Seq(
+                        BA(
+                          CallT(
+                            SVar("task-create-error-on-failure")
+                          , []
+                          , [Var("ctx"), Var("match264"), NoAnnoList(Str("\"integer array expected\""))]
+                          )
+                        , Var("v")
+                        )
+                      , Seq(
+                          Assign(
+                            Var("t204")
+                          , App(
+                              CallT(SVar("type-task"), [], [Var("ctx")])
+                            , Var("e1")
+                            )
+                          )
+                        , Seq(
+                            Assign(
+                              Var("match265")
+                            , App(
+                                CallT(SVar("new-task"), [], [Var("ctx")])
+                              , NoAnnoList(
+                                  Op("Rewrite", [NoAnnoList(Str("\"match274\"")), Var("t204")])
+                                )
+                              )
+                            )
+                          , Seq(
+                              BA(
+                                CallT(
+                                  SVar("task-create-error-on-failure")
+                                , []
+                                , [Var("ctx"), Var("match265"), NoAnnoList(Str("\"integer expected\""))]
+                                )
+                              , Var("e1")
+                              )
+                            , Seq(
+                                Assign(
+                                  Var("t205")
+                                , App(
+                                    CallT(SVar("type-task"), [], [Var("ctx")])
+                                  , Var("e2")
+                                  )
+                                )
+                              , Seq(
+                                  Assign(
+                                    Var("match266")
+                                  , App(
+                                      CallT(SVar("new-task"), [], [Var("ctx")])
+                                    , NoAnnoList(
+                                        Op("Rewrite", [NoAnnoList(Str("\"match275\"")), Var("t205")])
+                                      )
+                                    )
+                                  )
+                                , BA(
+                                    CallT(
+                                      SVar("task-create-error-on-failure")
+                                    , []
+                                    , [Var("ctx"), Var("match266"), NoAnnoList(Str("\"integer expected\""))]
+                                    )
+                                  , Var("e2")
+                                  )
+                                )
+                              )
+                            )
+                          )
+                        )
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      , SDefT(
+          "nabl-constraint"
+        , []
+        , [VarDec("ctx", ConstType(SortNoArgs("ATerm")))]
+        , SRule(
+            Rule(
+              NoAnnoList(Op("While", [Var("e"), Var("s")]))
+            , RootApp(Fail())
+            , [ WhereClause(
+                  Seq(
+                    Assign(
+                      Var("t206")
+                    , App(
+                        CallT(SVar("type-task"), [], [Var("ctx")])
+                      , Var("e")
+                      )
+                    )
+                  , Seq(
+                      Assign(
+                        Var("match267")
+                      , App(
+                          CallT(SVar("new-task"), [], [Var("ctx")])
+                        , NoAnnoList(
+                            Op("Rewrite", [NoAnnoList(Str("\"match272\"")), Var("t206")])
+                          )
+                        )
+                      )
+                    , BA(
+                        CallT(
+                          SVar("task-create-error-on-failure")
+                        , []
+                        , [Var("ctx"), Var("match267"), NoAnnoList(Str("\"boolean condition expected\""))]
+                        )
+                      , Var("e")
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      , SDefT(
+          "nabl-constraint"
+        , []
+        , [VarDec("ctx", ConstType(SortNoArgs("ATerm")))]
+        , SRule(
+            Rule(
+              NoAnnoList(
+                Op(
+                  "If"
+                , [Var("e"), Var("s1"), Var("s2")]
+                )
+              )
+            , RootApp(Fail())
+            , [ WhereClause(
+                  Seq(
+                    Assign(
+                      Var("t207")
+                    , App(
+                        CallT(SVar("type-task"), [], [Var("ctx")])
+                      , Var("e")
+                      )
+                    )
+                  , Seq(
+                      Assign(
+                        Var("match268")
+                      , App(
+                          CallT(SVar("new-task"), [], [Var("ctx")])
+                        , NoAnnoList(
+                            Op("Rewrite", [NoAnnoList(Str("\"match271\"")), Var("t207")])
+                          )
+                        )
+                      )
+                    , BA(
+                        CallT(
+                          SVar("task-create-error-on-failure")
+                        , []
+                        , [Var("ctx"), Var("match268"), NoAnnoList(Str("\"boolean condition expected\""))]
+                        )
+                      , Var("e")
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      , SDefT(
+          "nabl-constraint"
+        , []
+        , [VarDec("ctx", ConstType(SortNoArgs("ATerm")))]
+        , SRule(
+            Rule(
+              NoAnnoList(Op("Print", [Var("e")]))
+            , RootApp(Fail())
+            , [ WhereClause(
+                  Seq(
+                    Assign(
+                      Var("t208")
+                    , App(
+                        CallT(SVar("type-task"), [], [Var("ctx")])
+                      , Var("e")
+                      )
+                    )
+                  , Seq(
+                      Assign(
+                        Var("match269")
+                      , App(
+                          CallT(SVar("new-task"), [], [Var("ctx")])
+                        , NoAnnoList(
+                            Op("Rewrite", [NoAnnoList(Str("\"match270\"")), Var("t208")])
+                          )
+                        )
+                      )
+                    , BA(
+                        CallT(
+                          SVar("task-create-error-on-failure")
+                        , []
+                        , [Var("ctx"), Var("match269"), NoAnnoList(Str("\"integer expected\""))]
+                        )
+                      , Var("e")
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      , SDefT(
+          "nabl-constraint"
+        , []
+        , [VarDec("ctx", ConstType(SortNoArgs("ATerm")))]
+        , SRule(
+            Rule(
+              NoAnnoList(
+                Op(
+                  "Method"
+                , [ Var("ty")
+                  , Var("m")
+                  , Var("p_")
+                  , Var("v_")
+                  , Var("s_")
+                  , Var("e")
+                  ]
+                )
+              )
+            , RootApp(Fail())
+            , [ WhereClause(
+                  Seq(
+                    Assign(
+                      Var("ety")
+                    , App(
+                        CallT(SVar("type-task"), [], [Var("ctx")])
+                      , Var("e")
+                      )
+                    )
+                  , Seq(
+                      Assign(
+                        Var("subtype68")
+                      , App(
+                          CallT(SVar("create-subtype-task"), [], [Var("ctx")])
+                        , NoAnnoList(
+                            Tuple(
+                              [NoAnnoList(Str("\"<:\"")), Var("ety"), Var("ty")]
+                            )
+                          )
+                        )
+                      )
+                    , BA(
+                        CallT(
+                          SVar("task-create-error-on-failure")
+                        , []
+                        , [Var("ctx"), Var("subtype68"), NoAnnoList(Str("\"type mismatch in return expression\""))]
+                        )
+                      , Var("e")
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      ]
+    )
+  , Rules(
+      [ SDefT(
+          "task-rewrite"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(
+                Tuple(
+                  [ NoAnnoList(Str("\"match275\""))
+                  , As(Var("x"), NoAnnoList(Op("Int", [])))
+                  ]
+                )
+              )
+            , Var("x")
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "task-rewrite"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(
+                Tuple(
+                  [ NoAnnoList(Str("\"match274\""))
+                  , As(Var("x"), NoAnnoList(Op("Int", [])))
+                  ]
+                )
+              )
+            , Var("x")
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "task-rewrite"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(
+                Tuple(
+                  [ NoAnnoList(Str("\"match273\""))
+                  , As(Var("x"), NoAnnoList(Op("IntArray", [])))
+                  ]
+                )
+              )
+            , Var("x")
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "task-rewrite"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(
+                Tuple(
+                  [ NoAnnoList(Str("\"match272\""))
+                  , As(Var("x"), NoAnnoList(Op("Bool", [])))
+                  ]
+                )
+              )
+            , Var("x")
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "task-rewrite"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(
+                Tuple(
+                  [ NoAnnoList(Str("\"match271\""))
+                  , As(Var("x"), NoAnnoList(Op("Bool", [])))
+                  ]
+                )
+              )
+            , Var("x")
+            , []
+            )
+          )
+        )
+      , SDefT(
+          "task-rewrite"
+        , []
+        , []
+        , SRule(
+            Rule(
+              NoAnnoList(
+                Tuple(
+                  [ NoAnnoList(Str("\"match270\""))
+                  , As(Var("x"), NoAnnoList(Op("Int", [])))
+                  ]
+                )
+              )
+            , Var("x")
+            , []
+            )
+          )
+        )
+      ]
+    )
+  ]
+)

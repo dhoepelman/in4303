@@ -1,0 +1,51 @@
+definition
+
+module MiniJava
+exports
+  sorts WATER WATERTOKEN WATERTOKENSTART WATERTOKENSEPARATOR WATERTOKENSTAR
+
+  lexical syntax
+    [A-Za-z0-9\_]                  -> WATERTOKENSTART     {recover, avoid}
+    WATERTOKENSTART [A-Za-z0-9\_]* -> WATERTOKEN          
+    ~[A-Za-z0-9\_\ \t\12\r\n\*]    -> WATERTOKENSEPARATOR {recover, avoid}
+    "*"                            -> WATERTOKENSTAR      {recover, avoid}
+    WATERTOKEN                     -> WATER               
+    WATERTOKENSEPARATOR            -> WATER               
+    WATERTOKENSTAR                 -> WATER               
+                                   -> WATEREOF            
+    "completion123"                -> COMPLETIONPREFIX    {completion}
+    "|#WATERTOKENSTAR|"            -> WATERTOKENSTAR      {completion}
+    "|#Start|"                     -> Start               {completion}
+
+  lexical restrictions
+    WATERTOKEN -/- [A-Za-z0-9\_]
+    WATERTOKENSTAR -/- [\/]
+
+  context-free syntax
+    WATER -> LAYOUT {cons("WATER")}
+
+  (
+
+  sorts WATEREOF
+
+  lexical restrictions
+    WATEREOF -/- ~[]
+
+  lexical syntax
+    %% Lexical insertion recovery rules            
+                                        -> "dummy" {recover, cons("INSERTION")}
+
+  syntax
+    %% Kernel syntax insertion recovery rules   
+
+  )
+
+  (
+
+  context-free start-symbols
+    Start
+
+  context-free syntax
+    "dummy" -> Start {cons("Dummy")}
+
+  )

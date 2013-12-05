@@ -1,0 +1,4 @@
+regular tree grammar
+  start Start
+  productions
+    Start -> Dummy()

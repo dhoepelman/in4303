@@ -1,0 +1,13 @@
+module MiniJava-Completions
+
+imports 
+
+	MiniJava.generated
+	Statements.generated
+	Expressions.generated
+	Classes.generated
+	Lexical.generated
+
+completions
+
+	completion proposer : editor-complete
