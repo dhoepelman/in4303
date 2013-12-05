@@ -68,7 +68,8 @@ rules // Builders
 		where
 			filename := <guarantee-extension(|"generated.aterm")> path
 		;	result := <to-jbc> selected
-		 	
+	
+	// Continue here with "Generate Java Class Files" and the challenges seem fun too 	
 	generate-class-files:
 		(selected, position, ast, path, project-path) -> None()
 		where
