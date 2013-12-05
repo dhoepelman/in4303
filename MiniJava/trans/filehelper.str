@@ -1,0 +1,23 @@
+module trans/filehelper
+
+imports
+    
+  libstratego-lib
+  libstratego-aterm
+  libstratego-gpp
+  editor-common.generated
+
+  lib/runtime/analysis/-
+  lib/runtime/nabl/-
+  lib/runtime/types/-
+  lib/runtime/task/-
+  lib/runtime/properties/-
+  
+  
+rules
+	write-file: (filename, content) -> <id>
+	where
+		file := <fopen> (filename, "w")
+	;	writef := <fputs> (content, file)
+	;	closef := <fclose> file
+	;	refresh := <refresh-workspace-file> filename

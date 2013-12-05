@@ -23,7 +23,7 @@ rules	// Transform MiniJava AST into JasminXT
   	JBCHeader(
 		    None()
 		  , None()
-		  , JBCClass([PUBLIC()], cname)
+		  , JBCClass([PUBLIC()], cnamesimple)
 		  , JBCSuper("java/lang/Object")
 		  , []
 		  , None()
@@ -42,6 +42,8 @@ rules	// Transform MiniJava AST into JasminXT
 	    , <stmt-to-jbc> stmt
 	    )
   	])
+  	where
+  		cnamesimple := <strip-annos> cname
   	
   // Class       : ID * ParentDecl * List(FieldDecl) * List(MethodDecl) -> ClassDecl
   /*

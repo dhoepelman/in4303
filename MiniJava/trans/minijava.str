@@ -18,6 +18,8 @@ imports
   milestone1/-
   milestone2/-
   
+  trans/filehelper
+  
 rules // Analysis
   
   editor-analyze = analysis-default-editor
@@ -64,6 +66,12 @@ rules // Builders
 		where
 			filename := <guarantee-extension(|"generated.aterm")> path
 		;	result := <to-jbc> selected
+		 	
+	generate-class-file:
+		(selected, position, ast, path, project-path) -> (filename, result)
+		where
+			filename := <guarantee-extension(|".class")> path
+		;	result := ""
   
 rules // Debugging
   
