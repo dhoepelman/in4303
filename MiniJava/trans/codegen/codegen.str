@@ -8,6 +8,9 @@ imports
   
 rules	// Transform MiniJava AST into JasminXT
   
+  // For debugging
+  to-jbc = program-to-jbc + class-to-jbc + stmt-to-jbc + exp-to-jbc
+  
   /** Program     : MainClass * List(ClassDecl) **/
   program-to-jbc: Program(mainc, _) -> 
   	<class-to-jbc> mainc

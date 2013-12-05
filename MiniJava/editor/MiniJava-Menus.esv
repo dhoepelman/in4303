@@ -22,5 +22,5 @@ menus
     
   menu: "Generation"
   
-    action: "Generate Java Bytecode"	= generate-jbc
-    action: "Generate Java Bytecode (selected)" = to-jbc
+    action: "Generate Java Bytecode"	= generate-jbc (openeditor)
+    action: "Generate Java Bytecode (selected)" = generate-jbc-selection (openeditor)
