@@ -1,3 +1,5 @@
 *.class
 *.result.txt
 *.generated*
+*.aterm
+*.analysis
