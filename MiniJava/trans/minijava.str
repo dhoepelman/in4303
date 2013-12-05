@@ -53,6 +53,11 @@ rules // Editor services
       proposals := <analysis-propose-completions(|<language>, project-path, path)> ast
      
 rules // Builders
+	generate-jbc:
+		(selected, position, ast, path, project-path) -> (filename, result)
+		where
+			filename := <guarantee-extension(|"generated.j")> path
+		;	result := <program-to-jbc> ast
   
 rules // Debugging
   
