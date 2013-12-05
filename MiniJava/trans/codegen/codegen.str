@@ -1,0 +1,96 @@
+module codegen/codegen
+
+imports
+  
+  milestone1/MiniJava
+  milestone2/MiniJava.core
+  lib/jasmin/JasminXT
+  
+rules	// Transform MiniJava AST into JasminXT
+  
+  /** Program     : MainClass * List(ClassDecl) **/
+  program-to-jbc: Program(mainc, _) -> 
+  	<class-to-jbc> mainc
+	// Every class gets its own file, so JBCFile should be generated in class-to-jbc not program-to-jbc
+  
+  /** Class **/
+  
+  // MainClass   : ID * ID * Statement -> MainClass
+  class-to-jbc: MainClass(cname, pname, stmt) -> JBCFile(
+  	JBCHeader(
+		    None()
+		  , None()
+		  , JBCClass([PUBLIC()], cname)
+		  , JBCSuper("java/lang/Object")
+		  , []
+		  , None()
+		  , None()
+		  , None()
+		  )
+	// Fields
+	, []
+  	// Methods
+  	,[
+  		<classconstructor> (),
+  		JBCMethod(
+	      [PUBLIC(), STATIC()]
+	    , "main"
+	    , JBCMethodDesc([Array(Reference(CRef("java/lang/String")))], Void())
+	    , <stmt-to-jbc> stmt
+	    )
+  	])
+  	
+  // Class       : ID * ParentDecl * List(FieldDecl) * List(MethodDecl) -> ClassDecl
+  /*
+  class-to-jbc:	Class(name, parent, listfield, listmethod) -> [
+  		
+  	]*/
+  
+  //  Print       : Exp -> Statement
+  stmt-to-jbc:	Print(e) -> stmt*
+  	where
+  		exp* := <exp-to-jbc> e
+  	;	stmt* := [
+	  		<getstatic> ("java/lang/System", "out", "java/io/PrintStream"),
+	  		exp*,
+	  		<invokevirtual> ("java/io/PrintStream", "println", [Int()], Void())
+	  		]
+  	
+  	
+  /** Exp **/
+  // IntValue    : INT -> Exp
+  exp-to-jbc: IntValue(i) -> [LDC(i)]
+  
+  
+rules	// Helper rules
+	
+  classconstructor: () -> JBCMethod(
+	      [PUBLIC()]
+	    , Init()
+	    , JBCMethodDesc([], Void())
+	    , [ ALOAD_0()
+	      , INVOKESPECIAL(
+	          JBCMethodRef(CRef("java/lang/Object"), MRef(Init()), JBCMethodDesc([], Void()))
+	        )
+	      , RETURN()
+	      ]
+	    )
+	
+  getstatic: (cref, fref, ftype) ->
+  		GETSTATIC(
+  			JBCFieldRef(
+  				CRef(cref),
+  				FRef(fref),
+  				JBCFieldDesc(Reference(CRef(ftype)))
+  			)
+  		)
+
+  invokevirtual: (cref, mref, lparams, ret) ->
+  		INVOKEVIRTUAL(
+          JBCMethodRef(
+            CRef(cref)
+          , MRef(mref)
+          , JBCMethodDesc(lparams, ret)
+          )
+        )
+  

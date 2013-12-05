@@ -56,8 +56,10 @@ rules // Builders
 	generate-jbc:
 		(selected, position, ast, path, project-path) -> (filename, result)
 		where
-			filename := <guarantee-extension(|"generated.j")> path
+			filename := <guarantee-extension(|"generated.aterm")> path
 		;	result := <program-to-jbc> ast
+		 	
+	to-jbc = program-to-jbc + class-to-jbc + stmt-to-jbc + exp-to-jbc
   
 rules // Debugging
   
