@@ -39,11 +39,13 @@ rules	// Transform MiniJava AST into JasminXT
 	      [PUBLIC(), STATIC()]
 	    , "main"
 	    , JBCMethodDesc([Array(Reference(CRef("java/lang/String")))], Void())
-	    , <stmt-to-jbc> stmt
+	    , outputstmtjbc*
 	    )
   	])
   	where
-  		cnamesimple := <strip-annos> cname
+  		stmtjbc* :=  <stmt-to-jbc> stmt
+  	;	outputstmtjbc* := [stmtjbc*,RETURN()]
+  	;	cnamesimple := <strip-annos> cname
   	
   // Class       : ID * ParentDecl * List(FieldDecl) * List(MethodDecl) -> ClassDecl
   /*
