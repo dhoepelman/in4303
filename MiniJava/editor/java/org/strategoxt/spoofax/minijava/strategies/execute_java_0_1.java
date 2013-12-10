@@ -1,4 +1,4 @@
-﻿package org.spoofax.lang.minijava.strategies;
+﻿package org.strategoxt.spoofax.minijava.strategies;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -12,7 +12,9 @@ import org.spoofax.interpreter.terms.IStrategoTerm;
 import org.spoofax.interpreter.terms.ITermFactory;
 import org.strategoxt.lang.Context;
 import org.strategoxt.lang.Strategy;
-       
+
+// Note, shamelessly stolen from the JasminXT Spoofax project
+
 /**
  * Example Java strategy implementation.
  *
