@@ -48,8 +48,9 @@ rules
 		;	<try(call)> ("java", ["-jar", $[[<project-path>]/lib/jasmin.jar], "-d", parentdir, jasminfname])
 		;	<refresh-workspace-file> classfname 
 		 	// Create output directory for binary files
-		//;	<debug(!"Outputdir: ")> <output-directory> ()
-		//;	<output-directory ; mkdir-p> ()
+		;	outputdir := <output-directory> ()
+		;	<debug(!"Outputdir: ")> outputdir
+		;	<mkdir-p> outputdir
 	
 	run-file-after-generation:
 		(selected, position, ast, path, project-path) -> (filename, result)
@@ -72,14 +73,18 @@ rules // helper rules
 	make-filename: (parent, filename, ext) -> <concat-strings ; guarantee-extension(|ext)> [parent, "/", filename]
 	
 	// This should probably be a constant or something, but I'm a noob stratego programmer and only know rules
-	output-directory: () -> $[[<project-path>]/bin]
+	output-directory: () -> $[[<project-path>]/bin_mjv]
 	
 	// Create directory if not exists, like mkdir -p (but doesn't create parents)
-	mkdir-p:  (path) -> <id>
+	mkdir-p-e:  path -> <id>
 	where
 		// First check if path exists, otherwise create
-		<file-exists ; filemode ; isdir> path <+ <mkdir> path
-	
+		exists	:= <file-exists ; filemode ; isdir> path
+	;	<debug(!"Exists: ")> exists
+
+strategies
+	// Create directory if not exists
+	mkdir-p =  (file-exists ; filemode ; isdir) <+ mkdir
 
 rules // Below portion all shamelessly stolen from JasminXT Project	
 	process-output: Output(result, "") -> result
