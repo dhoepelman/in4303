@@ -38,19 +38,18 @@ rules
 		(selected, position, ast, path, project-path) -> None()
 		where
 			// Determines filenames and paths
-			classname	:= <mainclass-name> ast
-		;	outputdir	:= <concat-strings> [<binaries-directory> (), "/", <dirname> path]
-		 	// Save files in output directory as "directory.structure.filename.classname.j"
+			filename	:= <base-filename> path
+		;	classname	:= <mainclass-name> ast
+		 	// To prevent conflicts, store files in $output_dir/$path_to_file/$filename/$classname.[j|class]
+		;	outputdir	:= <concat-strings> [<binaries-directory> (), "/", <dirname> path, "/", filename]
 		;	jasminfname	:= <make-filename> (outputdir, classname, "j")
 		;	classfname	:= <make-filename> (outputdir, classname, "class")
 		 	// Create output directory for binary files
 		;	<mkdir-p> outputdir
 		 	// Write the Jasmin assembler file
-		;	<write-file> (jasminfname, <program-to-jbc;pp-jasminxt-string> ast)
+		;	<write-file> (jasminfname, <program-to-jbc/*;localize-classname(|filename)*/;pp-jasminxt-string> ast)
 		 	// Call Jasmin on the generated file
 		;	<try(call)> ("java", ["-jar", $[[<project-path>]/lib/jasmin.jar], "-d", outputdir, jasminfname])
-		 	// Rename the generated file
-		 	// TODO: Find a good way to i
 		;	<refresh-workspace-file> jasminfname 
 		;	<refresh-workspace-file> classfname 
 		 	
