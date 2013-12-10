@@ -23,5 +23,5 @@ menus
   menu: "Generation"
   
     action: "Generate Java Bytecode"	= generate-jbc (openeditor)
-    action: "Generate Java Bytecode (selected)" = generate-jbc-selection (openeditor)
+    action: "Generate Jasmin AST (selected)" = generate-jbc-selection (openeditor)
     action: "Generate Java class files"	= generate-class-files

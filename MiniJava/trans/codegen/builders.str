@@ -1,0 +1,90 @@
+module codegen/builders
+
+imports
+  libstratego-lib
+  libstratego-aterm
+  libstratego-gpp
+  editor-common.generated
+
+  lib/runtime/analysis/-
+  lib/runtime/nabl/-
+  lib/runtime/types/-
+  lib/runtime/task/-
+  lib/runtime/properties/-
+  
+  trans/codegen/-
+  
+  milestone1/-
+  milestone2/-
+  
+  lib/jasmin/JasminXT-pp
+
+rules
+	generate-jbc:
+		(selected, position, ast, path, project-path) -> (filename, result)
+		where
+			filename := <guarantee-extension(|"generated.j")> path
+		;	jasminast := <program-to-jbc> ast
+		;	result := <pp-jasminxt-string> jasminast
+		 	
+	generate-jbc-selection:
+		(selected, position, ast, path, project-path) -> (filename, result)
+		where
+			filename := <guarantee-extension(|"generated.aterm")> path
+		;	result := <to-jbc> selected
+	
+	// Continue here with "Generate Java Class Files" and the challenges seem fun too 	
+	generate-class-files:
+		(selected, position, ast, path, project-path) -> None()
+		where
+			// Determines filenames and paths
+			classname	:= <mainclass-name> ast
+		;	parentdir	:= <dirname> path
+		//;	<debug(!"Parentdir: ")> parentdir
+		//;	classfname	:= <guarantee-extension(|"class")> path
+		//;	jasminfname	:= <guarantee-extension(|"generated.j")> path
+		;	classfname	:= <concat-strings ; guarantee-extension(|"class")> [parentdir, "/", classname]
+		;	jasminfname	:= <concat-strings ; guarantee-extension(|"generated.j")> [parentdir, "/", classname]
+		//;	<debug(!"Classfname: ")> classfname
+		//;	<debug(!"Jasminfname: ")> jasminfname
+		 	// Write the Jasmin assembler file
+		;	<write-file> (jasminfname, <program-to-jbc;pp-jasminxt-string> ast)
+		 	// Call Jasmin on the generated file
+		;	<try(call)> ("java", ["-jar", $[[<project-path>]/lib/jasmin.jar], "-d", parentdir, jasminfname])
+		;	<refresh-workspace-file> classfname 
+		 	
+	/*
+	generate-class:
+		(selected, position, ast, path, project-path) -> None()
+		with
+			parentdir := <dirname> path ;
+			<try(call)> ("java", ["-jar", $[[<project-path>]/lib/jasmin.jar], "-d", parentdir, path])
+		where
+			cfname := <concat-strings ; guarantee-extension(|"class")> [project-path, "/", <dirname> path, "/", <class-name> ast] ;
+			<refresh-workspace-file> cfname
+			
+	execute-class:
+		(selected, position, ast, path, project-path) -> (filename, result)
+		with
+			filename := <guarantee-extension(|"result.txt")> path
+		with
+			cname := <class-name ; string-replace(|"/",".")> ast ;
+			cpath := <concat-strings> [project-path, "/", <dirname> path] ;
+			<execute-java(|cpath) ; process-output> cname => result
+		
+	
+	process-output: Output(result, "") -> result
+
+	process-output: Output(result, error) -> $[[result] Runtime error: [error]]
+		where not (<""> error)
+		*/
+		
+rules // helper rules
+	write-file: (filename, content) -> <id>
+	where
+		file := <fopen> (filename, "w")
+	;	<fputs> (content, file)
+	;	<fclose> file
+	;	<refresh-workspace-file> filename
+	 	
+	mainclass-name: Program(MainClass(cname, _, _), _) -> <strip-annos> cname

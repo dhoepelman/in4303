@@ -18,9 +18,6 @@ imports
   milestone1/-
   milestone2/-
   
-  lib/jasmin/JasminXT-pp
-  trans/filehelper
-  
 rules // Analysis
   
   editor-analyze = analysis-default-editor
@@ -56,51 +53,7 @@ rules // Editor services
       proposals := <analysis-propose-completions(|<language>, project-path, path)> ast
      
 rules // Builders
-	generate-jbc:
-		(selected, position, ast, path, project-path) -> (filename, result)
-		where
-			filename := <guarantee-extension(|"generated.j")> path
-		;	jasminast := <program-to-jbc> ast
-		;	result := <pp-jasminxt-string> jasminast
-		 	
-	generate-jbc-selection:
-		(selected, position, ast, path, project-path) -> (filename, result)
-		where
-			filename := <guarantee-extension(|"generated.aterm")> path
-		;	result := <to-jbc> selected
-	
-	// Continue here with "Generate Java Class Files" and the challenges seem fun too 	
-	generate-class-files:
-		(selected, position, ast, path, project-path) -> None()
-		where
-			filename := <guarantee-extension(|".class")> path
-		;	result := ""
-		 	
-	/*
-	generate-class:
-		(selected, position, ast, path, project-path) -> None()
-		with
-			parentdir := <dirname> path ;
-			<try(call)> ("java", ["-jar", $[[<project-path>]/lib/jasmin.jar], "-d", parentdir, path])
-		where
-			cfname := <concat-strings ; guarantee-extension(|"class")> [project-path, "/", <dirname> path, "/", <class-name> ast] ;
-			<refresh-workspace-file> cfname
-			
-	execute-class:
-		(selected, position, ast, path, project-path) -> (filename, result)
-		with
-			filename := <guarantee-extension(|"result.txt")> path
-		with
-			cname := <class-name ; string-replace(|"/",".")> ast ;
-			cpath := <concat-strings> [project-path, "/", <dirname> path] ;
-			<execute-java(|cpath) ; process-output> cname => result
-		
-	
-	process-output: Output(result, "") -> result
-
-	process-output: Output(result, error) -> $[[result] Runtime error: [error]]
-		where not (<""> error)
-		*/
+	// See /trans/codegen/builders
   
 rules // Debugging
   
