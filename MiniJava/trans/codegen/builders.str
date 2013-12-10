@@ -40,13 +40,8 @@ rules
 			// Determines filenames and paths
 			classname	:= <mainclass-name> ast
 		;	parentdir	:= <dirname> path
-		//;	<debug(!"Parentdir: ")> parentdir
-		//;	classfname	:= <guarantee-extension(|"class")> path
-		//;	jasminfname	:= <guarantee-extension(|"generated.j")> path
-		;	classfname	:= <concat-strings ; guarantee-extension(|"class")> [parentdir, "/", classname]
-		;	jasminfname	:= <concat-strings ; guarantee-extension(|"generated.j")> [parentdir, "/", classname]
-		//;	<debug(!"Classfname: ")> classfname
-		//;	<debug(!"Jasminfname: ")> jasminfname
+		;	classfname	:= <make-filename> (parentdir, classname, "class")
+		;	jasminfname	:= <make-filename> (parentdir, classname, "generated.j")
 		 	// Write the Jasmin assembler file
 		;	<write-file> (jasminfname, <program-to-jbc;pp-jasminxt-string> ast)
 		 	// Call Jasmin on the generated file
@@ -88,3 +83,5 @@ rules // helper rules
 	;	<refresh-workspace-file> filename
 	 	
 	mainclass-name: Program(MainClass(cname, _, _), _) -> <strip-annos> cname
+	
+	make-filename: (parent, filename, ext) -> <concat-strings ; guarantee-extension(|ext)> [parent, "/", filename]
