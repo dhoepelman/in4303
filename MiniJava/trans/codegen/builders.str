@@ -34,14 +34,14 @@ rules
 		;	result := <to-jbc> selected
 	
 	// Continue here with "Generate Java Class Files" and the challenges seem fun too 	
-	generate-class-files:
+	generate-java-class-files:
 		(selected, position, ast, path, project-path) -> None()
 		where
+			<debug(!"Starting generate-java-class-files")> ""
 			// Determines filenames and paths
-			filename	:= <base-filename> path
 		;	classname	:= <mainclass-name> ast
 		 	// To prevent conflicts, store files in $output_dir/$path_to_file/$filename/$classname.[j|class]
-		;	outputdir	:= <concat-strings> [<binaries-directory> (), "/", <dirname> path, "/", filename]
+		;	outputdir	:= <concat-strings> [<binaries-directory> (), "/", <dirname> path, "/", <base-filename> path]
 		;	jasminfname	:= <make-filename> (outputdir, classname, "j")
 		;	classfname	:= <make-filename> (outputdir, classname, "class")
 		 	// Create output directory for binary files
@@ -59,8 +59,8 @@ rules
 		where
 			filename	:= <guarantee-extension(|"result.txt")> path	 	
 		;	classname	:= <mainclass-name> ast
-		;	fullpath	:= <concat-strings> [project-path, "/", <dirname> path]
-		;	<execute-java(|fullpath) ; process-output> classname => result
+		;	bindir		:= <concat-strings> [<binaries-directory> (), "/", <dirname> path, "/", <base-filename> path]
+		;	<execute-java(|bindir) ; process-output> classname => result
 		
 rules // helper rules
 	
