@@ -1,0 +1,59 @@
+class Main {
+    public static void main(String[] args) {
+    	{
+    		System.out.println(new A().lt());
+    		System.out.println(new A().and());
+    		System.out.println(new A().not());
+    		System.out.println(new A().arrays());
+    	}
+    }
+}
+
+class A {
+    public int lt() {
+    	int res;
+    	if(1 < 2) {
+        	res = 1;
+        } else {
+        	res = 0;
+        }
+       	return res;
+    }
+    
+    public int and() {
+    	int res;
+    	if(true && false) {
+        	res = 0;
+        } else {
+        	res = 1;
+        }
+       	return res;
+    }
+	
+	public int not() {
+		int res;
+		if(!false) {
+			res = 1;
+		} else {
+			res = 0;
+		}
+		return res;	
+	}
+	
+	public int arrays() {
+		int[] a;
+		int res;
+		a = new int[5];
+		if(4 < a.length) {
+			res = 1;
+		} else {
+			res = 0;
+		}
+		a[1] = 10;
+		if(9 < a[1]) {
+		} else {
+			res = 0;
+		}
+		return res;
+	}
+}
