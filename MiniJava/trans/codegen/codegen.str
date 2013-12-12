@@ -44,7 +44,7 @@ rules	// Transform MiniJava AST into JasminXT
   	])
   	where
   		stmtjbc* :=  <stmt-to-jbc> stmt
-  	;	outputstmtjbc* := [stmtjbc*,RETURN()]
+  	;	outputstmtjbc* := [JBCLimitStack("2"),stmtjbc*,RETURN()]
   	;	cnamesimple := <strip-annos> cname
   	
   // Class       : ID * ParentDecl * List(FieldDecl) * List(MethodDecl) -> ClassDecl

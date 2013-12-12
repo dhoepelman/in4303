@@ -16,6 +16,10 @@ language General properties
   start symbols : Start
 
   provider      : include/minijava.ctree
+  provider		: include/minijava-java.jar
                                                                                                                
-  observer      : editor-analyze (multifile)                                                          
+  observer      : editor-analyze (multifile)  
+  
+  //on-save		: editor-save
+                                                          
                                                                                                                
