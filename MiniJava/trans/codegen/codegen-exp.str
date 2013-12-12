@@ -11,7 +11,40 @@ rules
   
   // IntValue    : INT -> Exp
   exp-to-jbc: IntValue(i) -> [LDC(i)]
+  
   // True        : Exp
   // False       : Exp
   exp-to-jbc: True() -> [ICONST_1()]
   exp-to-jbc: False() -> [ICONST_0()]
+  
+  //UnExp     : UnOp * Exp -> Exp
+  exp-to-jbc: UnExp(op, e) -> <concat> [<exp-to-jbc>e,<op-to-jbc>op]
+  
+  //BinExp    : BinOp * Exp * Exp -> Exp
+  exp-to-jbc: BinExp(op, e1, e2) -> <concat>[<exp-to-jbc>e1,<exp-to-jbc>e2,<op-to-jbc>op]
+  
+  /** Operators **/
+  //  Not      : UnOp
+  // Change int 1 (true) to 0 (false), every other int value to 1 (true)
+  //  !value == value ^ 1
+  op-to-jbc: Not() -> [ICONST_1(), IXOR()]
+  // Length    : UnOp
+  //op-to-jbc: Length() -> []
+  // NewArray  : UnOp
+  //op-to-jbc: NewArray() -> []
+  
+  // Plus      : BinOp
+  op-to-jbc: Plus() -> [IADD()]
+  // Minus     : BinOp
+  op-to-jbc: Minus() -> [ISUB()]
+  // Times     : BinOp
+  op-to-jbc: Times() -> [IMUL()]
+  // Lt        : BinOp
+  // Substract and get the sign: a-b >= 0 means 
+  // (a < b) == (a - b) >> 31
+  //op-to-jbc: Lt() -> [ISUB(), LDC(31), IUSHR()]
+  // And       : BinOp
+  //op-to-jbc: And() -> []
+  // Subscript : BinOp
+  //op-to-jbc: Subscript() -> []
+  

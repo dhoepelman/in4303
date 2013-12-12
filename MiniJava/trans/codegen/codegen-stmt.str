@@ -29,7 +29,7 @@ rules
   ;	out_ifs*	:= <stmt-to-jbc> ifs
   ; out_elses*	:= <stmt-to-jbc> elses
   ;	elselbl		:= <newname> "else_"
-  ;	endiflbl	:= <newname> "endif_"
+  ;	endiflbl	:= <newname> "end_"
   ; out*		:= [
   			// Execute the expression, this should leave a result on the stack
   			out_e*,
@@ -48,7 +48,7 @@ rules
 	 	out_e*		:= <exp-to-jbc> e
 	  ; out_stmt*	:= <stmt-to-jbc> stmt
 	  ;	loopcondlbl	:= <newname> "loopcond_"
-	  ;	loopbodylbl	:= <newname> "loopbody_"
+	  ;	loopbodylbl	:= <newname> "loop_"
 	  ; out*		:= [
 	    		// It is more efficient to jump to the condition here, as it decreases the number of jumps in loop execution from 2 to 1
 	    		GOTO(LabelRef(loopcondlbl)),
