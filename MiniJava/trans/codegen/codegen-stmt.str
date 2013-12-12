@@ -41,3 +41,21 @@ rules
   			JBCLabel("end0")
   		]
   		
+  // While       : Exp * Statement -> Statement
+  // TODO: Generate unique label names
+   stmt-to-jbc: While(e, stmt) -> out*
+   where
+	 	out_e*		:= <exp-to-jbc> e
+	  ; out_stmt*	:= <stmt-to-jbc> stmt
+	  ; out*		:= [
+	    		// Define the loop start
+	    		JBCLabel("loop0"),
+	  			// Execute the expression, this should leave a result on the stack
+	  			out_e*,
+	  			// If false, jump to the loop end
+	  			IFEQ(LabelRef("end0")),
+	  			out_stmt*,
+	  			GOTO(LabelRef("loop0")),
+	  			JBCLabel("end0")
+	  		]
+  		

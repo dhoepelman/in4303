@@ -1,0 +1,6 @@
+class Main {
+    public static void main(String[] args) {
+        while(false)
+        	System.out.println(0);
+    }
+}
