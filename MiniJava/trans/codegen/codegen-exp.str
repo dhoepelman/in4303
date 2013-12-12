@@ -11,3 +11,7 @@ rules
   
   // IntValue    : INT -> Exp
   exp-to-jbc: IntValue(i) -> [LDC(i)]
+  // True        : Exp
+  // False       : Exp
+  exp-to-jbc: True() -> [LDC(1)]
+  exp-to-jbc: False() -> [LDC(0)]
