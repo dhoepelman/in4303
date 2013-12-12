@@ -47,7 +47,7 @@ rules
 		 	// Create output directory for binary files
 		;	<mkdir-p> outputdir
 		 	// Write the Jasmin assembler file
-		;	<write-file> (jasminfname, <program-to-jbc/*;localize-classname(|filename)*/;pp-jasminxt-string> ast)
+		;	<write-file> (jasminfname, <program-to-jbc;pp-jasminxt-string> ast)
 		 	// Call Jasmin on the generated file
 		;	<try(call)> ("java", ["-jar", $[[<project-path>]/lib/jasmin.jar], "-d", outputdir, jasminfname])
 		;	<refresh-workspace-file> jasminfname 
@@ -56,9 +56,10 @@ rules
 	
 	run-file-after-generation:
 		(selected, position, ast, path, project-path) -> (filename, result)
+		with
+			filename	:= <guarantee-extension(|"result.txt")> path	
 		where
-			filename	:= <guarantee-extension(|"result.txt")> path	 	
-		;	classname	:= <mainclass-name> ast
+			classname	:= <mainclass-name> ast
 		;	bindir		:= <concat-strings> [<binaries-directory> (), "/", <dirname> path, "/", <base-filename> path]
 		;	<execute-java(|bindir) ; process-output> classname => result
 		

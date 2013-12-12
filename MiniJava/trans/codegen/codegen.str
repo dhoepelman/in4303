@@ -5,6 +5,7 @@ imports
   milestone1/MiniJava
   milestone2/MiniJava.core
   lib/jasmin/JasminXT
+  trans/codegen/-
   
 rules	// Transform MiniJava AST into JasminXT
   
@@ -44,7 +45,7 @@ rules	// Transform MiniJava AST into JasminXT
   	])
   	where
   		stmtjbc* :=  <stmt-to-jbc> stmt
-  	;	outputstmtjbc* := [JBCLimitStack("2"),stmtjbc*,RETURN()]
+  	;	outputstmtjbc* := [JBCLimitStack("100"),stmtjbc*,RETURN()]
   	;	cnamesimple := <strip-annos> cname
   	
   // Class       : ID * ParentDecl * List(FieldDecl) * List(MethodDecl) -> ClassDecl
@@ -52,22 +53,6 @@ rules	// Transform MiniJava AST into JasminXT
   class-to-jbc:	Class(name, parent, listfield, listmethod) -> [
   		
   	]*/
-  
-  //  Print       : Exp -> Statement
-  stmt-to-jbc:	Print(e) -> stmt*
-  	where
-  		exp* := <exp-to-jbc> e
-  	;	stmt* := [
-	  		<getstatic> ("java/lang/System", "out", "java/io/PrintStream"),
-	  		exp*,
-	  		<invokevirtual> ("java/io/PrintStream", "println", [Int()], Void())
-	  		]
-  	
-  	
-  /** Exp **/
-  // IntValue    : INT -> Exp
-  exp-to-jbc: IntValue(i) -> [LDC(i)]
-  
   
 rules	// Helper rules
 	

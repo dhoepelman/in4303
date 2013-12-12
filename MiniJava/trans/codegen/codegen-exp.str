@@ -1,0 +1,13 @@
+module codegen/codegen-exp
+
+imports
+  
+  milestone1/MiniJava
+  milestone2/MiniJava.core
+  lib/jasmin/JasminXT
+  trans/codegen/-
+  
+rules
+  
+  // IntValue    : INT -> Exp
+  exp-to-jbc: IntValue(i) -> [LDC(i)]

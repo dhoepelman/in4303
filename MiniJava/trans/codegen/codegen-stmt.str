@@ -1,0 +1,24 @@
+module codegen/codegen-stmt
+
+imports
+  
+  milestone1/MiniJava
+  milestone2/MiniJava.core
+  lib/jasmin/JasminXT
+  trans/codegen/-
+
+rules  
+	/** Statements **/
+  //  Print       : Exp -> Statement
+  stmt-to-jbc:	Print(e) -> stmt*
+  	where
+  		exp* := <exp-to-jbc> e
+  	;	stmt* := [
+	  		<getstatic> ("java/lang/System", "out", "java/io/PrintStream"),
+	  		exp*,
+	  		<invokevirtual> ("java/io/PrintStream", "println", [Int()], Void())
+	  		]
+	  		
+  // Block       : List(Statement) -> Statement
+  stmt-to-jbc: Block(stmtl)	-> <map(stmt-to-jbc) ; concat> stmtl
+  		
