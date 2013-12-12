@@ -1,0 +1,37 @@
+class Main {
+    public static void main(String[] args) {
+    	{
+    		System.out.println(new A().newarray());
+    		System.out.println(new A().subscript());
+    		System.out.println(new A().length());
+    	}
+    }
+}
+
+class A {
+	
+	public int newarray() {
+		int[] a;
+		a = new int[3];
+		return 1;
+	}
+	
+	public int subscript() {
+		int[] a;
+		a = new int[1];
+		a[0] = 1;
+		return a[0];
+	}
+	
+	public int length() {
+		int[] a;
+		int res;
+		a = new int[5];
+		if(4 < a.length) {
+			res = 1;
+		} else {
+			res = 0;
+		}
+		return res;
+	}
+}
