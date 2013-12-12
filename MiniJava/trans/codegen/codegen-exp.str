@@ -22,16 +22,34 @@ rules
   
   //BinExp    : BinOp * Exp * Exp -> Exp
   exp-to-jbc: BinExp(op, e1, e2) -> <concat>[<exp-to-jbc>e1,<exp-to-jbc>e2,<op-to-jbc>op]
+  // And recieves special treatment because of lazy evaluation
+  exp-to-jbc: BinExp(And(), e1, e2) -> out*
+  	where
+  		<debug> "entering And() exp-to-jbc"
+  	;	falselbl := <newname> "false_"
+  	;	endlbl	 := <newname> "end_"
+  	;	out_e1*	 := <exp-to-jbc>e1
+  	;	out_e2*	 := <exp-to-jbc>e2	
+  	;	out*	 := [
+  			out_e1*,
+  			IFEQ(LabelRef(falselbl)),
+  				out_e2*,
+  				IFEQ(LabelRef(falselbl)),
+  					ICONST_1(),
+  					GOTO(LabelRef(endlbl)),
+  			JBCLabel(falselbl),
+  			ICONST_0(),
+  			JBCLabel(endlbl)
+  		]
   
   /** Operators **/
   //  Not      : UnOp
-  // Change int 1 (true) to 0 (false), every other int value to 1 (true)
   //  !value == value ^ 1
   op-to-jbc: Not() -> [ICONST_1(), IXOR()]
   // Length    : UnOp
-  //op-to-jbc: Length() -> []
+  op-to-jbc: Length() -> [ARRAYLENGTH()]
   // NewArray  : UnOp
-  //op-to-jbc: NewArray() -> []
+  op-to-jbc: NewArray() -> [NEWARRAY(Int())]
   
   // Plus      : BinOp
   op-to-jbc: Plus() -> [IADD()]
@@ -39,12 +57,11 @@ rules
   op-to-jbc: Minus() -> [ISUB()]
   // Times     : BinOp
   op-to-jbc: Times() -> [IMUL()]
-  // Lt        : BinOp
-  // Substract and get the sign: a-b >= 0 means 
-  // (a < b) == (a - b) >> 31
-  //op-to-jbc: Lt() -> [ISUB(), LDC(31), IUSHR()]
-  // And       : BinOp
-  //op-to-jbc: And() -> []
   // Subscript : BinOp
-  //op-to-jbc: Subscript() -> []
+  op-to-jbc: Subscript() -> [IALOAD()]
+  // Lt        : BinOp
+  // a < b is equivalent to (a - b) >>> 31
+  // This never overflows because MiniJava is restricted to 31-bit unsigned integers
+  op-to-jbc: Lt() -> [ISUB(), LDC(31), IUSHR()]
+  
   
