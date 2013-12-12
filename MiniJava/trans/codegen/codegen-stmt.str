@@ -23,40 +23,42 @@ rules
   stmt-to-jbc: Block(stmtl)	-> <map(stmt-to-jbc) ; concat> stmtl
   
   // If          : Exp * Statement * Statement -> Statement
-  // TODO: Generate unique label names
   stmt-to-jbc: If(e, ifs, elses) -> out*
   where
   	out_e*		:= <exp-to-jbc> e
   ;	out_ifs*	:= <stmt-to-jbc> ifs
   ; out_elses*	:= <stmt-to-jbc> elses
+  ;	elselbl		:= <newname> "else_"
+  ;	endiflbl	:= <newname> "endif_"
   ; out*		:= [
   			// Execute the expression, this should leave a result on the stack
   			out_e*,
   			// Compare == 0, 0 == false so jump to else if 0
-  			IFEQ(LabelRef("else0")),
+  			IFEQ(LabelRef(elselbl)),
   			out_ifs*,
-  			GOTO(LabelRef("end0")),
-  			JBCLabel("else0"),
+  			GOTO(LabelRef(endiflbl)),
+  			JBCLabel(elselbl),
   			out_elses*,
-  			JBCLabel("end0")
+  			JBCLabel(endiflbl)
   		]
   		
   // While       : Exp * Statement -> Statement
-  // TODO: Generate unique label names
    stmt-to-jbc: While(e, stmt) -> out*
    where
 	 	out_e*		:= <exp-to-jbc> e
 	  ; out_stmt*	:= <stmt-to-jbc> stmt
+	  ;	loopcondlbl	:= <newname> "loopcond_"
+	  ;	loopbodylbl	:= <newname> "loopbody_"
 	  ; out*		:= [
 	    		// It is more efficient to jump to the condition here, as it decreases the number of jumps in loop execution from 2 to 1
-	    		GOTO(LabelRef("loopcond0")),
+	    		GOTO(LabelRef(loopcondlbl)),
 	    		// Define the loop body start
-	    		JBCLabel("loop0"),
+	    		JBCLabel(loopbodylbl),
 	  			out_stmt*,
-	  			JBCLabel("loopcond0"),
+	  			JBCLabel(loopcondlbl),
 	  			// Execute the expression, this should leave a result on the stack
 	  			out_e*,
 	  			// If true, jump to the loop body again
-	  			IFNE(LabelRef("loop0"))
+	  			IFNE(LabelRef(loopbodylbl))
 	  		]
   		
