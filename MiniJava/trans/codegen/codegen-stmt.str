@@ -48,14 +48,15 @@ rules
 	 	out_e*		:= <exp-to-jbc> e
 	  ; out_stmt*	:= <stmt-to-jbc> stmt
 	  ; out*		:= [
-	    		// Define the loop start
+	    		// It is more efficient to jump to the condition here, as it decreases the number of jumps in loop execution from 2 to 1
+	    		GOTO(LabelRef("loopcond0")),
+	    		// Define the loop body start
 	    		JBCLabel("loop0"),
+	  			out_stmt*,
+	  			JBCLabel("loopcond0"),
 	  			// Execute the expression, this should leave a result on the stack
 	  			out_e*,
-	  			// If false, jump to the loop end
-	  			IFEQ(LabelRef("end0")),
-	  			out_stmt*,
-	  			GOTO(LabelRef("loop0")),
-	  			JBCLabel("end0")
+	  			// If true, jump to the loop body again
+	  			IFNE(LabelRef("loop0"))
 	  		]
   		
