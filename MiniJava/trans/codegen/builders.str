@@ -11,6 +11,7 @@ imports
   lib/runtime/types/-
   lib/runtime/task/-
   lib/runtime/properties/-
+  lib/runtime/index/-
   
   trans/codegen/-
   
@@ -25,20 +26,26 @@ rules
 	generate-jbc:
 		(selected, position, ast, path, project-path) -> None()
 		where
-			<program-to-jbc ; map(write-jasminfile-unique(|path))> ast
+			// Initialize NaBL
+			index-setup(|<language>, project-path, path); task-setup(|project-path)
+		;	<program-to-jbc ; map(write-jasminfile-unique(|path))> ast
 	
 	// Generate jasmin ast for selection	 	
 	generate-jbc-selection:
 		(selected, position, ast, path, project-path) -> (filename, result)
 		where
-			filename := <guarantee-extension(|"generated.aterm")> path
+			// Initialize NaBL
+			index-setup(|<language>, project-path, path); task-setup(|project-path)
+		;	filename := <guarantee-extension(|"generated.aterm")> path
 		;	result := <to-jbc> selected
 
     // Generate .j and .class file in binary directory
 	generate-java-class-files:
 		(selected, position, ast, path, project-path) -> None()
 		where
-			outputdir	:= <concat-strings> [<binaries-directory> (), "/", <dirname> path, "/", <base-filename> path]
+			// Initialize NaBL
+			index-setup(|<language>, project-path, path); task-setup(|project-path)
+		;	outputdir	:= <concat-strings> [<binaries-directory> (), "/", <dirname> path, "/", <base-filename> path]
 		;	<program-to-jbc; map(write-classfile(|outputdir))> ast
 	
 	// Write a JBCFile to a original-file.classname.generated.j file

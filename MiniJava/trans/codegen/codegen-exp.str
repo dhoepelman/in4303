@@ -6,6 +6,8 @@ imports
   milestone2/MiniJava.core
   lib/jasmin/JasminXT
   trans/codegen/-
+  lib/runtime/nabl/-
+  lib/runtime/types/-
   
 rules
   
@@ -19,6 +21,31 @@ rules
   
   // This
   exp-to-jbc: This() -> [ALOAD_0()]	// Local var 0 is the this object
+  
+  // NewObject   : ID -> Exp
+  exp-to-jbc: NewObject(cname) -> out*
+  	where
+  		cnamesimple := <strip-annos> cname
+  	;	out*	:= [
+  	 		NEW(CRef(cnamesimple))	// Create new object reference
+  	 		,DUP()					// Duplicate reference for constructor invocation
+  	 		,INVOKESPECIAL(			// Invoke construtor
+	          JBCMethodRef(CRef(cnamesimple), MRef(Init()), JBCMethodDesc([], Void()))
+	        )
+  	 ]
+  
+  // Call        : Exp * ID * List(Exp) -> Exp
+  exp-to-jbc: Call(e, mname, params*) -> out*
+  	where
+  		ejbc*	:= <exp-to-jbc> e
+  	;	out*	:= [ejbc*,	// Put expression result on stack
+  	 	<invokevirtual> (
+  	 			<nabl-uri; nabl-uri-parent; nabl-uri-name> mname,	// Class name
+  	 			<strip-annos>mname,									// Method name
+  	 			[],													// Param types
+  	 			<get-type;mjvtype-to-jtype> mname)					// Return type
+  	 ]
+  
   
   //UnExp     : UnOp * Exp -> Exp
   exp-to-jbc: UnExp(op, e) -> <concat> [<exp-to-jbc>e,<op-to-jbc>op]
@@ -66,5 +93,6 @@ rules
   // a < b is equivalent to (a - b) >>> 31
   // This never overflows because MiniJava is restricted to 31-bit unsigned integers
   op-to-jbc: Lt() -> [ISUB(), LDC(31), IUSHR()]
+  
   
   

@@ -63,9 +63,8 @@ rules	// Transform MiniJava AST into JasminXT
 	// Fields
 	, []
   	// Methods
-  	,[
-  		<parentname;classconstructor> parent
-  	]) 
+  	,<conc> ([<parentname;classconstructor> parent], <map(method-to-jbc);concat> method*)
+  	) 
   
 rules	// Helper rules
 	
