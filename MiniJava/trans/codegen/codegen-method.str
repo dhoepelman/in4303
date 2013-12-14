@@ -1,0 +1,30 @@
+module codegen/codegen-method
+
+imports
+  
+  milestone1/MiniJava
+  milestone2/MiniJava.core
+  lib/jasmin/JasminXT
+  trans/codegen/-
+  
+rules
+
+	// Method      : Type * ID * List(ParamDecl) * List(VarDecl) * List(Statement) * Exp -> MethodDecl	
+	method-to-jbc: Method(rettype, mname, params*, vars*, stmt*, retexp) -> JBCMethod(
+		[PUBLIC()],					// Every MiniJava method is public
+		<strip-annos> mname,		// Method name
+		JBCMethodDesc([], <mjvtype-to-jtype>rettype),	// Method description: (params, return type)
+		methodstatements)
+	where
+		stmtjbc*	:= <map(stmt-to-jbc); concat> stmt*
+	;	retexpjbc*	:= <exp-to-jbc> retexp
+		// TODO: Better stack limit
+	;	methodstatements := [JBCLimitStack("100"),stmtjbc*,retexpjbc*,<j-retexp> rettype]
+	 	
+	
+	j-retexp: Bool() -> IRETURN()
+	j-retexp: Int() -> IRETURN()
+	j-retexp: IntArray() -> ARETURN()
+	j-retexp: ClassType(_) -> ARETURN()
+	
+	
