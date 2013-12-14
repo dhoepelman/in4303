@@ -25,7 +25,7 @@ rules
 	generate-jbc:
 		(selected, position, ast, path, project-path) -> None()
 		where
-			<program-to-jbc ; map(write-jasminfile(|<dirname> path))> ast
+			<program-to-jbc ; map(write-jasminfile-unique(|path))> ast
 	
 	// Generate jasmin ast for selection	 	
 	generate-jbc-selection:
@@ -41,28 +41,31 @@ rules
 			outputdir	:= <concat-strings> [<binaries-directory> (), "/", <dirname> path, "/", <base-filename> path]
 		;	<program-to-jbc; map(write-classfile(|outputdir))> ast
 	
-	// Write a JBCFile to a .j file. Create directory if it doesn't exist		
-	write-jasminfile(|outputdir): jbcfile -> None()
+	// Write a JBCFile to a original-file.classname.generated.j file
+	write-jasminfile-unique(|basefile): jbcfile -> None()
 		where
-			// Determines filenames and paths
-			classname	:= <classname> jbcfile
-		;	jasminfname	:= <make-filename> (outputdir, classname, "generated.j")
-		 	// Create output directory for binary files
-		;	<mkdir-p> outputdir
+			classn	:= <classname> jbcfile
+		;	newfile	:= <guarantee-extension(|$[[classn].generated.j])> basefile
+		;	<write-jasminfile(|newfile)> jbcfile
+	// Write a JBCFile to a .j file	
+	write-jasminfile(|outputfile): jbcfile -> None()
+		where
 		 	// Write the Jasmin assembler file
-		;	<write-file> (jasminfname, <pp-jasminxt-string> jbcfile)
-		;	<refresh-workspace-file> jasminfname 
-		;	<debug> $[Written [jasminfname]]
+			<write-file> (outputfile, <pp-jasminxt-string> jbcfile)
+		;	<refresh-workspace-file> outputfile
+		;	<debug> $[Written [outputfile]]
 	
 	// Write a JBCFile to a .j file and convert it to a classfile.  		
 	write-classfile(|outputdir): jbcfile -> None()
 		where
 			// Determines filenames and paths
 			classname	:= <classname> jbcfile
+			// Create output directory for binary files
+		;	<mkdir-p> outputdir
 		;	classfname	:= <make-filename> (outputdir, classname, "class")
-		;	jasminfname	:= <make-filename> (outputdir, classname, "generated.j")
+		;	jasminfname	:= <make-filename> (outputdir, classname, "j")
 		 	// Write the Jasmin assembler file
-		;	<write-jasminfile(|outputdir)> jbcfile 
+		;	<write-jasminfile(|jasminfname)> jbcfile 
 		 	// Call Jasmin on the generated file
 		;	<try(call)> ("java", ["-jar", $[[<project-path>]/lib/jasmin.jar], "-d", outputdir, jasminfname])
 		;	<refresh-workspace-file> classfname 
