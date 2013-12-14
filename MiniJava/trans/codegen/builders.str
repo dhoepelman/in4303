@@ -18,42 +18,56 @@ imports
   milestone2/-
   
   lib/jasmin/JasminXT-pp
+  lib/jasmin/JasminXT
 
 rules
+	// Generate .j files in same directory
 	generate-jbc:
-		(selected, position, ast, path, project-path) -> (filename, result)
+		(selected, position, ast, path, project-path) -> None()
 		where
-			filename := <guarantee-extension(|"generated.j")> path
-		;	jasminast := <program-to-jbc> ast
-		;	result := <pp-jasminxt-string> jasminast
-		 	
+			<program-to-jbc ; map(write-jasminfile(|<dirname> path))> ast
+	
+	// Generate jasmin ast for selection	 	
 	generate-jbc-selection:
 		(selected, position, ast, path, project-path) -> (filename, result)
 		where
 			filename := <guarantee-extension(|"generated.aterm")> path
 		;	result := <to-jbc> selected
-	
-	// Continue here with "Generate Java Class Files" and the challenges seem fun too 	
+
+    // Generate .j and .class file in binary directory
 	generate-java-class-files:
 		(selected, position, ast, path, project-path) -> None()
 		where
-			<debug(!"Starting generate-java-class-files")> ""
+			outputdir	:= <concat-strings> [<binaries-directory> (), "/", <dirname> path, "/", <base-filename> path]
+		;	<program-to-jbc; map(write-classfile(|outputdir))> ast
+	
+	// Write a JBCFile to a .j file. Create directory if it doesn't exist		
+	write-jasminfile(|outputdir): jbcfile -> None()
+		where
 			// Determines filenames and paths
-		;	classname	:= <mainclass-name> ast
-		 	// To prevent conflicts, store files in $output_dir/$path_to_file/$filename/$classname.[j|class]
-		;	outputdir	:= <concat-strings> [<binaries-directory> (), "/", <dirname> path, "/", <base-filename> path]
-		;	jasminfname	:= <make-filename> (outputdir, classname, "j")
-		;	classfname	:= <make-filename> (outputdir, classname, "class")
+			classname	:= <classname> jbcfile
+		;	jasminfname	:= <make-filename> (outputdir, classname, "generated.j")
 		 	// Create output directory for binary files
 		;	<mkdir-p> outputdir
 		 	// Write the Jasmin assembler file
-		;	<write-file> (jasminfname, <program-to-jbc;pp-jasminxt-string> ast)
+		;	<write-file> (jasminfname, <pp-jasminxt-string> jbcfile)
+		;	<refresh-workspace-file> jasminfname 
+		;	<debug> $[Written [jasminfname]]
+	
+	// Write a JBCFile to a .j file and convert it to a classfile.  		
+	write-classfile(|outputdir): jbcfile -> None()
+		where
+			// Determines filenames and paths
+			classname	:= <classname> jbcfile
+		;	classfname	:= <make-filename> (outputdir, classname, "class")
+		;	jasminfname	:= <make-filename> (outputdir, classname, "generated.j")
+		 	// Write the Jasmin assembler file
+		;	<write-jasminfile(|outputdir)> jbcfile 
 		 	// Call Jasmin on the generated file
 		;	<try(call)> ("java", ["-jar", $[[<project-path>]/lib/jasmin.jar], "-d", outputdir, jasminfname])
-		;	<refresh-workspace-file> jasminfname 
 		;	<refresh-workspace-file> classfname 
 		 	
-	
+	// Run a mjv program if it is already compiled
 	run-file-after-generation:
 		(selected, position, ast, path, project-path) -> (filename, result)
 		with
@@ -73,6 +87,7 @@ rules // helper rules
 	;	<refresh-workspace-file> filename
 	 	
 	mainclass-name: Program(MainClass(cname, _, _), _) -> <strip-annos> cname
+	classname: JBCFile(JBCHeader(_,_,JBCClass(_, cname),_,_,_,_,_),_,_) -> cname
 	
 	make-filename: (parent, filename, ext) -> <concat-strings ; guarantee-extension(|ext)> [parent, "/", filename]
 	

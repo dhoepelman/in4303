@@ -13,9 +13,7 @@ rules	// Transform MiniJava AST into JasminXT
   to-jbc = program-to-jbc + class-to-jbc + stmt-to-jbc + exp-to-jbc
   
   /** Program     : MainClass * List(ClassDecl) **/
-  program-to-jbc: Program(mainc, _) -> 
-  	<class-to-jbc> mainc
-	// Every class gets its own file, so JBCFile should be generated in class-to-jbc not program-to-jbc
+  program-to-jbc: Program(mainc, classes*) -> <conc> ([<class-to-jbc> mainc],<map(class-to-jbc)>classes*)
   
   /** Class **/
   
@@ -24,8 +22,8 @@ rules	// Transform MiniJava AST into JasminXT
   	JBCHeader(
 		    None()
 		  , None()
-		  , JBCClass([PUBLIC()], cnamesimple)
-		  , JBCSuper("java/lang/Object")
+		  , JBCClass([PUBLIC()], <strip-annos> cname)
+		  , JBCSuper(superc)
 		  , []
 		  , None()
 		  , None()
@@ -35,7 +33,7 @@ rules	// Transform MiniJava AST into JasminXT
 	, []
   	// Methods
   	,[
-  		<classconstructor> (),
+  		<classconstructor> superc,
   		JBCMethod(
 	      [PUBLIC(), STATIC()]
 	    , "main"
@@ -45,24 +43,41 @@ rules	// Transform MiniJava AST into JasminXT
   	])
   	where
   		stmtjbc* :=  <stmt-to-jbc> stmt
+  	;	superc	 := "java/lang/Object"
   	;	outputstmtjbc* := [JBCLimitStack("100"),stmtjbc*,RETURN()]
-  	;	cnamesimple := <strip-annos> cname
   	
-  // Class       : ID * ParentDecl * List(FieldDecl) * List(MethodDecl) -> ClassDecl
-  /*
-  class-to-jbc:	Class(name, parent, listfield, listmethod) -> [
-  		
-  	]*/
+  
+  	// Class       : ID * ParentDecl * List(FieldDecl) * List(MethodDecl) -> ClassDecl
+  	class-to-jbc:	Class(cname, parent, field*, method*) -> JBCFile(
+  	JBCHeader(
+		    None()
+		  , None()
+		  , JBCClass([PUBLIC()], <strip-annos> cname)
+		  , JBCSuper(<parentname>parent)
+		  , []
+		  , None()
+		  , None()
+		  , None()
+		  )
+	// Fields
+	, []
+  	// Methods
+  	,[
+  		<parentname;classconstructor> parent
+  	]) 
   
 rules	// Helper rules
 	
-  classconstructor: () -> JBCMethod(
+  parentname: None() -> "java/lang/Object"
+  parentname: Parent(p)	-> <strip-annos>p
+
+  classconstructor: superc -> JBCMethod(
 	      [PUBLIC()]
 	    , Init()
 	    , JBCMethodDesc([], Void())
 	    , [ ALOAD_0()
 	      , INVOKESPECIAL(
-	          JBCMethodRef(CRef("java/lang/Object"), MRef(Init()), JBCMethodDesc([], Void()))
+	          JBCMethodRef(CRef(superc), MRef(Init()), JBCMethodDesc([], Void()))
 	        )
 	      , RETURN()
 	      ]
