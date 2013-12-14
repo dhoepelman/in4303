@@ -17,6 +17,9 @@ rules
   exp-to-jbc: True() -> [ICONST_1()]
   exp-to-jbc: False() -> [ICONST_0()]
   
+  // This
+  exp-to-jbc: This() -> [ALOAD_0()]	// Local var 0 is the this object
+  
   //UnExp     : UnOp * Exp -> Exp
   exp-to-jbc: UnExp(op, e) -> <concat> [<exp-to-jbc>e,<op-to-jbc>op]
   
