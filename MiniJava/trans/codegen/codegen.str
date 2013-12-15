@@ -60,17 +60,6 @@ rules	// Helper rules
   mjvtype-to-jtype: Bool() -> Boolean()
   mjvtype-to-jtype: Int() -> Int()
   mjvtype-to-jtype: ClassType(cname) -> Reference(CRef(<strip-annos>cname))
-
-
-  // Should be an overlay, but I like being able to directory convert a mjv method signature to one applicabel for this
-  invokevirtual: (cref, mref, (lparams, ret)) ->
-  		INVOKEVIRTUAL(
-          JBCMethodRef(
-            CRef(cref)
-          , MRef(mref)
-          , JBCMethodDesc(lparams, ret)
-          )
-        )
         
  overlays
  	DEFAULT-CONSTRUCTOR(superc) =
@@ -101,3 +90,12 @@ rules	// Helper rules
 			  , None()
 			  , None()
 		  )
+		  
+	INVOKE-VIRTUAL(cref,mref, mdescr) =
+		INVOKEVIRTUAL(
+          JBCMethodRef(
+            CRef(cref)
+          , MRef(mref)
+          , mdescr
+          )
+        )

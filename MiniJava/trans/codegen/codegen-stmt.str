@@ -14,10 +14,10 @@ rules
   	where
   		exp* := <exp-to-jbc> e
   	;	stmt* := [
-	  		GET-STATIC("java/lang/System", "out", "java/io/PrintStream"),
-	  		exp*,
-	  		<invokevirtual> ("java/io/PrintStream", "println", ([Int()], Void()))
-	  		]
+	  			  GET-STATIC("java/lang/System", "out", "java/io/PrintStream")
+	  			 ,exp*
+	  			 ,INVOKE-VIRTUAL("java/io/PrintStream", "println", JBCMethodDesc([Int()], Void()) )
+	  			 ]
 	  		
   // Block       : List(Statement) -> Statement
   stmt-to-jbc: Block(stmtl)	-> <map(stmt-to-jbc) ; concat> stmtl

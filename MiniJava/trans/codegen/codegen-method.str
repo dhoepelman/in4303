@@ -7,22 +7,36 @@ imports
   lib/jasmin/JasminXT
   trans/codegen/-
   
+  lib/runtime/nabl/-
+  lib/runtime/types/-
+  
 rules
 
 	// Method      : Type * ID * List(ParamDecl) * List(VarDecl) * List(Statement) * Exp -> MethodDecl	
-	method-to-jbc: Method(rettype, mname, params*, vars*, stmt*, retexp) -> JBCMethod(
-		[PUBLIC()],					// Every MiniJava method is public
-		<strip-annos> mname,		// Method name
-		JBCMethodDesc([], <mjvtype-to-jtype>rettype),	// Method description: (params, return type)
-		methodstatements)
+	method-to-jbc: Method(rettype, mname, params*, vars*, stmt*, retexp) ->
+		JBCMethod(
+		   [PUBLIC()]				// Every MiniJava method is public
+		  ,<strip-annos> mname		// Method name
+		  ,<get-descriptor> mname	// Method signature/descriptor
+		  ,methodstatements
+		)
 	where
 		stmtjbc*	:= <map(stmt-to-jbc); concat> stmt*
 	;	retexpjbc*	:= <exp-to-jbc> retexp
 		// TODO: Better stack limit
 	;	methodstatements := [JBCLimitStack("100"),stmtjbc*,retexpjbc*,<j-retexp> rettype]
-	 	
+	
+	// Create method descriptor
+	nabl-prop-site(|lang, ctx, uris, states, implicits):
+	  Method(ty, mname, param*, var*, stmt*, exp) -> <fail>
+	  where
+	  	descr := JBCMethodDesc(<map(paramtype;mjvtype-to-jtype)> param*, <mjvtype-to-jtype> ty) // Method description: (params, return type)
+	  ; <store-descriptor(|ctx, descr)> mname 	
+	    
 rules // helper rules	
 	j-retexp: Bool() -> IRETURN()
 	j-retexp: Int() -> IRETURN()
 	j-retexp: IntArray() -> ARETURN()
 	j-retexp: ClassType(_) -> ARETURN()
+	
+	paramtype: Param(t, _) -> t

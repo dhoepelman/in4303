@@ -1,0 +1,71 @@
+module codegen/methoddescr
+
+imports
+  lib/runtime/nabl/-
+  lib/runtime/task/-
+  lib/runtime/properties/-
+  lib/runtime/types/-
+  lib/runtime/editor/-
+  milestone1/-
+  milestone2/-
+
+
+signature
+  constructors
+    NablNsMethod : Namespace
+
+
+signature
+  constructors
+    NablProp_descriptor : Property
+
+
+rules
+
+  nabl-custom-properties(add-properties) =
+    ![NablProp_descriptor()] ; add-properties
+
+  descriptor-is(|task*) =
+    nabl-prop-calc(|task*, [])
+
+  descriptor-is(|task*, dep*) =
+    nabl-prop-calc(|task*, dep*)
+
+  descriptor-list(|task*) =
+    nabl-prop-list(|task*, [])
+
+  descriptor-list(|task*, dep*) =
+    nabl-prop-list(|task*, dep*)
+
+  descriptor-lookup(|task*) =
+    nabl-prop-lookup(|NablProp_descriptor(), task*, [])
+
+  descriptor-lookup(|task*, dep*) =
+    nabl-prop-lookup(|NablProp_descriptor(), task*, dep*)
+
+  descriptor-match(|task*, expected) =
+    nabl-prop-match(
+    | NablProp_descriptor()
+    , task*
+    , Eq()
+    , expected
+    )
+
+  descriptor-match(|task*, relation, expected) =
+    nabl-prop-match(|NablProp_descriptor(), task*, relation, expected)
+
+  create-descriptor-task(|task*) =
+    fail
+
+  get-descriptor =
+    get-property(|NablProp_descriptor())
+
+  store-descriptor(|partition, prop) =
+    nabl-store-prop(
+    | partition
+    , Prop(NablProp_descriptor(), prop, [])
+    )
+
+  create-property-task(|partition, kind):
+    term -> <create-descriptor-task(|partition)> term
+    where NablProp_descriptor() := kind

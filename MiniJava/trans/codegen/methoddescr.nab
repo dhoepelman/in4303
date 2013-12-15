@@ -1,0 +1,12 @@
+module codegen/methoddescr
+
+imports
+        milestone1/-
+        milestone2/-
+
+namespaces
+	Method
+
+properties
+
+  descriptor of Method: MethodDescriptor

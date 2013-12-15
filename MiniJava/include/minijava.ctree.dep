@@ -1,18 +1,19 @@
 C:\Users\David\git\in4303\MiniJava\include/minijava.ctree: \
 	C:\Users\David\git\in4303\MiniJava/milestone2/MiniJava.core.str \
-	C:\Users\David\git\in4303\MiniJava/lib/runtime/editor/queue.str \
-	C:\Users\David\git\in4303\MiniJava/lib/runtime/editor/positions.str \
-	C:\Users\David\git\in4303\MiniJava/lib/runtime/editor/interop.str \
-	C:\Users\David\git\in4303\MiniJava/lib/runtime/editor/editor.str \
-	C:\Users\David\git\in4303\MiniJava/lib/runtime/editor/annotations.str \
 	C:\Users\David\git\in4303\MiniJava/milestone2/analysis.rtree \
 	C:\Users\David\git\in4303\MiniJava/lib/runtime/tmpl/pp.str \
 	C:\Users\David\git\in4303\MiniJava/milestone1/pp.rtree \
-	C:\Users\David\git\in4303\MiniJava/lib/runtime/editor/outline-library.str \
-	C:\Users\David\git\in4303\MiniJava/lib/runtime/editor/origins.str \
 	C:\Users\David\git\in4303\MiniJava/milestone1/outline.rtree \
 	C:\Users\David\git\in4303\MiniJava/milestone1/MiniJava.str \
 	C:\Users\David\git\in4303\MiniJava/milestone1/MiniJava-parenthesize.str \
+	C:\Users\David\git\in4303\MiniJava/lib/runtime/editor/queue.str \
+	C:\Users\David\git\in4303\MiniJava/lib/runtime/editor/positions.str \
+	C:\Users\David\git\in4303\MiniJava/lib/runtime/editor/outline-library.str \
+	C:\Users\David\git\in4303\MiniJava/lib/runtime/editor/origins.str \
+	C:\Users\David\git\in4303\MiniJava/lib/runtime/editor/interop.str \
+	C:\Users\David\git\in4303\MiniJava/lib/runtime/editor/editor.str \
+	C:\Users\David\git\in4303\MiniJava/lib/runtime/editor/annotations.str \
+	C:\Users\David\git\in4303\MiniJava/trans/codegen/methoddescr.str \
 	C:\Users\David\git\in4303\MiniJava/trans/codegen/codegen.str \
 	C:\Users\David\git\in4303\MiniJava/trans/codegen/codegen-stmt.str \
 	C:\Users\David\git\in4303\MiniJava/trans/codegen/codegen-method.str \
