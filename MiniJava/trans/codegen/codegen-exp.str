@@ -38,12 +38,15 @@ rules
   exp-to-jbc: Call(e, mname, args*) -> out*
   	where
   		ejbc*	:= <exp-to-jbc> e
+  	;	methoddescr := <get-descriptor> mname
+  	//;	<debug> $[Method descriptor of [<strip-annos>mname]:]
+  	//;	<debug> methoddescr
   	;	out*	:=
   	 		[ejbc*													// Put expression result on stack
   	 		,INVOKE-VIRTUAL(
   	 			  <nabl-uri; nabl-uri-parent; nabl-uri-name> mname	// Class name
   	 			, <strip-annos> mname								// Method name
-  	 			, <get-descriptor> mname					    	// Method descriptor
+  	 			, methoddescr					    	// Method descriptor
   	 			)	
   	 		]
   

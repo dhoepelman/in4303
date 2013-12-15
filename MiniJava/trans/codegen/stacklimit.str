@@ -1,0 +1,65 @@
+module codegen/stacklimit
+
+imports
+  
+  milestone1/MiniJava
+  milestone2/MiniJava.core
+
+  libstratego-lib
+  libstratego-aterm
+  
+rules
+	
+	/** Statements **/
+	// Print places System.out on the stack for the println() call
+	stack-limit: Print(e) -> <addi> (1, <stack-limit>e)
+	// Block requires as large a stack as it's largest statement
+	stack-limit: Block(stmt*) -> <map(stack-limit);foldr(!0, max)> stmt* // list-max doesn't work on empty list
+	// If requires as large a stack as its condition and branches
+	stack-limit: If(e, ifs, elses) -> <map(stack-limit);list-max> [e,ifs,elses]
+	// While does too
+	stack-limit: While(e, stmt) -> <map(stack-limit);list-max> [e,stmt]
+
+	/** Expressions **/
+	// Trivial
+	stack-limit: IntValue(_) -> 1
+	stack-limit: True() -> 1
+	stack-limit: False() -> 1
+	stack-limit: This() -> 1
+	
+	// NewObject leaves something on the stack, but requires 2 spaces because it calls the constructor
+	stack-limit: NewObject(_) -> 2
+	//stack-limit : -> 1
+	// Call(callee-exp, method-name, args*) is tricky, it
+	// Always requires 1 + count(args) stack space, this is the minimum
+	// callee-exp has the stack to itself, so it requires <stack-limit> callee-exp
+	// parameter 1 has callee-exp, so it requires 1 + <stack-limit> param1
+	// parameter 2 has callee-exp and param1, so it requires 2 + <stack-limit> param2
+	// etc.
+	// Param n will always requires a n + 1 stack (1 is its own minimum), so the minimum is guaranteed
+	// total required: <max> (<stack-limit> callee-exp, )
+	stack-limit: Call(callee-exp, method-name, args*) -> total
+		where
+			explimit := <stack-limit> callee-exp
+		//;	<debug> $[Callee expression limit: [explimit]]
+		;	arglimits	:= <map(stack-limit)> args*
+		//;	<debug> $[Argument limits: [arglimits]]
+		;	arglimit := <foldr(!0,max,inc)> args*
+		//;	<debug> $[Stack limit for arguments: [arglimit]]
+		;	total := <max> (explimit, arglimit)
+		//;	<debug> $[Total limit: [total]]
+	
+	stack-limit: UnExp(op, e) -> <addi> (<stack-limit>op, <stack-limit>e)
+	// e2 has the result of e1 on the stack so needs 1 more
+	stack-limit: BinExp(op, e1, e2) -> <addi> (<stack-limit>op, <max> (<stack-limit>e1, <stack-limit;inc>e2)) 
+	// And is lazy so doesn't require extra stack space, as e1 result is consumed before e2 is calculated
+	stack-limit: BinExp(And(), e1, e2) -> <max> (<stack-limit>e1,<stack-limit>e2)
+	// Operators
+	stack-limit: Not() -> 1
+	stack-limit: Length() -> 0
+	stack-limit: NewArray() -> 0
+	stack-limit: Plus() -> 0
+	stack-limit: Minus() -> 0
+	stack-limit: Times() -> 0
+	stack-limit: Subscript() -> 0
+	stack-limit: Lt() -> 0	// Places something on the stack, but first removes top 2 to leave 1

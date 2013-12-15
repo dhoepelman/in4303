@@ -36,9 +36,9 @@ rules	// Transform MiniJava AST into JasminXT
   	)
   	where
   		stmtjbc* := <stmt-to-jbc> stmt
+  	;	stacklimit := <stack-limit;int-to-string> stmt
   	;	superc	 := <parentname> None()
-  	 	// TODO: Better stack limit
-  	;	outputstmtjbc* := [JBCLimitStack("100"),stmtjbc*,RETURN()]
+  	;	outputstmtjbc* := [JBCLimitStack(stacklimit),stmtjbc*,RETURN()]
   	
   
   // Class       : ID * ParentDecl * List(FieldDecl) * List(MethodDecl) -> ClassDecl
