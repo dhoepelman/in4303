@@ -1,2 +1,5 @@
 Thu: 12-12 10:00 - 12:30 => 2,5 hours
 Sat: 19:00 - 23:00 => 4 hours
+Sun: 11:00 - 18:00 => 7 hours (2,5 hours challenges)
+
+Total: 13,5 hours (2,5 hours challenges)
