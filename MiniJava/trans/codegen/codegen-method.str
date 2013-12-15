@@ -24,7 +24,7 @@ rules
 		stmtjbc*		:= <map(stmt-to-jbc); concat> stmt*
 	;	stmtstacklimit	:= <map(stack-limit) ; foldr(!0, max)> stmt* // list-max doesn't work on the empty list
 	;	stacklimit		:= <max> (<stack-limit> retexp, stmtstacklimit)
-	;	<debug> stacklimit
+	//;	<debug> stacklimit
 	;	retexpjbc*		:= <exp-to-jbc> retexp
 	;	methodstatements:= [JBCLimitStack(<int-to-string>stacklimit),stmtjbc*,retexpjbc*,<j-retexp> rettype]
 	
