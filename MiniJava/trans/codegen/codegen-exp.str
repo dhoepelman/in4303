@@ -35,7 +35,7 @@ rules
   	 ]
   
   // Call        : Exp * ID * List(Exp) -> Exp
-  exp-to-jbc: Call(e, mname, params*) -> out*
+  exp-to-jbc: Call(e, mname, args*) -> out*
   	where
   		ejbc*	:= <exp-to-jbc> e
   	;	out*	:=
