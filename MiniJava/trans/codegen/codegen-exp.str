@@ -38,13 +38,17 @@ rules
   exp-to-jbc: Call(e, mname, params*) -> out*
   	where
   		ejbc*	:= <exp-to-jbc> e
+  	//;	mjvrettype	:= <get-type> mname
+  	//;	<debug> mjvrettype
+  	//;	jrettype	:= <mjvtype-to-jtype> mname
+  	//;	<debug> jrettype
   	;	out*	:= [ejbc*,	// Put expression result on stack
   	 	<invokevirtual> (
   	 			<nabl-uri; nabl-uri-parent; nabl-uri-name> mname,	// Class name
   	 			<strip-annos>mname,									// Method name
-  	 			[],													// Param types
-  	 			<get-type;mjvtype-to-jtype> mname)					// Return type
+  	 			<get-type;mjvmethodtype-to-jbcmethodtype> mname)	// Parameter and Return type
   	 ]
+  mjvmethodtype-to-jbcmethodtype: (paramtypes*, rettype) -> (<map(mjvtype-to-jtype)>paramtypes*, <mjvtype-to-jtype>rettype)
   
   
   //UnExp     : UnOp * Exp -> Exp

@@ -6,6 +6,8 @@ imports
   milestone2/MiniJava.core
   lib/jasmin/JasminXT
   trans/codegen/-
+  libstratego-lib
+  libstratego-aterm
   
 rules	// Transform MiniJava AST into JasminXT
   
@@ -98,7 +100,7 @@ rules	// Helper rules
   			)
   		)
 
-  invokevirtual: (cref, mref, lparams, ret) ->
+  invokevirtual: (cref, mref, (lparams, ret)) ->
   		INVOKEVIRTUAL(
           JBCMethodRef(
             CRef(cref)
