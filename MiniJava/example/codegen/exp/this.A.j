@@ -1,4 +1,4 @@
-.class public Main
+.class public A
 .super java/lang/Object
 
 ; Default constructor
@@ -8,8 +8,9 @@
     return
 .end method
 
-; Empty main() method
-.method public static main([Ljava/lang/String;)V
+; Method methodA()
+.method public methodA()LA;
     .limit stack 100
-    return
+    aload_0	; Load this, local variable 0
+    areturn	; Return reference
 .end method
