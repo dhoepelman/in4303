@@ -1,0 +1,12 @@
+class Main {
+    public static void main(String[] args) {
+    	{}
+    }
+}
+
+class A {
+	
+	public int[] foo() {
+		return new int[3];
+	}
+}

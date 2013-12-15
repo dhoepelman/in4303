@@ -83,7 +83,7 @@ rules
   // Length    : UnOp
   op-to-jbc: Length() -> [ARRAYLENGTH()]
   // NewArray  : UnOp
-  op-to-jbc: NewArray() -> [NEWARRAY(Int())]
+  op-to-jbc: NewArray() -> [NEWARRAY(IntName())]
   
   // Plus      : BinOp
   op-to-jbc: Plus() -> [IADD()]
