@@ -21,10 +21,8 @@ rules
 		// TODO: Better stack limit
 	;	methodstatements := [JBCLimitStack("100"),stmtjbc*,retexpjbc*,<j-retexp> rettype]
 	 	
-	
+rules // helper rules	
 	j-retexp: Bool() -> IRETURN()
 	j-retexp: Int() -> IRETURN()
 	j-retexp: IntArray() -> ARETURN()
 	j-retexp: ClassType(_) -> ARETURN()
-	
-	

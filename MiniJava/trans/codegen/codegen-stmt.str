@@ -14,7 +14,7 @@ rules
   	where
   		exp* := <exp-to-jbc> e
   	;	stmt* := [
-	  		<getstatic> ("java/lang/System", "out", "java/io/PrintStream"),
+	  		GET-STATIC("java/lang/System", "out", "java/io/PrintStream"),
 	  		exp*,
 	  		<invokevirtual> ("java/io/PrintStream", "println", ([Int()], Void()))
 	  		]
@@ -31,16 +31,16 @@ rules
   ;	elselbl		:= <newname> "else_"
   ;	endiflbl	:= <newname> "end_"
   ; out*		:= [
-  			// Execute the expression, this should leave a result on the stack
-  			out_e*,
-  			// Compare == 0, 0 == false so jump to else if 0
-  			IFEQ(LabelRef(elselbl)),
-  			out_ifs*,
-  			GOTO(LabelRef(endiflbl)),
-  			JBCLabel(elselbl),
-  			out_elses*,
-  			JBCLabel(endiflbl)
-  		]
+  					// Execute the expression, this should leave a result on the stack
+  					  out_e*
+  					// Compare == 0, 0 == false so jump to else if 0
+  					, IFEQ(LabelRef(elselbl))
+  					, out_ifs*
+  					, GOTO(LabelRef(endiflbl))
+  					, JBCLabel(elselbl)
+  					, out_elses*
+  					, JBCLabel(endiflbl)
+  				   ]
   		
   // While       : Exp * Statement -> Statement
    stmt-to-jbc: While(e, stmt) -> out*
@@ -50,15 +50,24 @@ rules
 	  ;	loopcondlbl	:= <newname> "loopcond_"
 	  ;	loopbodylbl	:= <newname> "loop_"
 	  ; out*		:= [
-	    		// It is more efficient to jump to the condition here, as it decreases the number of jumps in loop execution from 2 to 1
-	    		GOTO(LabelRef(loopcondlbl)),
-	    		// Define the loop body start
-	    		JBCLabel(loopbodylbl),
-	  			out_stmt*,
-	  			JBCLabel(loopcondlbl),
-	  			// Execute the expression, this should leave a result on the stack
-	  			out_e*,
-	  			// If true, jump to the loop body again
-	  			IFNE(LabelRef(loopbodylbl))
-	  		]
+	    				  // It is more efficient to jump to the condition here, as it decreases the number of jumps in loop execution from 2 to 1
+	    				  GOTO(LabelRef(loopcondlbl))
+	    				  // Define the loop body start
+	    				, JBCLabel(loopbodylbl)
+	  					, out_stmt*
+	  					, JBCLabel(loopcondlbl)
+	  					  // Execute the expression, this should leave a result on the stack
+	  					, out_e*
+	  					  // If true, jump to the loop body again
+	  					, IFNE(LabelRef(loopbodylbl))
+	  				   ]
   		
+overlays
+	GET-STATIC(cref, fref, ftype) =
+  		GETSTATIC(
+  			JBCFieldRef(
+  				CRef(cref),
+  				FRef(fref),
+  				JBCFieldDesc(Reference(CRef(ftype)))
+  			)
+  		)

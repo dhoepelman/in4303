@@ -48,8 +48,6 @@ rules
   	 			<strip-annos>mname,									// Method name
   	 			<get-type;mjvmethodtype-to-jbcmethodtype> mname)	// Parameter and Return type
   	 ]
-  mjvmethodtype-to-jbcmethodtype: (paramtypes*, rettype) -> (<map(mjvtype-to-jtype)>paramtypes*, <mjvtype-to-jtype>rettype)
-  
   
   //UnExp     : UnOp * Exp -> Exp
   exp-to-jbc: UnExp(op, e) -> <concat> [<exp-to-jbc>e,<op-to-jbc>op]
@@ -59,8 +57,7 @@ rules
   // And recieves special treatment because of lazy evaluation
   exp-to-jbc: BinExp(And(), e1, e2) -> out*
   	where
-  		<debug> "entering And() exp-to-jbc"
-  	;	falselbl := <newname> "false_"
+  		falselbl := <newname> "false_"
   	;	endlbl	 := <newname> "end_"
   	;	out_e1*	 := <exp-to-jbc>e1
   	;	out_e2*	 := <exp-to-jbc>e2	
@@ -98,5 +95,6 @@ rules
   // This never overflows because MiniJava is restricted to 31-bit unsigned integers
   op-to-jbc: Lt() -> [ISUB(), LDC(31), IUSHR()]
   
-  
+rules // helper rules
+  mjvmethodtype-to-jbcmethodtype: (paramtypes*, rettype) -> (<map(mjvtype-to-jtype)>paramtypes*, <mjvtype-to-jtype>rettype)
   

@@ -15,7 +15,7 @@ rules	// Transform MiniJava AST into JasminXT
   to-jbc = program-to-jbc + class-to-jbc + stmt-to-jbc + exp-to-jbc
   
   /** Program     : MainClass * List(ClassDecl) **/
-  program-to-jbc: Program(mainc, classes*) -> <conc> ([<class-to-jbc> mainc],<map(class-to-jbc)>classes*)
+  program-to-jbc: Program(mainc, classes*) -> [<class-to-jbc> mainc | <map(class-to-jbc)>classes*]
   
   /** Class **/
   
@@ -41,13 +41,14 @@ rules	// Transform MiniJava AST into JasminXT
   	;	outputstmtjbc* := [JBCLimitStack("100"),stmtjbc*,RETURN()]
   	
   
-  	// Class       : ID * ParentDecl * List(FieldDecl) * List(MethodDecl) -> ClassDecl
-  	class-to-jbc:	Class(cname, parent, field*, method*) -> JBCFile(
-  	CLASS-HEADER(<strip-annos> cname,<parentname>parent)
-	// Fields
-	, []
-  	// Methods
-  	,[DEFAULT-CONSTRUCTOR(<parentname> parent) | <map(method-to-jbc)> method*]
+  // Class       : ID * ParentDecl * List(FieldDecl) * List(MethodDecl) -> ClassDecl
+  class-to-jbc:	Class(cname, parent, field*, method*) ->
+  	JBCFile(
+  		CLASS-HEADER(<strip-annos> cname,<parentname>parent)
+		// Fields
+		, []
+  		// Methods
+  		,[DEFAULT-CONSTRUCTOR(<parentname> parent) | <map(method-to-jbc)> method*]
   	)
   
 rules	// Helper rules
@@ -59,16 +60,9 @@ rules	// Helper rules
   mjvtype-to-jtype: Bool() -> Boolean()
   mjvtype-to-jtype: Int() -> Int()
   mjvtype-to-jtype: ClassType(cname) -> Reference(CRef(<strip-annos>cname))
-	
-  getstatic: (cref, fref, ftype) ->
-  		GETSTATIC(
-  			JBCFieldRef(
-  				CRef(cref),
-  				FRef(fref),
-  				JBCFieldDesc(Reference(CRef(ftype)))
-  			)
-  		)
 
+
+  // Should be an overlay, but I like being able to directory convert a mjv method signature to one applicabel for this
   invokevirtual: (cref, mref, (lparams, ret)) ->
   		INVOKEVIRTUAL(
           JBCMethodRef(
