@@ -21,51 +21,33 @@ rules	// Transform MiniJava AST into JasminXT
   
   // MainClass   : ID * ID * Statement -> MainClass
   class-to-jbc: MainClass(cname, pname, stmt) -> JBCFile(
-  	JBCHeader(
-		    None()
-		  , None()
-		  , JBCClass([PUBLIC()], <strip-annos> cname)
-		  , JBCSuper(superc)
-		  , []
-		  , None()
-		  , None()
-		  , None()
-		  )
+  	CLASS-HEADER(<strip-annos> cname, superc)
 	// Fields
 	, []
   	// Methods
-  	,[
-  		<classconstructor> superc,
-  		JBCMethod(
+  	, [ DEFAULT-CONSTRUCTOR(superc)
+  	  , JBCMethod(
 	      [PUBLIC(), STATIC()]
 	    , "main"
 	    , JBCMethodDesc([Array(Reference(CRef("java/lang/String")))], Void())
 	    , outputstmtjbc*
 	    )
-  	])
+  	  ]
+  	)
   	where
-  		stmtjbc* :=  <stmt-to-jbc> stmt
-  	;	superc	 := "java/lang/Object"
+  		stmtjbc* := <stmt-to-jbc> stmt
+  	;	superc	 := <parentname> None()
   	 	// TODO: Better stack limit
   	;	outputstmtjbc* := [JBCLimitStack("100"),stmtjbc*,RETURN()]
   	
   
   	// Class       : ID * ParentDecl * List(FieldDecl) * List(MethodDecl) -> ClassDecl
   	class-to-jbc:	Class(cname, parent, field*, method*) -> JBCFile(
-  	JBCHeader(
-		    None()
-		  , None()
-		  , JBCClass([PUBLIC()], <strip-annos> cname)
-		  , JBCSuper(<parentname>parent)
-		  , []
-		  , None()
-		  , None()
-		  , None()
-		  )
+  	CLASS-HEADER(<strip-annos> cname,<parentname>parent)
 	// Fields
 	, []
   	// Methods
-  	,[<parentname;classconstructor> parent | <map(method-to-jbc)> method*]
+  	,[DEFAULT-CONSTRUCTOR(<parentname> parent) | <map(method-to-jbc)> method*]
   	)
   
 rules	// Helper rules
@@ -77,19 +59,6 @@ rules	// Helper rules
   mjvtype-to-jtype: Bool() -> Boolean()
   mjvtype-to-jtype: Int() -> Int()
   mjvtype-to-jtype: ClassType(cname) -> Reference(CRef(<strip-annos>cname))
-  
-
-  classconstructor: superc -> JBCMethod(
-	      [PUBLIC()]
-	    , Init()
-	    , JBCMethodDesc([], Void())
-	    , [ ALOAD_0()
-	      , INVOKESPECIAL(
-	          JBCMethodRef(CRef(superc), MRef(Init()), JBCMethodDesc([], Void()))
-	        )
-	      , RETURN()
-	      ]
-	    )
 	
   getstatic: (cref, fref, ftype) ->
   		GETSTATIC(
@@ -108,4 +77,33 @@ rules	// Helper rules
           , JBCMethodDesc(lparams, ret)
           )
         )
-  
+        
+ overlays
+ 	DEFAULT-CONSTRUCTOR(superc) =
+	    JBCMethod(
+	      [PUBLIC()]
+	    , Init()
+	    , JBCMethodDesc([], Void())
+	    , [ JBCLimitStack("1"), JBCLimitLocals("1")
+	      , ALOAD_0()
+	      , INVOKE-CONSTRUCTOR(superc)
+	      , RETURN()
+	      ]
+	    )
+	
+	INVOKE-CONSTRUCTOR(superc) =
+		INVOKESPECIAL(
+	    	JBCMethodRef(CRef(superc), MRef(Init()), JBCMethodDesc([], Void()))
+	    )
+	    
+	CLASS-HEADER(cname, superc) =
+		JBCHeader(
+			    None()
+			  , None()
+			  , JBCClass([PUBLIC()], cname)
+			  , JBCSuper(superc)
+			  , []
+			  , None()
+			  , None()
+			  , None()
+		  )
