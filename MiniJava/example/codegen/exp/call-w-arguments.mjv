@@ -1,0 +1,18 @@
+class Main {
+    public static void main(String[] args) {
+    	{
+    		System.out.println(new A().par1(1));
+    		System.out.println(new A().par2(5,1));
+    	}
+    }
+}
+
+class A {
+	public int par1(int par) {
+		return par;
+	}
+	
+	public int par2(int foo, int bar) {
+		return bar;
+	}
+}
