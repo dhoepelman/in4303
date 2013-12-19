@@ -19,6 +19,10 @@ rules
 	stack-limit: If(e, ifs, elses) -> <map(stack-limit);list-max> [e,ifs,elses]
 	// While does too
 	stack-limit: While(e, stmt) -> <map(stack-limit);list-max> [e,stmt]
+	// Assign      : VarRef * Exp -> Statement
+	// ArrayAssign : VarRef * Exp * Exp -> Statement
+	stack-limit: Assign(FieldRef(_), e) -> <stack-limit;inc>e	// Object reference needs 1 stack space
+	stack-limit: ArrayAssign(FieldRef(_), ie, e) -> <max;inc> (<stack-limit>ie, <stack-limit;inc> e) 
 
 	/** Expressions **/
 	// Trivial

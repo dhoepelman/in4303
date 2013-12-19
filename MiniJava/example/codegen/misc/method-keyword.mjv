@@ -4,8 +4,8 @@ class Main {
     }
 }
 
-class A {
-	public int foo() {
+class ldc {
+	public int aload_0() {
 		return 1;
 	}
 }

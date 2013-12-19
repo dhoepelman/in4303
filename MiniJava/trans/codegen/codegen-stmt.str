@@ -6,6 +6,8 @@ imports
   milestone2/MiniJava.core
   lib/jasmin/JasminXT
   trans/codegen/-
+  lib/runtime/nabl/-
+  lib/runtime/types/-
 
 rules  
 	/** Statements **/
@@ -61,6 +63,28 @@ rules
 	  					  // If true, jump to the loop body again
 	  					, IFNE(LabelRef(loopbodylbl))
 	  				   ]
+	  				   
+	// Assign      : VarRef * Exp -> Statement
+	stmt-to-jbc: Assign(FieldRef(fname), e) -> out*
+	where
+		oute*	:= <exp-to-jbc> e
+	;	out*	:= [ ALOAD_0()
+					,oute*
+					,PUTFIELD(<fieldref> fname)
+					]
+	
+	//ArrayAssign : VarRef * Exp * Exp -> Statement
+	stmt-to-jbc: ArrayAssign(FieldRef(fname), indexe, e) -> out*
+	where
+		outie*	:= <exp-to-jbc> indexe
+	;	oute*	:= <exp-to-jbc> e
+	;	fref	:= <fieldref>fname
+	;	out*	:= [ ALOAD_0()
+	 				,GETFIELD(fref)
+	 				,outie*
+					,oute*
+					,IASTORE()
+					]	
   		
 overlays
 	GET-STATIC(cref, fref, ftype) =

@@ -8,6 +8,8 @@ imports
   trans/codegen/-
   libstratego-lib
   libstratego-aterm
+  lib/runtime/nabl/-
+  lib/runtime/types/-
   
 rules	// Transform MiniJava AST into JasminXT
   
@@ -32,6 +34,11 @@ rules	// Helper rules
   mjvtype-to-jtype: Bool() -> Boolean()
   mjvtype-to-jtype: Int() -> Int()
   mjvtype-to-jtype: ClassType(cname) -> Reference(CRef(<strip-annos>cname))
+  
+  // Field ref shorthand
+  fieldref: fname -> FIELDREF(<nabl-uri; nabl-uri-parent; nabl-uri-name> fname,
+  						  <strip-annos>fname,
+  						  <get-type;type-to-jbc>fname)
         
  overlays
 		  
@@ -43,3 +50,9 @@ rules	// Helper rules
           , mdescr
           )
         )
+        
+    FIELDREF(cname,fname,ftype) = JBCFieldRef(
+  			 	 CRef(cname)
+  				,FRef(fname)
+  				,JBCFieldDesc(ftype)
+  			)

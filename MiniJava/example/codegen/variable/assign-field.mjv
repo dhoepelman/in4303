@@ -1,0 +1,17 @@
+class Main {
+    public static void main(String[] args) {
+    	{
+    		System.out.println(new A().foo());
+    	}
+    }
+}
+
+class A {
+	int[] arrfield;
+	
+	public int foo() {
+  	arrfield = new int[5];
+  	arrfield[2] = 1;
+  	return arrfield[2];
+  }
+}
