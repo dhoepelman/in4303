@@ -51,19 +51,15 @@ rules
 	nabl-prop-site(|lang, ctx, uris, states, implicits):
 	  Method(ty, mname, param*, var*, stmt*, exp) -> <fail>
 	  where
-	  	<debug> "Starting nabl prop-site"
-	  ;	descr := JBCMethodDesc(<map(paramtype;type-to-jbc)> param*, <type-to-jbc> ty) // Method description: (params, return type)
+	  	descr := JBCMethodDesc(<map(paramtype;type-to-jbc)> param*, <type-to-jbc> ty) // Method description: (params, return type)
 	  ; <store-descriptor(|ctx, descr)> mname
-	    // TODO: find out why var indices are not stored
-	  ; <conc;map-with-index(varname;store-var-index-tuple(|ctx))> (param*,var*)
+	  ; locals* := <conc;map(varname)> (param*,var*)
+	  ; <map-with-index(store-var-index-tuple(|ctx))> locals*
 	  //; <conc;nmap(store-var-index|1)> (param*,var*)
 	    
 	    
 rules // helper rules	
-	store-var-index-tuple(|ctx): (i, e) -> <store-var-index(|ctx,<inc>i)> e 
-	where
-		<debug> "Var index:"
-	;	<debug> (i,e)
+	store-var-index-tuple(|ctx): (i, e) -> <store-var-index(|ctx,i)> e 
 	
 	j-retexp: Bool() -> IRETURN()
 	j-retexp: Int() -> IRETURN()
@@ -79,11 +75,9 @@ rules // helper rules
 	varcomp: Var(t,n) -> (t,n)
 	
 	make-vardecl(|label1,label2): (type, name) -> JBCVarDecl(
-		  <get-var-index> name
+		  <get-var-index;int-to-string> name
 		, <strip-annos> name
 		, JBCFieldDesc(<type-to-jbc>type)
 		, LabelRef(label1)
 		, LabelRef(label2)
 		)
-	where
-		<debug> (type, name)
