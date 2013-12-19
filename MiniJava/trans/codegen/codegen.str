@@ -29,12 +29,6 @@ rules	// Helper rules
   parentname: None() -> "java/lang/Object"
   parentname: Parent(p)	-> <strip-annos>p
   
-  // Deprecated, use type-to-jbc
-  mjvtype-to-jtype: IntArray() -> Array(Int())
-  mjvtype-to-jtype: Bool() -> Boolean()
-  mjvtype-to-jtype: Int() -> Int()
-  mjvtype-to-jtype: ClassType(cname) -> Reference(CRef(<strip-annos>cname))
-  
   // Field ref shorthand
   fieldref: fname -> FIELDREF(<nabl-uri; nabl-uri-parent; nabl-uri-name> fname,
   						  <strip-annos>fname,

@@ -1,0 +1,14 @@
+module codegen/properties
+
+imports
+        milestone1/-
+        milestone2/-
+
+namespaces
+	Method
+	Variable
+
+properties
+
+  descriptor of Method: MethodDescriptor
+  var-index of Variable: Int

@@ -33,7 +33,7 @@ rules
 	nabl-prop-site(|lang, ctx, uris, states, implicits):
 	  Method(ty, mname, param*, var*, stmt*, exp) -> <fail>
 	  where
-	  	descr := JBCMethodDesc(<map(paramtype;mjvtype-to-jtype)> param*, <mjvtype-to-jtype> ty) // Method description: (params, return type)
+	  	descr := JBCMethodDesc(<map(paramtype;type-to-jbc)> param*, <type-to-jbc> ty) // Method description: (params, return type)
 	  ; <store-descriptor(|ctx, descr)> mname 	
 	    
 rules // helper rules	
