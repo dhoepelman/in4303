@@ -19,11 +19,12 @@ rules
 	stack-limit: If(e, ifs, elses) -> <map(stack-limit);list-max> [e,ifs,elses]
 	// While does too
 	stack-limit: While(e, stmt) -> <map(stack-limit);list-max> [e,stmt]
-	// Assign      : VarRef * Exp -> Statement
+	// Assign      : VarRef * Exp -> Statement	
+	stack-limit: Assign(FieldRef(_), e) -> <stack-limit;inc>e
+	stack-limit: Assign(VarRef(_), e) -> <stack-limit>e
 	// ArrayAssign : VarRef * Exp * Exp -> Statement
-	stack-limit: Assign(FieldRef(_), e) -> <stack-limit;inc>e	// Object reference needs 1 stack space
-	stack-limit: ArrayAssign(FieldRef(_), ie, e) -> <max;inc> (<stack-limit>ie, <stack-limit;inc> e) 
-
+	stack-limit: ArrayAssign(_, ie, e) -> <max;inc> (<stack-limit>ie, <stack-limit;inc> e) 
+	
 	/** Expressions **/
 	// Trivial
 	stack-limit: IntValue(_) -> 1
@@ -31,6 +32,7 @@ rules
 	stack-limit: False() -> 1
 	stack-limit: This() -> 1
 	stack-limit: FieldRef(_) -> 1
+	stack-limit: VarRef(_) -> 1
 	
 	// NewObject leaves something on the stack, but requires 2 spaces because it calls the constructor
 	stack-limit: NewObject(_) -> 2

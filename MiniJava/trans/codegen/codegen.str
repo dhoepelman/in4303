@@ -29,6 +29,16 @@ rules	// Helper rules
   parentname: None() -> "java/lang/Object"
   parentname: Parent(p)	-> <strip-annos>p
   
+  // Correct load/store instruction
+  localload(|i): IntArray() -> ALOAD(VarRef(i))
+  localload(|i): Bool() -> ILOAD(VarRef(i))
+  localload(|i): Int() -> ILOAD(VarRef(i))
+  localload(|i): ClassType(_) -> ALOAD(VarRef(i))
+  localstore(|i): IntArray() -> ASTORE(VarRef(i))
+  localstore(|i): Bool() -> ISTORE(VarRef(i))
+  localstore(|i): Int() -> ISTORE(VarRef(i))
+  localstore(|i): ClassType(_) -> ASTORE(VarRef(i))
+  
   // Field ref shorthand
   fieldref: fname -> FIELDREF(<nabl-uri; nabl-uri-parent; nabl-uri-name> fname,
   						  <strip-annos>fname,

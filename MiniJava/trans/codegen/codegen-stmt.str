@@ -72,6 +72,12 @@ rules
 					,oute*
 					,PUTFIELD(<fieldref> fname)
 					]
+	stmt-to-jbc: Assign(VarRef(localname), e) -> out*
+	where
+		oute*	:= <exp-to-jbc> e
+	;	localnum:= <get-var-index> localname
+	;	type	:= <get-type> localname
+	;	out*	:= [oute*,<localstore(|localnum)>type]
 	
 	//ArrayAssign : VarRef * Exp * Exp -> Statement
 	stmt-to-jbc: ArrayAssign(FieldRef(fname), indexe, e) -> out*
@@ -84,7 +90,17 @@ rules
 	 				,outie*
 					,oute*
 					,IASTORE()
-					]	
+					]
+	stmt-to-jbc: ArrayAssign(VarRef(localname), ie, e) -> out*
+	where
+		oute*	:= <exp-to-jbc> e
+	;	outie*	:= <exp-to-jbc> ie
+	;	localnum:= <get-var-index> localname
+	;	out*	:= [ ALOAD(VarRef(localnum))
+	 				,outie*
+	 				,oute*
+	 				,IASTORE()
+	 				]	
   		
 overlays
 	GET-STATIC(cref, fref, ftype) =

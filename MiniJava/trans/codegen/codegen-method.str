@@ -21,25 +21,69 @@ rules
 		  ,methodstatements
 		)
 	where
-		stmtjbc*		:= <map(stmt-to-jbc); concat> stmt*
-	;	stmtstacklimit	:= <map(stack-limit) ; foldr(!0, max)> stmt* // list-max doesn't work on the empty list
-	;	stacklimit		:= <max> (<stack-limit> retexp, stmtstacklimit)
-	//; stacklimit		:= 100
-	//;	<debug> stacklimit
+		startlbl		:= <newname> "methodstart_"
+	;	endlbl			:= <newname> "methodend_"
+	 	// Variables
+	; 	locals*			:= <conc> (params*,vars*)
+	; 	localsdecl*		:= <map(varcomp;make-vardecl(|startlbl,endlbl))> locals*
+	;  	locallimit		:= <length;inc> locals*	// `this` is local 0 so num locals is length+1
+	 	// Statements in JBC
+	;	stmtjbc*		:= <map(stmt-to-jbc); concat> stmt*
 	;	retexpjbc*		:= <exp-to-jbc> retexp
-	;	methodstatements:= [JBCLimitStack(<int-to-string>stacklimit),stmtjbc*,retexpjbc*,<j-retexp> rettype]
+	 	// Calculate stack limit
+	//;	stmtstacklimit	:= <map(stack-limit) ; foldr(!0, max)> stmt* // list-max doesn't work on the empty list
+	//;	stacklimit		:= <max> (<stack-limit> retexp, stmtstacklimit)
+	; stacklimit		:= 100
+	//;	<debug> stacklimit
+	// Make all of the method statements
+	;	methodstatements:= [ JBCLimitStack(<int-to-string>stacklimit)
+	 						,JBCLimitLocals(<int-to-string>locallimit)
+	 						,localsdecl*
+	 						,JBCLabel(startlbl)
+	 						,stmtjbc*
+	 						,retexpjbc*
+	 						,<j-retexp> rettype
+	 						, JBCLabel(endlbl)
+	 						]
+	
 	
 	// Create method descriptor
 	nabl-prop-site(|lang, ctx, uris, states, implicits):
 	  Method(ty, mname, param*, var*, stmt*, exp) -> <fail>
 	  where
-	  	descr := JBCMethodDesc(<map(paramtype;type-to-jbc)> param*, <type-to-jbc> ty) // Method description: (params, return type)
-	  ; <store-descriptor(|ctx, descr)> mname 	
+	  	<debug> "Starting nabl prop-site"
+	  ;	descr := JBCMethodDesc(<map(paramtype;type-to-jbc)> param*, <type-to-jbc> ty) // Method description: (params, return type)
+	  ; <store-descriptor(|ctx, descr)> mname
+	    // TODO: find out why var indices are not stored
+	  ; <conc;map-with-index(varname;store-var-index-tuple(|ctx))> (param*,var*)
+	  //; <conc;nmap(store-var-index|1)> (param*,var*)
+	    
 	    
 rules // helper rules	
+	store-var-index-tuple(|ctx): (i, e) -> <store-var-index(|ctx,<inc>i)> e 
+	where
+		<debug> "Var index:"
+	;	<debug> (i,e)
+	
 	j-retexp: Bool() -> IRETURN()
 	j-retexp: Int() -> IRETURN()
 	j-retexp: IntArray() -> ARETURN()
 	j-retexp: ClassType(_) -> ARETURN()
 	
 	paramtype: Param(t, _) -> t
+	
+	varname: Param(_,n) -> n
+	varname: Var(_,n) -> n
+	
+	varcomp: Param(t,n) -> (t,n)
+	varcomp: Var(t,n) -> (t,n)
+	
+	make-vardecl(|label1,label2): (type, name) -> JBCVarDecl(
+		  <get-var-index> name
+		, <strip-annos> name
+		, JBCFieldDesc(<type-to-jbc>type)
+		, LabelRef(label1)
+		, LabelRef(label2)
+		)
+	where
+		<debug> (type, name)

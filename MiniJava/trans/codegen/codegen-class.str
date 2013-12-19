@@ -28,7 +28,8 @@ rules
   	)
   	where
   		stmtjbc* := <stmt-to-jbc> stmt
-  	;	stacklimit := <stack-limit;int-to-string> stmt
+  	//;	stacklimit := <stack-limit;int-to-string> stmt
+  	;	stacklimit	:= 100
   	;	superc	 := <parentname> None()
   	;	outputstmtjbc* := [JBCLimitStack(stacklimit),stmtjbc*,RETURN()]
   	

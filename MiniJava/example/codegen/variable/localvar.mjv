@@ -1,16 +1,16 @@
 class Main {
     public static void main(String[] args) {
-    	System.out.println(new A().foo(1));
+    	System.out.println(new A().foo(1, new int[2]));
     }
 }
 
 class A {
-	public int foo(int par) {
-		return par;
-	}
-	
-	public int bar() {
+	public int foo(int par, int[] par2) {
 		int local;
+		int[] local2;
+		local = par;
+		local2 = par2;
+		local2[0] = 1;
 		return local;
 	}
 }
