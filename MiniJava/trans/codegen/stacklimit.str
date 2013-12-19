@@ -26,6 +26,7 @@ rules
 	stack-limit: True() -> 1
 	stack-limit: False() -> 1
 	stack-limit: This() -> 1
+	stack-limit: FieldRef(_) -> 1
 	
 	// NewObject leaves something on the stack, but requires 2 spaces because it calls the constructor
 	stack-limit: NewObject(_) -> 2

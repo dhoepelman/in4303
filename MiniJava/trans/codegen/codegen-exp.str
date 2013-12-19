@@ -22,6 +22,21 @@ rules
   // This
   exp-to-jbc: This() -> [ALOAD_0()]	// Local var 0 is the this object
   
+  // FieldRef  : String -> Exp
+  exp-to-jbc: FieldRef(fname) -> [
+  		 ALOAD_0()
+  		,GETFIELD(
+  			JBCFieldRef(
+  			 	 CRef(cname)
+  				,FRef(<strip-annos>fname)
+  				,JBCFieldDesc(<type-to-jbc>fieldt)
+  			)
+  		 )
+  		]
+    where
+    	cname	:= <nabl-uri; nabl-uri-parent; nabl-uri-name> fname
+    ;	fieldt	:= <get-type> fname 
+  
   // NewObject   : ID -> Exp
   exp-to-jbc: NewObject(cname) -> out*
   	where
