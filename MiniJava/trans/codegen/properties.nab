@@ -7,8 +7,10 @@ imports
 namespaces
 	Method
 	Variable
+	Field
 
 properties
 
   descriptor of Method: MethodDescriptor
+  descriptor of Field: FieldDescriptor
   var-index of Variable: Int
