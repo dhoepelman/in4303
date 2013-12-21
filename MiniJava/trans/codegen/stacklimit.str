@@ -45,16 +45,21 @@ rules
 	// etc.
 	// Param n will always requires a n + 1 stack (1 is its own minimum), so the minimum is guaranteed
 	// total required: <max> (<stack-limit> callee-exp, )
-	stack-limit: Call(callee-exp, method-name, args*) -> total
+	stack-limit: Call(callee-exp, method-name, args) -> total
 		where
+		//	<debug> $[Calculating call stack limit for method [method-name] with [<length>args] parameters]
 			explimit := <stack-limit> callee-exp
-		//;	<debug> $[Callee expression limit: [explimit]]
-		;	arglimits	:= <map(stack-limit)> args*
-		//;	<debug> $[Argument limits: [arglimits]]
-		;	arglimit := <foldr(!0,max,inc)> args*
-		//;	<debug> $[Stack limit for arguments: [arglimit]]
+		//;	<debug> args
+		;	arglimits	:= <map(stack-limit)> args
+		//;	<debug> arglimits
+		;	arglimit := <foldr(!0,max;inc);inc> args
+		//;	arglimit := <stack-limit-param;inc> args
+		//;	<debug> arglimit
 		;	total := <max> (explimit, arglimit)
 		//;	<debug> $[Total limit: [total]]
+	// This should be equivalent to foldr(!0,max,inc) or foldr(!0,max;inc) but I couldn't get it working
+	//stack-limit-param: [] -> 0
+	//stack-limit-param: [x|xs] -> <max> (x, <stack-limit-param; inc> xs)
 	
 	stack-limit: UnExp(op, e) -> <addi> (<stack-limit>op, <stack-limit>e)
 	// e2 has the result of e1 on the stack so needs 1 more
