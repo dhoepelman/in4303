@@ -40,9 +40,9 @@ rules	// Helper rules
   localstore(|i): ClassType(_) -> ASTORE(VarNum(<int-to-string>i))
   
   // Field ref shorthand
-  fieldref: fname -> FIELDREF(<nabl-uri; nabl-uri-parent; nabl-uri-name> fname,
-  						  <strip-annos>fname,
-  						  <get-type;type-to-jbc>fname)
+  fieldref: fname -> JBCFieldRef(CRef(<nabl-uri; nabl-uri-parent; nabl-uri-name> fname),
+  						  FRef(<strip-annos>fname),
+  						  <get-descriptor>fname)
         
  overlays
 		  
@@ -54,9 +54,3 @@ rules	// Helper rules
           , mdescr
           )
         )
-        
-    FIELDREF(cname,fname,ftype) = JBCFieldRef(
-  			 	 CRef(cname)
-  				,FRef(fname)
-  				,JBCFieldDesc(ftype)
-  			)

@@ -45,7 +45,13 @@ rules
   	)
   	
   /** Field generation **/
-  field-to-jbc: Field(fieldt, fieldn) -> JBCField([PUBLIC()], <strip-annos>fieldn, JBCFieldDesc(<type-to-jbc>fieldt), None(), None())
+  field-to-jbc: Field(fieldt, fieldn) -> JBCField([PUBLIC()], <strip-annos>fieldn, <get-descriptor>fieldn, None(), None())
+  // Create method descriptor
+  nabl-prop-site(|lang, ctx, uris, states, implicits):
+	  Field(fieldt, fieldn) -> <fail>
+	  where
+	  	descr := JBCFieldDesc(<type-to-jbc>fieldt)
+	  ; <store-descriptor(|ctx, descr)> fieldn
   	
 overlays
 	
