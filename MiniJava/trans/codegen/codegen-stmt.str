@@ -96,7 +96,7 @@ rules
 		oute*	:= <exp-to-jbc> e
 	;	outie*	:= <exp-to-jbc> ie
 	;	localnum:= <get-var-index;int-to-string> localname
-	;	out*	:= [ ALOAD(VarRef(localnum))
+	;	out*	:= [ ALOAD(VarNum(localnum))
 	 				,outie*
 	 				,oute*
 	 				,IASTORE()

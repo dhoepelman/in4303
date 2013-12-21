@@ -30,14 +30,14 @@ rules	// Helper rules
   parentname: Parent(p)	-> <strip-annos>p
   
   // Correct load/store instruction
-  localload(|i): IntArray() -> ALOAD(VarRef(<int-to-string>i))
-  localload(|i): Bool() -> ILOAD(VarRef(<int-to-string>i))
-  localload(|i): Int() -> ILOAD(VarRef(<int-to-string>i))
-  localload(|i): ClassType(_) -> ALOAD(VarRef(<int-to-string>i))
-  localstore(|i): IntArray() -> ASTORE(VarRef(<int-to-string>i))
-  localstore(|i): Bool() -> ISTORE(VarRef(<int-to-string>i))
-  localstore(|i): Int() -> ISTORE(VarRef(<int-to-string>i))
-  localstore(|i): ClassType(_) -> ASTORE(VarRef(<int-to-string>i))
+  localload(|i): IntArray() -> ALOAD(VarNum(<int-to-string>i))
+  localload(|i): Bool() -> ILOAD(VarNum(<int-to-string>i))
+  localload(|i): Int() -> ILOAD(VarNum(<int-to-string>i))
+  localload(|i): ClassType(_) -> ALOAD(VarNum(<int-to-string>i))
+  localstore(|i): IntArray() -> ASTORE(VarNum(<int-to-string>i))
+  localstore(|i): Bool() -> ISTORE(VarNum(<int-to-string>i))
+  localstore(|i): Int() -> ISTORE(VarNum(<int-to-string>i))
+  localstore(|i): ClassType(_) -> ASTORE(VarNum(<int-to-string>i))
   
   // Field ref shorthand
   fieldref: fname -> FIELDREF(<nabl-uri; nabl-uri-parent; nabl-uri-name> fname,
