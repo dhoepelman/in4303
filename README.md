@@ -1,6 +1,4 @@
 IN4303 lab repo
 ====
-Private repository for dhoepelman
 
-If this is accidentally made public and you're a in4303: I'd recommend not looking at it.
-Plagiarism will prevent you from learning anything and might get you in serious trouble.
+Don't be an idiot and copy work from this. You're a master student and should be willing to learn stuff.
